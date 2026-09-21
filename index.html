@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#050505">
+<meta name="theme-color" content="#050507">
 <title>FLUX</title>
 
 <style>
@@ -13,940 +13,894 @@
     padding: 0;
 }
 
+:root {
+    --bg: #050507;
+    --glass: rgba(255,255,255,0.075);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.58);
+    --accent: #8c7cff;
+}
+
 html,
 body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #050505;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Segoe UI", sans-serif;
+    overflow-x: hidden;
 }
 
-button {
-    font: inherit;
-}
-
-#app {
+body {
+    min-height: 100vh;
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at 50% 45%, rgba(90, 70, 255, .09), transparent 35%),
-        #050505;
 }
 
-/* =================================
-   AMBIENT WORLD
-================================= */
+/* ---------- BACKGROUND ---------- */
 
 .ambient {
-    position: absolute;
-    inset: -25%;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
-    filter: blur(90px);
-    opacity: .75;
-    transition: transform 1s cubic-bezier(.2,.8,.2,1);
+    z-index: 0;
 }
 
 .orb {
     position: absolute;
     border-radius: 50%;
-    mix-blend-mode: screen;
-    animation: float 11s ease-in-out infinite alternate;
+    filter: blur(80px);
+    opacity: 0.42;
+    animation: drift 14s ease-in-out infinite alternate;
 }
 
 .orb.one {
-    width: 42vw;
-    height: 42vw;
-    min-width: 280px;
-    min-height: 280px;
-    background: rgba(82, 56, 255, .18);
-    top: 5%;
-    left: 8%;
+    width: 330px;
+    height: 330px;
+    background: #5b45ff;
+    left: -120px;
+    top: -90px;
 }
 
 .orb.two {
-    width: 35vw;
-    height: 35vw;
-    min-width: 240px;
-    min-height: 240px;
-    background: rgba(0, 190, 255, .13);
-    right: 5%;
-    bottom: 5%;
-    animation-delay: -3s;
+    width: 280px;
+    height: 280px;
+    background: #00d9ff;
+    right: -120px;
+    top: 25%;
+    animation-delay: -4s;
 }
 
 .orb.three {
-    width: 28vw;
-    height: 28vw;
-    min-width: 200px;
-    min-height: 200px;
-    background: rgba(255, 50, 170, .1);
-    left: 40%;
-    top: 55%;
-    animation-delay: -6s;
+    width: 300px;
+    height: 300px;
+    background: #ff3da8;
+    left: 30%;
+    bottom: -170px;
+    animation-delay: -7s;
 }
 
-@keyframes float {
+@keyframes drift {
     from {
-        transform: translate3d(-20px, -15px, 0) scale(1);
+        transform: translate3d(-20px, -10px, 0) scale(1);
     }
-
     to {
-        transform: translate3d(25px, 25px, 0) scale(1.12);
+        transform: translate3d(35px, 25px, 0) scale(1.16);
     }
 }
-
-/* =================================
-   POINTER LIGHT
-================================= */
 
 .pointer-light {
     position: fixed;
-    width: 340px;
-    height: 340px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
     background: radial-gradient(
         circle,
-        rgba(255,255,255,.08),
-        rgba(100,80,255,.04) 35%,
-        transparent 70%
+        rgba(255,255,255,0.09),
+        transparent 68%
     );
-    z-index: 20;
-    opacity: 0;
-    transition: opacity .4s ease;
+    z-index: 1;
+    mix-blend-mode: screen;
 }
 
-/* =================================
-   SCREENS
-================================= */
+/* ---------- APP ---------- */
+
+.app {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+}
+
+/* ---------- HOME ---------- */
 
 .screen {
-    position: absolute;
-    inset: 0;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.home {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition:
-        opacity .9s cubic-bezier(.2,.8,.2,1),
-        transform 1s cubic-bezier(.2,.8,.2,1),
-        filter 1s ease;
 }
 
-/* =================================
-   LANDING
-================================= */
-
-#landing {
-    z-index: 10;
-}
-
-#landing.exit {
-    opacity: 0;
-    transform: scale(1.12);
-    filter: blur(18px);
-    pointer-events: none;
-}
-
-.hero {
-    position: relative;
-    width: min(900px, 92vw);
+.home-content {
+    width: min(900px, 100%);
     text-align: center;
-    z-index: 5;
-}
-
-.mini-label {
-    font-size: 11px;
-    letter-spacing: .38em;
-    text-transform: uppercase;
-    opacity: .45;
-    margin-bottom: 28px;
 }
 
 .logo {
-    font-size: clamp(72px, 17vw, 190px);
-    line-height: .78;
-    letter-spacing: -.085em;
+    font-size: clamp(76px, 17vw, 190px);
+    line-height: 0.8;
+    letter-spacing: -0.075em;
     font-weight: 800;
+    user-select: none;
     background: linear-gradient(
         120deg,
-        #ffffff 10%,
-        #bdb7ff 45%,
-        #ffffff 70%,
-        #8de8ff
+        #ffffff,
+        #aaa5ff,
+        #70eaff,
+        #ffffff
     );
+    background-size: 250% 250%;
     -webkit-background-clip: text;
-    background-clip: text;
     color: transparent;
-    animation: logoPulse 5s ease-in-out infinite;
-    user-select: none;
+    animation: logoFlow 8s ease infinite;
 }
 
-@keyframes logoPulse {
-    0%, 100% {
-        transform: scale(1);
-        filter: brightness(1);
-    }
-
-    50% {
-        transform: scale(1.015);
-        filter: brightness(1.12);
-    }
+@keyframes logoFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .tagline {
-    margin-top: 35px;
-    font-size: clamp(16px, 2.2vw, 24px);
-    letter-spacing: .02em;
-    opacity: .65;
+    margin-top: 34px;
+    font-size: clamp(18px, 3vw, 30px);
+    color: rgba(255,255,255,0.78);
+    letter-spacing: -0.02em;
 }
 
-.enter {
-    position: relative;
-    margin-top: 48px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.055);
+.play-button {
+    margin-top: 45px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.10);
     color: white;
+    border-radius: 999px;
     padding: 18px 34px;
-    min-width: 190px;
-    border-radius: 999px;
-    cursor: pointer;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow:
-        inset 0 1px rgba(255,255,255,.12),
-        0 20px 70px rgba(0,0,0,.3);
-    transition:
-        transform .35s cubic-bezier(.2,.8,.2,1),
-        background .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
-    overflow: hidden;
-}
-
-.enter span {
-    position: relative;
-    z-index: 2;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .2em;
-}
-
-.enter::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        110deg,
-        transparent,
-        rgba(255,255,255,.15),
-        transparent
-    );
-    transform: translateX(-120%);
-    transition: transform .7s ease;
-}
-
-.enter:hover {
-    transform: translateY(-5px) scale(1.03);
-    background: rgba(255,255,255,.1);
-    border-color: rgba(255,255,255,.32);
-    box-shadow:
-        0 20px 70px rgba(90,80,255,.15),
-        inset 0 1px rgba(255,255,255,.18);
-}
-
-.enter:hover::before {
-    transform: translateX(120%);
-}
-
-.enter:active {
-    transform: scale(.94);
-}
-
-/* =================================
-   PLAYGROUND
-================================= */
-
-#playground {
-    opacity: 0;
-    transform: scale(.94);
-    pointer-events: none;
-    z-index: 5;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 28px;
-}
-
-#playground.active {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-}
-
-.play-top {
-    width: min(1100px, 100%);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 5;
-}
-
-.flux-small {
     font-size: 15px;
-    font-weight: 800;
-    letter-spacing: .15em;
-}
-
-.back {
-    border: 1px solid rgba(255,255,255,.13);
-    background: rgba(255,255,255,.045);
-    color: rgba(255,255,255,.7);
-    padding: 10px 17px;
-    border-radius: 999px;
-    cursor: pointer;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: .3s ease;
-}
-
-.back:hover {
-    color: white;
-    background: rgba(255,255,255,.09);
-}
-
-.play-content {
-    width: min(1100px, 100%);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 30px 0;
-}
-
-.play-title {
-    margin-bottom: 20px;
-}
-
-.play-title small {
-    display: block;
-    font-size: 10px;
-    letter-spacing: .35em;
-    opacity: .35;
-    margin-bottom: 10px;
-}
-
-.play-title h2 {
-    font-size: clamp(30px, 6vw, 62px);
-    letter-spacing: -.045em;
     font-weight: 700;
-    transition: color .8s ease;
-}
-
-.play-title p {
-    margin-top: 10px;
-    opacity: .45;
-    font-size: 14px;
-}
-
-/* =================================
-   LIQUID CARD
-================================= */
-
-.liquid-card {
-    position: relative;
-    height: min(55vh, 520px);
-    min-height: 320px;
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 32px;
-    overflow: hidden;
-    background:
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(100,90,255,.04),
-            transparent 60%
-        ),
-        rgba(255,255,255,.025);
-    box-shadow:
-        inset 0 1px rgba(255,255,255,.06),
-        0 30px 100px rgba(0,0,0,.35);
+    letter-spacing: 0.12em;
+    cursor: pointer;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     transition:
-        border-color .6s ease,
-        box-shadow .6s ease;
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-.liquid-card.active {
-    border-color: rgba(150,140,255,.2);
-    box-shadow:
-        inset 0 1px rgba(255,255,255,.08),
-        0 30px 100px rgba(70,50,255,.12);
+.play-button:hover {
+    transform: translateY(-4px) scale(1.04);
+    background: rgba(255,255,255,0.16);
+    box-shadow: 0 18px 60px rgba(120,100,255,0.25);
 }
 
-#liquidCanvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    touch-action: none;
+.play-button:active {
+    transform: scale(0.94);
 }
 
-.liquid-info {
-    position: absolute;
-    left: 24px;
-    bottom: 22px;
-    pointer-events: none;
-    z-index: 2;
-}
+/* ---------- TOP BAR ---------- */
 
-.liquid-info strong {
-    display: block;
-    font-size: 12px;
-    letter-spacing: .18em;
-}
-
-.liquid-info span {
-    display: block;
-    margin-top: 6px;
-    font-size: 11px;
-    opacity: .35;
-}
-
-/* =================================
-   INTERACTION INDICATOR
-================================= */
-
-.energy {
-    position: absolute;
-    right: 24px;
-    bottom: 22px;
+.topbar {
+    width: min(1180px, 100%);
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    pointer-events: none;
 }
 
-.energy-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: white;
-    opacity: .3;
-    transition:
-        transform .2s ease,
-        opacity .2s ease;
+.small-logo {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.06em;
 }
 
-.energy-dot.active {
-    opacity: .9;
-    transform: scale(1.7);
-}
-
-.energy-text {
-    font-size: 9px;
-    letter-spacing: .18em;
-    opacity: .3;
-}
-
-/* =================================
-   FUTURE TOYS
-================================= */
-
-.toys {
+.top-actions {
     display: flex;
     gap: 10px;
-    margin-top: 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
 }
 
-.toys::-webkit-scrollbar {
-    display: none;
+.icon-button {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: white;
+    cursor: pointer;
+    font-size: 17px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: transform .2s ease, background .2s ease;
 }
 
-.toy {
-    flex: 1;
-    min-width: 130px;
-    border: 1px solid rgba(255,255,255,.07);
-    background: rgba(255,255,255,.025);
-    border-radius: 18px;
-    padding: 15px;
-    opacity: .38;
-    transition:
-        transform .3s ease,
-        opacity .3s ease,
-        background .3s ease;
+.icon-button:hover {
+    transform: scale(1.07);
+    background: rgba(255,255,255,0.13);
 }
 
-.toy:hover {
-    opacity: .7;
-    transform: translateY(-3px);
-    background: rgba(255,255,255,.045);
+/* ---------- HUB ---------- */
+
+.hub {
+    width: min(1180px, 100%);
+    margin: 75px auto 0;
 }
 
-.toy-name {
-    font-size: 11px;
-    letter-spacing: .1em;
+.hub-heading {
+    margin-bottom: 35px;
 }
 
-.toy-status {
-    margin-top: 7px;
-    font-size: 9px;
-    letter-spacing: .15em;
+.hub-heading span {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
-/* =================================
-   MOBILE
-================================= */
+.hub-heading h1 {
+    margin-top: 10px;
+    font-size: clamp(45px, 8vw, 82px);
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+}
 
-@media (max-width: 600px) {
+.experiences {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
 
-    #playground {
-        padding: 20px;
+.experience {
+    position: relative;
+    min-height: 220px;
+    padding: 25px;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.105),
+        rgba(255,255,255,0.035)
+    );
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    cursor: pointer;
+    transition:
+        transform .35s cubic-bezier(.2,.8,.2,1),
+        border-color .35s ease,
+        background .35s ease;
+}
+
+.experience:hover {
+    transform: translateY(-7px);
+    border-color: rgba(255,255,255,0.24);
+    background: rgba(255,255,255,0.10);
+}
+
+.experience.large {
+    grid-column: span 2;
+}
+
+.experience-number {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: .12em;
+}
+
+.experience h2 {
+    position: absolute;
+    left: 25px;
+    bottom: 55px;
+    font-size: clamp(27px, 4vw, 42px);
+    letter-spacing: -0.05em;
+}
+
+.experience p {
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.card-glow {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    right: -40px;
+    top: -50px;
+    border-radius: 50%;
+    background: rgba(115,100,255,0.25);
+    filter: blur(45px);
+    transition: transform .5s ease;
+}
+
+.experience:hover .card-glow {
+    transform: scale(1.35);
+}
+
+/* ---------- PLAY AREA ---------- */
+
+.play-screen {
+    display: none;
+    padding: 20px;
+}
+
+.play-container {
+    width: min(1200px, 100%);
+    margin: auto;
+}
+
+.play-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.back-button {
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: white;
+    padding: 11px 17px;
+    border-radius: 999px;
+    cursor: pointer;
+    backdrop-filter: blur(18px);
+}
+
+.play-title {
+    text-align: center;
+    flex: 1;
+}
+
+.play-title h2 {
+    font-size: 25px;
+    letter-spacing: -0.04em;
+}
+
+.play-title p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.stat {
+    min-width: 80px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat strong {
+    display: block;
+    color: white;
+    font-size: 19px;
+}
+
+.canvas-card {
+    position: relative;
+    width: 100%;
+    height: min(70vh, 680px);
+    min-height: 450px;
+    overflow: hidden;
+    border-radius: 34px;
+    border: 1px solid var(--glass-border);
+    background:
+        radial-gradient(circle at 50% 45%, rgba(100,90,255,0.08), transparent 40%),
+        rgba(255,255,255,0.035);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 30px 100px rgba(0,0,0,0.3);
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+}
+
+.game-message {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    transition: opacity .4s ease;
+}
+
+.game-message h2 {
+    font-size: clamp(28px, 6vw, 58px);
+    letter-spacing: -0.06em;
+}
+
+.game-message p {
+    color: var(--muted);
+    margin-top: 9px;
+    font-size: 14px;
+}
+
+/* ---------- SETTINGS ---------- */
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.settings {
+    width: min(440px, 100%);
+    border: 1px solid var(--glass-border);
+    background: rgba(20,20,25,0.86);
+    border-radius: 30px;
+    padding: 27px;
+    box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.settings-header h2 {
+    font-size: 28px;
+    letter-spacing: -0.04em;
+}
+
+.setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.setting:last-child {
+    border-bottom: none;
+}
+
+.setting-label strong {
+    display: block;
+    font-size: 15px;
+}
+
+.setting-label span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.toggle {
+    width: 49px;
+    height: 29px;
+    border-radius: 30px;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    padding: 3px;
+    cursor: pointer;
+}
+
+.toggle i {
+    display: block;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: white;
+    transition: transform .25s ease;
+}
+
+.toggle.active {
+    background: rgba(120,105,255,0.75);
+}
+
+.toggle.active i {
+    transform: translateX(20px);
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 850px) {
+    .experiences {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .mini-label {
-        margin-bottom: 22px;
+    .experience.large {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 580px) {
+    .screen {
+        padding: 18px;
     }
 
-    .tagline {
-        margin-top: 25px;
+    .hub {
+        margin-top: 50px;
     }
 
-    .enter {
-        margin-top: 35px;
+    .experiences {
+        grid-template-columns: 1fr;
     }
 
-    .play-content {
-        padding: 20px 0;
+    .experience,
+    .experience.large {
+        grid-column: span 1;
+        min-height: 190px;
     }
 
-    .liquid-card {
-        height: 48vh;
-        min-height: 300px;
-        border-radius: 25px;
+    .canvas-card {
+        min-height: 440px;
+        height: 68vh;
+        border-radius: 27px;
     }
 
-    .toy {
-        flex: 0 0 135px;
+    .play-header {
+        gap: 8px;
     }
+
+    .play-title h2 {
+        font-size: 20px;
+    }
+
+    .back-button {
+        padding: 9px 13px;
+    }
+}
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
 }
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+</div>
 
-    <div class="ambient" id="ambient">
-        <div class="orb one"></div>
-        <div class="orb two"></div>
-        <div class="orb three"></div>
-    </div>
+<div class="pointer-light" id="pointerLight"></div>
 
-    <div class="pointer-light" id="pointerLight"></div>
+<div class="app">
 
-    <!-- =============================
-         LANDING
-    ============================== -->
+    <!-- HOME -->
 
-    <section class="screen" id="landing">
-
-        <div class="hero">
-
-            <div class="mini-label">
-                A digital playground
-            </div>
-
-            <div class="logo">
-                FLUX
-            </div>
+    <section class="screen home" id="homeScreen">
+        <div class="home-content">
+            <div class="logo">FLUX</div>
 
             <div class="tagline">
                 Do you wanna play with Flux?
             </div>
 
-            <button class="enter" id="enterButton">
-                <span>LET'S PLAY</span>
+            <button class="play-button" id="startButton">
+                LET'S PLAY
             </button>
-
         </div>
-
     </section>
 
 
-    <!-- =============================
-         PLAYGROUND
-    ============================== -->
+    <!-- PLAYGROUND HUB -->
 
-    <section class="screen" id="playground">
+    <section class="screen" id="hubScreen" style="display:none;">
 
-        <div class="play-top">
+        <div class="topbar">
+            <div class="small-logo">FLUX</div>
 
-            <div class="flux-small">
-                FLUX
+            <div class="top-actions">
+                <button class="icon-button" id="settingsButton">⚙</button>
             </div>
-
-            <button class="back" id="backButton">
-                ← EXIT
-            </button>
-
         </div>
 
+        <div class="hub">
 
-        <div class="play-content">
-
-            <div class="play-title">
-
-                <small>
-                    PLAYGROUND / 001
-                </small>
-
-                <h2 id="liquidTitle">
-                    Liquid.
-                </h2>
-
-                <p>
-                    Move your finger. Disturb the surface.
-                </p>
-
+            <div class="hub-heading">
+                <span>FLUX PLAYGROUND</span>
+                <h1>Choose<br>your reality.</h1>
             </div>
 
+            <div class="experiences">
 
-            <div class="liquid-card" id="liquidCard">
-
-                <canvas id="liquidCanvas"></canvas>
-
-                <div class="liquid-info">
-
-                    <strong>
-                        LIQUID BLOB
-                    </strong>
-
-                    <span>
-                        MOVE • TOUCH • EXPLORE
-                    </span>
-
+                <div class="experience large" data-game="gravity">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">01 / INTERACTIVE</div>
+                    <h2>Gravity Playground</h2>
+                    <p>Move the universe with your touch.</p>
                 </div>
 
-                <div class="energy">
-
-                    <div class="energy-dot" id="energyDot"></div>
-
-                    <div class="energy-text">
-                        ENERGY
-                    </div>
-
+                <div class="experience" data-game="liquid">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">02 / PHYSICS</div>
+                    <h2>Liquid Blob</h2>
+                    <p>Pull. Stretch. Release.</p>
                 </div>
 
-            </div>
-
-
-            <div class="toys">
-
-                <div class="toy">
-                    <div class="toy-name">
-                        GRAVITY
-                    </div>
-                    <div class="toy-status">
-                        COMING SOON
-                    </div>
+                <div class="experience">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">03 / SOON</div>
+                    <h2>Colour Lab</h2>
+                    <p>Make the screen yours.</p>
                 </div>
 
-                <div class="toy">
-                    <div class="toy-name">
-                        COLOUR
-                    </div>
-                    <div class="toy-status">
-                        COMING SOON
-                    </div>
+                <div class="experience">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">04 / SOON</div>
+                    <h2>Hypnotic</h2>
+                    <p>Lose yourself.</p>
                 </div>
 
-                <div class="toy">
-                    <div class="toy-name">
-                        SPIRAL
-                    </div>
-                    <div class="toy-status">
-                        COMING SOON
-                    </div>
+                <div class="experience">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">05 / SOON</div>
+                    <h2>Beat Pad</h2>
+                    <p>Make something loud.</p>
                 </div>
 
-                <div class="toy">
-                    <div class="toy-name">
-                        RANDOM
-                    </div>
-                    <div class="toy-status">
-                        COMING SOON
-                    </div>
+                <div class="experience">
+                    <div class="card-glow"></div>
+                    <div class="experience-number">06 / SOON</div>
+                    <h2>Randomizer</h2>
+                    <p>Let Flux decide.</p>
                 </div>
 
             </div>
-
         </div>
-
     </section>
+
+
+    <!-- GAME SCREEN -->
+
+    <section class="play-screen" id="playScreen">
+
+        <div class="play-container">
+
+            <div class="play-header">
+
+                <button class="back-button" id="backButton">
+                    ← Back
+                </button>
+
+                <div class="play-title">
+                    <h2 id="gameTitle">Gravity Playground</h2>
+                    <p id="gameSubtitle">Touch the field</p>
+                </div>
+
+                <div class="stat">
+                    <span>ENERGY</span>
+                    <strong id="score">0</strong>
+                </div>
+
+            </div>
+
+            <div class="canvas-card">
+
+                <canvas id="gameCanvas"></canvas>
+
+                <div class="game-message" id="gameMessage">
+                    <h2>Touch</h2>
+                    <p>Move your finger or cursor around.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <div class="overlay" id="settingsOverlay">
+
+        <div class="settings">
+
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button class="icon-button" id="closeSettings">×</button>
+            </div>
+
+            <div class="setting">
+                <div class="setting-label">
+                    <strong>Reduced Motion</strong>
+                    <span>Reduce animated effects.</span>
+                </div>
+
+                <button class="toggle" id="motionToggle">
+                    <i></i>
+                </button>
+            </div>
+
+            <div class="setting">
+                <div class="setting-label">
+                    <strong>Reset High Score</strong>
+                    <span>Clear your local FLUX score.</span>
+                </div>
+
+                <button class="back-button" id="resetScore">
+                    Reset
+                </button>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 
 
 <script>
+/* ==========================================
+   FLUX V3
+   ========================================== */
 
-/* =================================
-   CORE ELEMENTS
-================================= */
+const homeScreen = document.getElementById("homeScreen");
+const hubScreen = document.getElementById("hubScreen");
+const playScreen = document.getElementById("playScreen");
 
-const landing =
-    document.getElementById("landing");
+const startButton = document.getElementById("startButton");
+const backButton = document.getElementById("backButton");
 
-const playground =
-    document.getElementById("playground");
+const settingsButton = document.getElementById("settingsButton");
+const settingsOverlay = document.getElementById("settingsOverlay");
+const closeSettings = document.getElementById("closeSettings");
 
-const enterButton =
-    document.getElementById("enterButton");
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-const backButton =
-    document.getElementById("backButton");
+const gameTitle = document.getElementById("gameTitle");
+const gameSubtitle = document.getElementById("gameSubtitle");
+const scoreElement = document.getElementById("score");
+const gameMessage = document.getElementById("gameMessage");
 
-const pointerLight =
-    document.getElementById("pointerLight");
+const pointerLight = document.getElementById("pointerLight");
 
-const ambient =
-    document.getElementById("ambient");
+const motionToggle = document.getElementById("motionToggle");
+const resetScore = document.getElementById("resetScore");
 
-const liquidCard =
-    document.getElementById("liquidCard");
+let currentGame = null;
+let animationFrame = null;
 
-const liquidTitle =
-    document.getElementById("liquidTitle");
-
-const energyDot =
-    document.getElementById("energyDot");
-
-
-/* =================================
-   GLOBAL POINTER
-================================= */
-
-let mouseX =
-    window.innerWidth / 2;
-
-let mouseY =
-    window.innerHeight / 2;
-
-document.addEventListener(
-    "pointermove",
-    event => {
-
-        mouseX = event.clientX;
-        mouseY = event.clientY;
-
-        pointerLight.style.left =
-            mouseX + "px";
-
-        pointerLight.style.top =
-            mouseY + "px";
-
-        pointerLight.style.opacity =
-            "1";
-
-        ambient.style.transform =
-            `translate(
-                ${(mouseX - window.innerWidth / 2) * .018}px,
-                ${(mouseY - window.innerHeight / 2) * .018}px
-            )`;
-    }
-);
-
-document.addEventListener(
-    "pointerleave",
-    () => {
-
-        pointerLight.style.opacity =
-            "0";
-    }
-);
-
-
-/* =================================
-   SCREEN TRANSITIONS
-================================= */
-
-enterButton.addEventListener(
-    "click",
-    () => {
-
-        landing.classList.add("exit");
-
-        setTimeout(
-            () => {
-
-                playground.classList.add(
-                    "active"
-                );
-
-                resizeCanvas();
-
-            },
-            350
-        );
-    }
-);
-
-
-backButton.addEventListener(
-    "click",
-    () => {
-
-        playground.classList.remove(
-            "active"
-        );
-
-        setTimeout(
-            () => {
-
-                landing.classList.remove(
-                    "exit"
-                );
-
-            },
-            300
-        );
-    }
-);
-
-
-/* =================================
-   CANVAS
-================================= */
-
-const canvas =
-    document.getElementById(
-        "liquidCanvas"
-    );
-
-const ctx =
-    canvas.getContext("2d");
-
-let width = 0;
-let height = 0;
-
-let dpr =
-    Math.min(
-        window.devicePixelRatio || 1,
-        2
-    );
-
-
-/* =================================
-   POINTER PHYSICS
-================================= */
-
-const pointer = {
-
+let pointer = {
     x: 0,
     y: 0,
-
-    previousX: 0,
-    previousY: 0,
-
     active: false,
-
-    force: 0,
-
-    speed: 0
+    strength: 0
 };
 
+let gravityBalls = [];
+let particles = [];
+let ripples = [];
 
-/* =================================
-   BLOB
-================================= */
+let score = 0;
+let lastTime = performance.now();
 
-const blob = {
-
-    x: 0,
-    y: 0,
-
-    vx: 0,
-    vy: 0,
-
-    baseRadius: 100,
-    radius: 100,
-
-    rotation: 0,
-
-    hue: 245,
-
-    energy: 0
-
-};
+let reducedMotion =
+    localStorage.getItem("fluxReducedMotion") === "true";
 
 
-/* =================================
-   PARTICLES
-================================= */
+/* ---------- NAVIGATION ---------- */
 
-const particles = [];
+startButton.addEventListener("click", () => {
+    homeScreen.style.display = "none";
+    hubScreen.style.display = "block";
+});
 
-const PARTICLE_COUNT = 90;
+backButton.addEventListener("click", () => {
+    stopGame();
 
-function createParticles() {
+    playScreen.style.display = "none";
+    hubScreen.style.display = "block";
+});
 
-    particles.length = 0;
 
-    for (
-        let i = 0;
-        i < PARTICLE_COUNT;
-        i++
-    ) {
+/* ---------- SETTINGS ---------- */
 
-        particles.push({
+settingsButton.addEventListener("click", () => {
+    settingsOverlay.style.display = "flex";
+});
 
-            x:
-                Math.random() *
-                width,
+closeSettings.addEventListener("click", () => {
+    settingsOverlay.style.display = "none";
+});
 
-            y:
-                Math.random() *
-                height,
-
-            vx: 0,
-            vy: 0,
-
-            size:
-                Math.random() *
-                1.8 + .4,
-
-            alpha:
-                Math.random() *
-                .25 + .06
-
-        });
+settingsOverlay.addEventListener("click", (event) => {
+    if (event.target === settingsOverlay) {
+        settingsOverlay.style.display = "none";
     }
+});
+
+function applyMotionSetting() {
+    document.body.classList.toggle("reduced-motion", reducedMotion);
+    motionToggle.classList.toggle("active", reducedMotion);
 }
 
+motionToggle.addEventListener("click", () => {
+    reducedMotion = !reducedMotion;
 
-/* =================================
-   RESIZE
-================================= */
+    localStorage.setItem(
+        "fluxReducedMotion",
+        reducedMotion
+    );
+
+    applyMotionSetting();
+});
+
+resetScore.addEventListener("click", () => {
+    localStorage.removeItem("fluxHighScore");
+    score = 0;
+    scoreElement.textContent = "0";
+});
+
+applyMotionSetting();
+
+
+/* ---------- POINTER LIGHT ---------- */
+
+window.addEventListener("pointermove", (event) => {
+    pointerLight.style.left = event.clientX + "px";
+    pointerLight.style.top = event.clientY + "px";
+});
+
+
+/* ---------- GAME SELECTION ---------- */
+
+document.querySelectorAll(".experience[data-game]").forEach(card => {
+
+    card.addEventListener("click", () => {
+
+        const game = card.dataset.game;
+
+        hubScreen.style.display = "none";
+        playScreen.style.display = "block";
+
+        startGame(game);
+    });
+
+});
+
+
+/* ==========================================
+   GAME ENGINE
+   ========================================== */
 
 function resizeCanvas() {
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-    width = rect.width;
-    height = rect.height;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    canvas.width =
-        width * dpr;
-
-    canvas.height =
-        height * dpr;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
 
     ctx.setTransform(
         dpr,
@@ -956,188 +910,699 @@ function resizeCanvas() {
         0,
         0
     );
+}
 
-    if (!blob.x) {
+window.addEventListener("resize", resizeCanvas);
 
-        blob.x =
-            width / 2;
 
-        blob.y =
-            height / 2;
+/* ---------- START GAME ---------- */
+
+function startGame(game) {
+
+    stopGame();
+
+    currentGame = game;
+
+    resizeCanvas();
+
+    score = 0;
+
+    scoreElement.textContent = "0";
+
+    gameMessage.style.opacity = "1";
+
+    if (game === "gravity") {
+
+        gameTitle.textContent = "Gravity Playground";
+        gameSubtitle.textContent = "Touch the field";
+
+        createGravityWorld();
+
+    } else if (game === "liquid") {
+
+        gameTitle.textContent = "Liquid Blob";
+        gameSubtitle.textContent = "Pull the energy";
+
+        createLiquidWorld();
+
     }
 
-    blob.baseRadius =
-        Math.min(
-            width,
-            height
-        ) * .19;
+    lastTime = performance.now();
 
-    if (!particles.length) {
+    animationFrame = requestAnimationFrame(gameLoop);
+}
 
-        createParticles();
+
+/* ---------- STOP GAME ---------- */
+
+function stopGame() {
+
+    if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+    }
+
+    animationFrame = null;
+
+    gravityBalls = [];
+    particles = [];
+    ripples = [];
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+}
+
+
+/* ==========================================
+   GRAVITY PLAYGROUND
+   ========================================== */
+
+function createGravityWorld() {
+
+    gravityBalls = [];
+
+    const rect = canvas.getBoundingClientRect();
+
+    const count =
+        window.innerWidth < 600 ? 22 : 38;
+
+    for (let i = 0; i < count; i++) {
+
+        gravityBalls.push({
+            x: Math.random() * rect.width,
+            y: Math.random() * rect.height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            radius: 3 + Math.random() * 5,
+            mass: 0.6 + Math.random() * 1.4,
+            hue: Math.random() * 360
+        });
+    }
+
+    pointer.x = rect.width / 2;
+    pointer.y = rect.height / 2;
+    pointer.active = false;
+
+    canvas.onpointerdown = handleGravityPointer;
+    canvas.onpointermove = handleGravityPointerMove;
+    canvas.onpointerup = releasePointer;
+
+    setTimeout(() => {
+        gameMessage.style.opacity = "0";
+    }, 2200);
+}
+
+
+function handleGravityPointer(event) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    pointer.x = event.clientX - rect.left;
+    pointer.y = event.clientY - rect.top;
+
+    pointer.active = true;
+    pointer.strength = 1;
+
+    createRipple(pointer.x, pointer.y);
+}
+
+
+function handleGravityPointerMove(event) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    pointer.x = event.clientX - rect.left;
+    pointer.y = event.clientY - rect.top;
+
+    pointer.active = true;
+    pointer.strength = 1;
+}
+
+
+function releasePointer() {
+
+    pointer.active = false;
+    pointer.strength = 0;
+}
+
+
+function updateGravity(dt) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    for (const ball of gravityBalls) {
+
+        if (pointer.active) {
+
+            const dx = pointer.x - ball.x;
+            const dy = pointer.y - ball.y;
+
+            const distanceSq =
+                dx * dx +
+                dy * dy +
+                100;
+
+            const distance =
+                Math.sqrt(distanceSq);
+
+            const force =
+                85 /
+                distanceSq *
+                100;
+
+            ball.vx +=
+                (dx / distance) *
+                force *
+                dt;
+
+            ball.vy +=
+                (dy / distance) *
+                force *
+                dt;
+        }
+
+        ball.vx *= 0.992;
+        ball.vy *= 0.992;
+
+        ball.x += ball.vx * dt * 60;
+        ball.y += ball.vy * dt * 60;
+
+        if (ball.x < ball.radius) {
+            ball.x = ball.radius;
+            ball.vx *= -0.8;
+        }
+
+        if (ball.x > rect.width - ball.radius) {
+            ball.x = rect.width - ball.radius;
+            ball.vx *= -0.8;
+        }
+
+        if (ball.y < ball.radius) {
+            ball.y = ball.radius;
+            ball.vy *= -0.8;
+        }
+
+        if (ball.y > rect.height - ball.radius) {
+            ball.y = rect.height - ball.radius;
+            ball.vy *= -0.8;
+        }
+    }
+
+    if (pointer.active) {
+
+        score +=
+            gravityBalls.length *
+            dt *
+            0.65;
+
+        scoreElement.textContent =
+            Math.floor(score);
+
+        createParticleBurst(
+            pointer.x,
+            pointer.y,
+            1
+        );
     }
 }
 
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
 
+function drawGravity() {
 
-/* =================================
-   POINTER POSITION
-================================= */
+    const rect = canvas.getBoundingClientRect();
 
-function updatePointer(
-    clientX,
-    clientY
-) {
+    ctx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+    );
 
-    const rect =
-        canvas.getBoundingClientRect();
+    /* gravitational field */
 
-    const x =
-        clientX - rect.left;
+    if (pointer.active) {
 
-    const y =
-        clientY - rect.top;
+        const gradient =
+            ctx.createRadialGradient(
+                pointer.x,
+                pointer.y,
+                0,
+                pointer.x,
+                pointer.y,
+                230
+            );
 
-    pointer.previousX =
-        pointer.x;
-
-    pointer.previousY =
-        pointer.y;
-
-    pointer.x = x;
-    pointer.y = y;
-
-    const dx =
-        pointer.x -
-        pointer.previousX;
-
-    const dy =
-        pointer.y -
-        pointer.previousY;
-
-    pointer.speed =
-        Math.sqrt(
-            dx * dx +
-            dy * dy
+        gradient.addColorStop(
+            0,
+            "rgba(130,110,255,0.20)"
         );
 
-    pointer.force =
-        Math.min(
-            pointer.speed / 10,
-            1.5
+        gradient.addColorStop(
+            0.45,
+            "rgba(80,180,255,0.07)"
         );
+
+        gradient.addColorStop(
+            1,
+            "rgba(0,0,0,0)"
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            rect.width,
+            rect.height
+        );
+    }
+
+    /* connecting particles */
+
+    for (let i = 0; i < gravityBalls.length; i++) {
+
+        const a = gravityBalls[i];
+
+        for (
+            let j = i + 1;
+            j < gravityBalls.length;
+            j++
+        ) {
+
+            const b = gravityBalls[j];
+
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+
+            const distance =
+                Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 100) {
+
+                ctx.beginPath();
+
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+
+                ctx.strokeStyle =
+                    `rgba(255,255,255,${(1 - distance / 100) * 0.10})`;
+
+                ctx.lineWidth = 1;
+
+                ctx.stroke();
+            }
+        }
+    }
+
+    /* balls */
+
+    for (const ball of gravityBalls) {
+
+        const glow =
+            ctx.createRadialGradient(
+                ball.x,
+                ball.y,
+                0,
+                ball.x,
+                ball.y,
+                ball.radius * 5
+            );
+
+        glow.addColorStop(
+            0,
+            `hsla(${ball.hue},100%,80%,0.9)`
+        );
+
+        glow.addColorStop(
+            0.25,
+            `hsla(${ball.hue},100%,65%,0.25)`
+        );
+
+        glow.addColorStop(
+            1,
+            `hsla(${ball.hue},100%,50%,0)`
+        );
+
+        ctx.fillStyle = glow;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            ball.x,
+            ball.y,
+            ball.radius * 5,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle =
+            `hsl(${ball.hue},100%,78%)`;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            ball.x,
+            ball.y,
+            ball.radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+    }
+
+    drawRipples();
+    drawParticles();
+}
+
+
+/* ==========================================
+   LIQUID WORLD
+   ========================================== */
+
+let liquid = {
+    x: 0,
+    y: 0,
+    tx: 0,
+    ty: 0,
+    vx: 0,
+    vy: 0,
+    radius: 85,
+    hue: 250
+};
+
+function createLiquidWorld() {
+
+    const rect = canvas.getBoundingClientRect();
+
+    liquid.x = rect.width / 2;
+    liquid.y = rect.height / 2;
+
+    liquid.tx = liquid.x;
+    liquid.ty = liquid.y;
+
+    pointer.active = false;
+
+    canvas.onpointerdown = handleLiquidPointer;
+    canvas.onpointermove = handleLiquidPointerMove;
+    canvas.onpointerup = releasePointer;
+
+    setTimeout(() => {
+        gameMessage.style.opacity = "0";
+    }, 2200);
+}
+
+
+function handleLiquidPointer(event) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    pointer.x =
+        event.clientX - rect.left;
+
+    pointer.y =
+        event.clientY - rect.top;
+
+    pointer.active = true;
+
+    createRipple(
+        pointer.x,
+        pointer.y
+    );
+}
+
+
+function handleLiquidPointerMove(event) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    pointer.x =
+        event.clientX - rect.left;
+
+    pointer.y =
+        event.clientY - rect.top;
 
     pointer.active = true;
 }
 
 
-canvas.addEventListener(
-    "pointermove",
-    event => {
+function updateLiquid(dt) {
 
-        updatePointer(
-            event.clientX,
-            event.clientY
+    if (pointer.active) {
+
+        liquid.tx = pointer.x;
+        liquid.ty = pointer.y;
+
+        score += dt * 35;
+
+        scoreElement.textContent =
+            Math.floor(score);
+
+        liquid.hue += dt * 18;
+
+        if (liquid.hue > 360) {
+            liquid.hue -= 360;
+        }
+
+        createParticleBurst(
+            liquid.x,
+            liquid.y,
+            0.6
         );
     }
-);
+
+    const dx = liquid.tx - liquid.x;
+    const dy = liquid.ty - liquid.y;
+
+    liquid.vx += dx * 0.018;
+    liquid.vy += dy * 0.018;
+
+    liquid.vx *= 0.86;
+    liquid.vy *= 0.86;
+
+    liquid.x += liquid.vx * dt * 60;
+    liquid.y += liquid.vy * dt * 60;
+}
 
 
-canvas.addEventListener(
-    "pointerdown",
-    event => {
+function drawLiquid() {
 
-        updatePointer(
-            event.clientX,
-            event.clientY
+    const rect = canvas.getBoundingClientRect();
+
+    ctx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+    );
+
+    const speed =
+        Math.sqrt(
+            liquid.vx * liquid.vx +
+            liquid.vy * liquid.vy
         );
 
-        createRipple(
-            pointer.x,
-            pointer.y,
-            true
+    const stretch =
+        Math.min(speed * 0.8, 45);
+
+    const gradient =
+        ctx.createRadialGradient(
+            liquid.x - 20,
+            liquid.y - 25,
+            5,
+            liquid.x,
+            liquid.y,
+            liquid.radius * 2
         );
+
+    gradient.addColorStop(
+        0,
+        `hsla(${liquid.hue},100%,90%,1)`
+    );
+
+    gradient.addColorStop(
+        0.25,
+        `hsla(${liquid.hue + 25},100%,70%,0.95)`
+    );
+
+    gradient.addColorStop(
+        0.65,
+        `hsla(${liquid.hue + 55},100%,55%,0.65)`
+    );
+
+    gradient.addColorStop(
+        1,
+        `hsla(${liquid.hue + 80},100%,40%,0)`
+    );
+
+    ctx.save();
+
+    ctx.translate(
+        liquid.x,
+        liquid.y
+    );
+
+    ctx.rotate(
+        Math.atan2(
+            liquid.vy,
+            liquid.vx
+        )
+    );
+
+    ctx.scale(
+        1 + stretch / 100,
+        1 - stretch / 170
+    );
+
+    ctx.fillStyle = gradient;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        liquid.radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+
+    drawRipples();
+    drawParticles();
+}
+
+
+/* ==========================================
+   PARTICLES
+   ========================================== */
+
+function createParticleBurst(x, y, amount) {
+
+    if (reducedMotion) {
+        return;
     }
-);
 
-
-canvas.addEventListener(
-    "pointerup",
-    () => {
-
-        pointer.active = false;
+    if (particles.length > 120) {
+        return;
     }
-);
 
+    const count =
+        Math.ceil(amount * 2);
 
-canvas.addEventListener(
-    "pointercancel",
-    () => {
+    for (let i = 0; i < count; i++) {
 
-        pointer.active = false;
+        particles.push({
+            x,
+            y,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            life: 0.4 + Math.random() * 0.5,
+            maxLife: 0.4 + Math.random() * 0.5,
+            size: 1 + Math.random() * 2
+        });
     }
-);
+}
 
 
-canvas.addEventListener(
-    "pointerleave",
-    () => {
+function updateParticles(dt) {
 
-        pointer.active = false;
+    for (let i = particles.length - 1; i >= 0; i--) {
+
+        const p = particles[i];
+
+        p.x += p.vx * dt * 60;
+        p.y += p.vy * dt * 60;
+
+        p.life -= dt;
+
+        if (p.life <= 0) {
+            particles.splice(i, 1);
+        }
     }
-);
+}
 
 
-/* =================================
-   RIPPLE SYSTEM
-================================= */
+function drawParticles() {
 
-const ripples = [];
+    for (const p of particles) {
 
-function createRipple(
-    x,
-    y,
-    strong = false
-) {
+        const alpha =
+            Math.max(
+                p.life / p.maxLife,
+                0
+            );
+
+        ctx.fillStyle =
+            `rgba(255,255,255,${alpha})`;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+    }
+}
+
+
+/* ==========================================
+   RIPPLES
+   ========================================== */
+
+function createRipple(x, y) {
+
+    if (reducedMotion) {
+        return;
+    }
 
     ripples.push({
-
         x,
         y,
-
-        radius:
-            strong ? 8 : 3,
-
-        alpha:
-            strong ? .7 : .3,
-
-        speed:
-            strong ? 5 : 2.5
-
+        radius: 5,
+        alpha: 0.5
     });
+
+    if (ripples.length > 20) {
+        ripples.shift();
+    }
+}
+
+
+function updateRipples(dt) {
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+
+        const ripple = ripples[i];
+
+        ripple.radius +=
+            dt * 180;
+
+        ripple.alpha -=
+            dt * 0.55;
+
+        if (ripple.alpha <= 0) {
+            ripples.splice(i, 1);
+        }
+    }
 }
 
 
 function drawRipples() {
 
-    for (
-        let i = ripples.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const ripple =
-            ripples[i];
-
-        ripple.radius +=
-            ripple.speed;
-
-        ripple.alpha *=
-            .945;
+    for (const ripple of ripples) {
 
         ctx.beginPath();
 
@@ -1150,810 +1615,73 @@ function drawRipples() {
         );
 
         ctx.strokeStyle =
-            `hsla(
-                ${blob.hue},
-                100%,
-                90%,
-                ${ripple.alpha}
-            )`;
+            `rgba(255,255,255,${ripple.alpha})`;
 
-        ctx.lineWidth =
-            1.2;
+        ctx.lineWidth = 1;
 
         ctx.stroke();
-
-        if (
-            ripple.alpha <
-            .008
-        ) {
-
-            ripples.splice(
-                i,
-                1
-            );
-        }
     }
 }
 
 
-/* =================================
-   BLOB PHYSICS
-================================= */
-
-function updateBlob() {
-
-    let targetX =
-        width / 2;
-
-    let targetY =
-        height / 2;
-
-
-    if (
-        pointer.active
-    ) {
-
-        targetX =
-            pointer.x;
-
-        targetY =
-            pointer.y;
-    }
-
-
-    const dx =
-        targetX -
-        blob.x;
-
-    const dy =
-        targetY -
-        blob.y;
-
-
-    blob.vx +=
-        dx * .009;
-
-    blob.vy +=
-        dy * .009;
-
-
-    /*
-       Liquid resistance
-    */
-
-    blob.vx *=
-        .875;
-
-    blob.vy *=
-        .875;
-
-
-    blob.x +=
-        blob.vx;
-
-    blob.y +=
-        blob.vy;
-
-
-    /*
-       Stretch
-    */
-
-    const speed =
-        Math.sqrt(
-            blob.vx *
-            blob.vx +
-            blob.vy *
-            blob.vy
-        );
-
-
-    const targetRadius =
-        blob.baseRadius +
-        Math.min(
-            speed * 2.7,
-            38
-        );
-
-
-    blob.radius +=
-        (
-            targetRadius -
-            blob.radius
-        ) * .09;
-
-
-    /*
-       Rotation
-    */
-
-    blob.rotation +=
-        blob.vx * .002;
-
-
-    /*
-       Energy
-    */
-
-    blob.energy +=
-        (
-            Math.min(
-                speed * .05,
-                1
-            ) -
-            blob.energy
-        ) * .08;
-
-
-    /*
-       Colour shifts
-    */
-
-    blob.hue +=
-        (
-            235 +
-            speed * 2 -
-            blob.hue
-        ) * .015;
-
-
-    liquidTitle.style.color =
-        `hsl(
-            ${blob.hue},
-            80%,
-            92%
-        )`;
-
-
-    /*
-       Card reacts to energy
-    */
-
-    liquidCard.style.boxShadow =
-        `
-        inset 0 1px rgba(255,255,255,.08),
-        0 30px 100px
-        hsla(
-            ${blob.hue},
-            80%,
-            50%,
-            ${.05 + blob.energy * .14}
-        )
-        `;
-
-
-    /*
-       Energy indicator
-    */
-
-    if (
-        blob.energy >
-        .12
-    ) {
-
-        energyDot.classList.add(
-            "active"
-        );
-
-    } else {
-
-        energyDot.classList.remove(
-            "active"
-        );
-    }
-}
-
-
-/* =================================
-   PARTICLE PHYSICS
-================================= */
-
-function updateParticles() {
-
-    for (
-        const particle of particles
-    ) {
-
-        /*
-           Blob influence
-        */
-
-        let dx =
-            blob.x -
-            particle.x;
-
-        let dy =
-            blob.y -
-            particle.y;
-
-        let distance =
-            Math.sqrt(
-                dx * dx +
-                dy * dy
-            );
-
-
-        if (
-            distance < 250 &&
-            distance > 1
-        ) {
-
-            const force =
-                (
-                    250 -
-                    distance
-                ) / 250;
-
-
-            /*
-               Push particles outward
-            */
-
-            particle.vx -=
-                (
-                    dx / distance
-                ) *
-                force *
-                .16;
-
-            particle.vy -=
-                (
-                    dy / distance
-                ) *
-                force *
-                .16;
-        }
-
-
-        /*
-           Pointer influence
-        */
-
-        if (
-            pointer.active
-        ) {
-
-            dx =
-                pointer.x -
-                particle.x;
-
-            dy =
-                pointer.y -
-                particle.y;
-
-            distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
-
-
-            if (
-                distance < 150 &&
-                distance > 1
-            ) {
-
-                const force =
-                    (
-                        150 -
-                        distance
-                    ) / 150;
-
-
-                particle.vx -=
-                    (
-                        dx / distance
-                    ) *
-                    force *
-                    pointer.force *
-                    .35;
-
-                particle.vy -=
-                    (
-                        dy / distance
-                    ) *
-                    force *
-                    pointer.force *
-                    .35;
-            }
-        }
-
-
-        /*
-           Friction
-        */
-
-        particle.vx *=
-            .975;
-
-        particle.vy *=
-            .975;
-
-
-        particle.x +=
-            particle.vx;
-
-        particle.y +=
-            particle.vy;
-
-
-        /*
-           Wrap around
-        */
-
-        if (
-            particle.x < -10
-        ) {
-
-            particle.x =
-                width + 10;
-        }
-
-        if (
-            particle.x >
-            width + 10
-        ) {
-
-            particle.x =
-                -10;
-        }
-
-        if (
-            particle.y < -10
-        ) {
-
-            particle.y =
-                height + 10;
-        }
-
-        if (
-            particle.y >
-            height + 10
-        ) {
-
-            particle.y =
-                -10;
-        }
-    }
-}
-
-
-/* =================================
-   DRAW PARTICLES
-================================= */
-
-function drawParticles() {
-
-    for (
-        const particle of particles
-    ) {
-
-        ctx.beginPath();
-
-        ctx.arc(
-            particle.x,
-            particle.y,
-            particle.size,
-            0,
-            Math.PI * 2
-        );
-
-
-        ctx.fillStyle =
-            `hsla(
-                ${blob.hue},
-                70%,
-                90%,
-                ${particle.alpha}
-            )`;
-
-
-        ctx.fill();
-    }
-}
-
-
-/* =================================
-   DRAW LIQUID BLOB
-================================= */
-
-function drawBlob() {
-
-    const points = 72;
-
-    const coords = [];
-
-    const time =
-        performance.now();
-
-
-    for (
-        let i = 0;
-        i < points;
-        i++
-    ) {
-
-        const angle =
-            (
-                Math.PI *
-                2 *
-                i
-            ) / points;
-
-
-        /*
-           Organic surface
-        */
-
-        const wave1 =
-            Math.sin(
-                angle * 3 +
-                time * .0015
-            ) * 5;
-
-
-        const wave2 =
-            Math.sin(
-                angle * 5 -
-                time * .0011
-            ) * 3;
-
-
-        const wave3 =
-            Math.sin(
-                angle * 7 +
-                time * .0008
-            ) * 2;
-
-
-        /*
-           Movement stretch
-        */
-
-        let velocityStretch = 0;
-
-        const velocity =
-            Math.sqrt(
-                blob.vx *
-                blob.vx +
-                blob.vy *
-                blob.vy
-            );
-
-
-        if (
-            velocity > .1
-        ) {
-
-            velocityStretch =
-                Math.cos(
-                    angle -
-                    Math.atan2(
-                        blob.vy,
-                        blob.vx
-                    )
-                ) *
-                Math.min(
-                    velocity * 2,
-                    30
-                );
-        }
-
-
-        const radius =
-            blob.radius +
-            wave1 +
-            wave2 +
-            wave3 +
-            velocityStretch;
-
-
-        coords.push({
-
-            x:
-                blob.x +
-                Math.cos(
-                    angle +
-                    blob.rotation
-                ) *
-                radius,
-
-            y:
-                blob.y +
-                Math.sin(
-                    angle +
-                    blob.rotation
-                ) *
-                radius
-
-        });
-    }
-
-
-    /*
-       Gradient
-    */
-
-    const gradient =
-        ctx.createRadialGradient(
-
-            blob.x -
-            blob.radius * .35,
-
-            blob.y -
-            blob.radius * .4,
-
-            5,
-
-            blob.x,
-
-            blob.y,
-
-            blob.radius * 1.4
-        );
-
-
-    gradient.addColorStop(
-        0,
-        `hsla(
-            ${blob.hue},
-            100%,
-            98%,
-            .98
-        )`
-    );
-
-
-    gradient.addColorStop(
-        .22,
-        `hsla(
-            ${blob.hue},
-            90%,
-            85%,
-            .9
-        )`
-    );
-
-
-    gradient.addColorStop(
-        .55,
-        `hsla(
-            ${blob.hue},
-            80%,
-            60%,
-            .7
-        )`
-    );
-
-
-    gradient.addColorStop(
-        1,
-        `hsla(
-            ${blob.hue},
-            80%,
-            30%,
-            .12
-        )`
-    );
-
-
-    /*
-       Shape
-    */
-
-    ctx.beginPath();
-
-    const first =
-        coords[0];
-
-    ctx.moveTo(
-        first.x,
-        first.y
-    );
-
-
-    for (
-        let i = 0;
-        i < coords.length;
-        i++
-    ) {
-
-        const current =
-            coords[i];
-
-        const next =
-            coords[
-                (i + 1) %
-                coords.length
-            ];
-
-
-        const midpointX =
-            (
-                current.x +
-                next.x
-            ) / 2;
-
-
-        const midpointY =
-            (
-                current.y +
-                next.y
-            ) / 2;
-
-
-        ctx.quadraticCurveTo(
-
-            current.x,
-            current.y,
-
-            midpointX,
-            midpointY
-        );
-    }
-
-
-    ctx.closePath();
-
-
-    /*
-       Outer glow
-    */
-
-    ctx.shadowBlur =
-        65;
-
-    ctx.shadowColor =
-        `hsla(
-            ${blob.hue},
-            90%,
-            60%,
-            .45
-        )`;
-
-
-    ctx.fillStyle =
-        gradient;
-
-    ctx.fill();
-
-
-    ctx.shadowBlur = 0;
-
-
-    /*
-       Glass highlight
-    */
-
-    const highlight =
-        ctx.createRadialGradient(
-
-            blob.x -
-            blob.radius * .35,
-
-            blob.y -
-            blob.radius * .4,
-
-            0,
-
-            blob.x -
-            blob.radius * .35,
-
-            blob.y -
-            blob.radius * .4,
-
-            blob.radius * .35
-        );
-
-
-    highlight.addColorStop(
-        0,
-        "rgba(255,255,255,.3)"
-    );
-
-
-    highlight.addColorStop(
-        1,
-        "rgba(255,255,255,0)"
-    );
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-
-        blob.x -
-        blob.radius * .3,
-
-        blob.y -
-        blob.radius * .35,
-
-        blob.radius * .3,
-
-        0,
-
-        Math.PI * 2
-
-    );
-
-
-    ctx.fillStyle =
-        highlight;
-
-    ctx.fill();
-}
-
-
-/* =================================
-   AUTO RIPPLE
-================================= */
-
-let rippleTimer = 0;
-
-function ambientRipple() {
-
-    rippleTimer++;
-
-    if (
-        rippleTimer > 100
-    ) {
-
-        rippleTimer = 0;
-
-        if (
-            !pointer.active
-        ) {
-
-            createRipple(
-                blob.x,
-                blob.y
-            );
-        }
-    }
-}
-
-
-/* =================================
+/* ==========================================
    MAIN LOOP
-================================= */
+   ========================================== */
 
-function animate() {
+function gameLoop(now) {
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+    if (!currentGame) {
+        return;
+    }
 
+    let dt =
+        (now - lastTime) / 1000;
 
-    updateBlob();
+    dt = Math.min(dt, 0.035);
 
-    updateParticles();
+    lastTime = now;
 
-    ambientRipple();
+    updateParticles(dt);
+    updateRipples(dt);
 
-    drawParticles();
+    if (currentGame === "gravity") {
 
-    drawRipples();
+        updateGravity(dt);
+        drawGravity();
 
-    drawBlob();
+    } else if (currentGame === "liquid") {
 
+        updateLiquid(dt);
+        drawLiquid();
+    }
 
-    requestAnimationFrame(
-        animate
-    );
+    animationFrame =
+        requestAnimationFrame(gameLoop);
 }
 
 
-/* =================================
-   START
-================================= */
+/* ==========================================
+   INITIALISE
+   ========================================== */
 
-resizeCanvas();
+window.addEventListener("load", () => {
 
-animate();
+    resizeCanvas();
 
+    /* subtle first-touch response */
+
+    document.addEventListener(
+        "pointerdown",
+        () => {
+            document.body.style.setProperty(
+                "--accent",
+                "#9b8cff"
+            );
+        },
+        { once: true }
+    );
+
+});
 </script>
 
 </body>
