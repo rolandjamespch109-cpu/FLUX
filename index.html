@@ -23,10 +23,6 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-    cursor: default;
-}
-
 button {
     font: inherit;
 }
@@ -37,20 +33,20 @@ button {
     height: 100%;
     overflow: hidden;
     background:
-        radial-gradient(circle at 50% 45%, rgba(90, 70, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 50% 45%, rgba(90, 70, 255, .09), transparent 35%),
         #050505;
 }
 
-/* =========================
-   AMBIENT BACKGROUND
-========================= */
+/* =================================
+   AMBIENT WORLD
+================================= */
 
 .ambient {
     position: absolute;
     inset: -25%;
     pointer-events: none;
-    filter: blur(80px);
-    opacity: .7;
+    filter: blur(90px);
+    opacity: .75;
     transition: transform 1s cubic-bezier(.2,.8,.2,1);
 }
 
@@ -58,7 +54,7 @@ button {
     position: absolute;
     border-radius: 50%;
     mix-blend-mode: screen;
-    animation: float 10s ease-in-out infinite alternate;
+    animation: float 11s ease-in-out infinite alternate;
 }
 
 .orb.one {
@@ -76,7 +72,7 @@ button {
     height: 35vw;
     min-width: 240px;
     min-height: 240px;
-    background: rgba(0, 190, 255, .12);
+    background: rgba(0, 190, 255, .13);
     right: 5%;
     bottom: 5%;
     animation-delay: -3s;
@@ -87,7 +83,7 @@ button {
     height: 28vw;
     min-width: 200px;
     min-height: 200px;
-    background: rgba(255, 50, 170, .09);
+    background: rgba(255, 50, 170, .1);
     left: 40%;
     top: 55%;
     animation-delay: -6s;
@@ -103,31 +99,31 @@ button {
     }
 }
 
-/* =========================
+/* =================================
    POINTER LIGHT
-========================= */
+================================= */
 
 .pointer-light {
     position: fixed;
-    width: 320px;
-    height: 320px;
+    width: 340px;
+    height: 340px;
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
     background: radial-gradient(
         circle,
-        rgba(255,255,255,.07),
-        rgba(100,80,255,.035) 35%,
+        rgba(255,255,255,.08),
+        rgba(100,80,255,.04) 35%,
         transparent 70%
     );
-    z-index: 2;
+    z-index: 20;
     opacity: 0;
     transition: opacity .4s ease;
 }
 
-/* =========================
-   LANDING
-========================= */
+/* =================================
+   SCREENS
+================================= */
 
 .screen {
     position: absolute;
@@ -140,6 +136,10 @@ button {
         transform 1s cubic-bezier(.2,.8,.2,1),
         filter 1s ease;
 }
+
+/* =================================
+   LANDING
+================================= */
 
 #landing {
     z-index: 10;
@@ -267,9 +267,9 @@ button {
     transform: scale(.94);
 }
 
-/* =========================
+/* =================================
    PLAYGROUND
-========================= */
+================================= */
 
 #playground {
     opacity: 0;
@@ -343,6 +343,7 @@ button {
     font-size: clamp(30px, 6vw, 62px);
     letter-spacing: -.045em;
     font-weight: 700;
+    transition: color .8s ease;
 }
 
 .play-title p {
@@ -351,9 +352,9 @@ button {
     font-size: 14px;
 }
 
-/* =========================
+/* =================================
    LIQUID CARD
-========================= */
+================================= */
 
 .liquid-card {
     position: relative;
@@ -362,12 +363,28 @@ button {
     border: 1px solid rgba(255,255,255,.1);
     border-radius: 32px;
     overflow: hidden;
-    background: rgba(255,255,255,.025);
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(100,90,255,.04),
+            transparent 60%
+        ),
+        rgba(255,255,255,.025);
     box-shadow:
         inset 0 1px rgba(255,255,255,.06),
         0 30px 100px rgba(0,0,0,.35);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    transition:
+        border-color .6s ease,
+        box-shadow .6s ease;
+}
+
+.liquid-card.active {
+    border-color: rgba(150,140,255,.2);
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.08),
+        0 30px 100px rgba(70,50,255,.12);
 }
 
 #liquidCanvas {
@@ -399,9 +416,45 @@ button {
     opacity: .35;
 }
 
-/* =========================
+/* =================================
+   INTERACTION INDICATOR
+================================= */
+
+.energy {
+    position: absolute;
+    right: 24px;
+    bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.energy-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+    opacity: .3;
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
+}
+
+.energy-dot.active {
+    opacity: .9;
+    transform: scale(1.7);
+}
+
+.energy-text {
+    font-size: 9px;
+    letter-spacing: .18em;
+    opacity: .3;
+}
+
+/* =================================
    FUTURE TOYS
-========================= */
+================================= */
 
 .toys {
     display: flex;
@@ -423,6 +476,16 @@ button {
     border-radius: 18px;
     padding: 15px;
     opacity: .38;
+    transition:
+        transform .3s ease,
+        opacity .3s ease,
+        background .3s ease;
+}
+
+.toy:hover {
+    opacity: .7;
+    transform: translateY(-3px);
+    background: rgba(255,255,255,.045);
 }
 
 .toy-name {
@@ -437,11 +500,12 @@ button {
     text-transform: uppercase;
 }
 
-/* =========================
+/* =================================
    MOBILE
-========================= */
+================================= */
 
 @media (max-width: 600px) {
+
     #playground {
         padding: 20px;
     }
@@ -487,7 +551,10 @@ button {
 
     <div class="pointer-light" id="pointerLight"></div>
 
-    <!-- LANDING -->
+    <!-- =============================
+         LANDING
+    ============================== -->
+
     <section class="screen" id="landing">
 
         <div class="hero">
@@ -513,54 +580,109 @@ button {
     </section>
 
 
-    <!-- PLAYGROUND -->
+    <!-- =============================
+         PLAYGROUND
+    ============================== -->
+
     <section class="screen" id="playground">
 
         <div class="play-top">
-            <div class="flux-small">FLUX</div>
+
+            <div class="flux-small">
+                FLUX
+            </div>
 
             <button class="back" id="backButton">
                 ← EXIT
             </button>
+
         </div>
+
 
         <div class="play-content">
 
             <div class="play-title">
-                <small>PLAYGROUND / 001</small>
-                <h2>Liquid.</h2>
-                <p>Move your finger. Disturb the surface.</p>
+
+                <small>
+                    PLAYGROUND / 001
+                </small>
+
+                <h2 id="liquidTitle">
+                    Liquid.
+                </h2>
+
+                <p>
+                    Move your finger. Disturb the surface.
+                </p>
+
             </div>
 
-            <div class="liquid-card">
+
+            <div class="liquid-card" id="liquidCard">
+
                 <canvas id="liquidCanvas"></canvas>
 
                 <div class="liquid-info">
-                    <strong>LIQUID BLOB</strong>
-                    <span>MOVE • TOUCH • EXPLORE</span>
+
+                    <strong>
+                        LIQUID BLOB
+                    </strong>
+
+                    <span>
+                        MOVE • TOUCH • EXPLORE
+                    </span>
+
                 </div>
+
+                <div class="energy">
+
+                    <div class="energy-dot" id="energyDot"></div>
+
+                    <div class="energy-text">
+                        ENERGY
+                    </div>
+
+                </div>
+
             </div>
+
 
             <div class="toys">
 
                 <div class="toy">
-                    <div class="toy-name">GRAVITY</div>
-                    <div class="toy-status">COMING SOON</div>
+                    <div class="toy-name">
+                        GRAVITY
+                    </div>
+                    <div class="toy-status">
+                        COMING SOON
+                    </div>
                 </div>
 
                 <div class="toy">
-                    <div class="toy-name">COLOUR</div>
-                    <div class="toy-status">COMING SOON</div>
+                    <div class="toy-name">
+                        COLOUR
+                    </div>
+                    <div class="toy-status">
+                        COMING SOON
+                    </div>
                 </div>
 
                 <div class="toy">
-                    <div class="toy-name">SPIRAL</div>
-                    <div class="toy-status">COMING SOON</div>
+                    <div class="toy-name">
+                        SPIRAL
+                    </div>
+                    <div class="toy-status">
+                        COMING SOON
+                    </div>
                 </div>
 
                 <div class="toy">
-                    <div class="toy-name">RANDOM</div>
-                    <div class="toy-status">COMING SOON</div>
+                    <div class="toy-name">
+                        RANDOM
+                    </div>
+                    <div class="toy-status">
+                        COMING SOON
+                    </div>
                 </div>
 
             </div>
@@ -573,455 +695,1227 @@ button {
 
 
 <script>
-/* =========================
-   FLUX CORE
-========================= */
 
-const landing = document.getElementById("landing");
-const playground = document.getElementById("playground");
-const enterButton = document.getElementById("enterButton");
-const backButton = document.getElementById("backButton");
-const pointerLight = document.getElementById("pointerLight");
-const ambient = document.getElementById("ambient");
+/* =================================
+   CORE ELEMENTS
+================================= */
 
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
+const landing =
+    document.getElementById("landing");
 
-document.addEventListener("pointermove", (event) => {
+const playground =
+    document.getElementById("playground");
 
-    mouseX = event.clientX;
-    mouseY = event.clientY;
+const enterButton =
+    document.getElementById("enterButton");
 
-    pointerLight.style.left = mouseX + "px";
-    pointerLight.style.top = mouseY + "px";
-    pointerLight.style.opacity = "1";
+const backButton =
+    document.getElementById("backButton");
 
-    ambient.style.transform =
-        `translate(${(mouseX - window.innerWidth / 2) * .018}px,
-                   ${(mouseY - window.innerHeight / 2) * .018}px)`;
-});
+const pointerLight =
+    document.getElementById("pointerLight");
 
-document.addEventListener("pointerleave", () => {
-    pointerLight.style.opacity = "0";
-});
+const ambient =
+    document.getElementById("ambient");
 
+const liquidCard =
+    document.getElementById("liquidCard");
 
-/* =========================
-   SCREEN TRANSITION
-========================= */
+const liquidTitle =
+    document.getElementById("liquidTitle");
 
-enterButton.addEventListener("click", () => {
-
-    landing.classList.add("exit");
-
-    setTimeout(() => {
-        playground.classList.add("active");
-        resizeCanvas();
-    }, 350);
-});
+const energyDot =
+    document.getElementById("energyDot");
 
 
-backButton.addEventListener("click", () => {
+/* =================================
+   GLOBAL POINTER
+================================= */
 
-    playground.classList.remove("active");
+let mouseX =
+    window.innerWidth / 2;
 
-    setTimeout(() => {
-        landing.classList.remove("exit");
-    }, 300);
-});
+let mouseY =
+    window.innerHeight / 2;
+
+document.addEventListener(
+    "pointermove",
+    event => {
+
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+
+        pointerLight.style.left =
+            mouseX + "px";
+
+        pointerLight.style.top =
+            mouseY + "px";
+
+        pointerLight.style.opacity =
+            "1";
+
+        ambient.style.transform =
+            `translate(
+                ${(mouseX - window.innerWidth / 2) * .018}px,
+                ${(mouseY - window.innerHeight / 2) * .018}px
+            )`;
+    }
+);
+
+document.addEventListener(
+    "pointerleave",
+    () => {
+
+        pointerLight.style.opacity =
+            "0";
+    }
+);
 
 
-/* =========================
-   LIQUID BLOB
-========================= */
+/* =================================
+   SCREEN TRANSITIONS
+================================= */
 
-const canvas = document.getElementById("liquidCanvas");
-const ctx = canvas.getContext("2d");
+enterButton.addEventListener(
+    "click",
+    () => {
+
+        landing.classList.add("exit");
+
+        setTimeout(
+            () => {
+
+                playground.classList.add(
+                    "active"
+                );
+
+                resizeCanvas();
+
+            },
+            350
+        );
+    }
+);
+
+
+backButton.addEventListener(
+    "click",
+    () => {
+
+        playground.classList.remove(
+            "active"
+        );
+
+        setTimeout(
+            () => {
+
+                landing.classList.remove(
+                    "exit"
+                );
+
+            },
+            300
+        );
+    }
+);
+
+
+/* =================================
+   CANVAS
+================================= */
+
+const canvas =
+    document.getElementById(
+        "liquidCanvas"
+    );
+
+const ctx =
+    canvas.getContext("2d");
 
 let width = 0;
 let height = 0;
-let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-let pointer = {
+let dpr =
+    Math.min(
+        window.devicePixelRatio || 1,
+        2
+    );
+
+
+/* =================================
+   POINTER PHYSICS
+================================= */
+
+const pointer = {
+
     x: 0,
     y: 0,
+
+    previousX: 0,
+    previousY: 0,
+
     active: false,
-    force: 0
+
+    force: 0,
+
+    speed: 0
 };
+
+
+/* =================================
+   BLOB
+================================= */
 
 const blob = {
+
     x: 0,
     y: 0,
-    baseRadius: 105,
-    radius: 105,
+
     vx: 0,
     vy: 0,
-    rotation: 0
+
+    baseRadius: 100,
+    radius: 100,
+
+    rotation: 0,
+
+    hue: 245,
+
+    energy: 0
+
 };
+
+
+/* =================================
+   PARTICLES
+================================= */
 
 const particles = [];
 
-function resizeCanvas() {
-
-    const rect = canvas.getBoundingClientRect();
-
-    width = rect.width;
-    height = rect.height;
-
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    blob.x = width / 2;
-    blob.y = height / 2;
-
-    blob.baseRadius = Math.min(width, height) * .19;
-
-    if (!particles.length) {
-        createParticles();
-    }
-}
+const PARTICLE_COUNT = 90;
 
 function createParticles() {
 
     particles.length = 0;
 
-    for (let i = 0; i < 65; i++) {
+    for (
+        let i = 0;
+        i < PARTICLE_COUNT;
+        i++
+    ) {
 
         particles.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
+
+            x:
+                Math.random() *
+                width,
+
+            y:
+                Math.random() *
+                height,
+
             vx: 0,
             vy: 0,
-            size: Math.random() * 1.8 + .5,
-            alpha: Math.random() * .25 + .08
+
+            size:
+                Math.random() *
+                1.8 + .4,
+
+            alpha:
+                Math.random() *
+                .25 + .06
+
         });
     }
 }
 
-window.addEventListener("resize", resizeCanvas);
 
+/* =================================
+   RESIZE
+================================= */
 
-/* =========================
-   TOUCH / MOUSE
-========================= */
+function resizeCanvas() {
 
-function updatePointer(clientX, clientY) {
+    const rect =
+        canvas.getBoundingClientRect();
 
-    const rect = canvas.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
 
-    pointer.x = clientX - rect.left;
-    pointer.y = clientY - rect.top;
-    pointer.active = true;
-    pointer.force = 1;
-}
+    canvas.width =
+        width * dpr;
 
-canvas.addEventListener("pointermove", (event) => {
-    updatePointer(event.clientX, event.clientY);
-});
+    canvas.height =
+        height * dpr;
 
-canvas.addEventListener("pointerdown", (event) => {
-    updatePointer(event.clientX, event.clientY);
-});
-
-canvas.addEventListener("pointerup", () => {
-    pointer.active = false;
-});
-
-canvas.addEventListener("pointercancel", () => {
-    pointer.active = false;
-});
-
-canvas.addEventListener("pointerleave", () => {
-    pointer.active = false;
-});
-
-
-/* =========================
-   BLOB PHYSICS
-========================= */
-
-function updateBlob() {
-
-    let targetX = width / 2;
-    let targetY = height / 2;
-
-    if (pointer.active) {
-        targetX = pointer.x;
-        targetY = pointer.y;
-    }
-
-    const dx = targetX - blob.x;
-    const dy = targetY - blob.y;
-
-    blob.vx += dx * .008;
-    blob.vy += dy * .008;
-
-    blob.vx *= .87;
-    blob.vy *= .87;
-
-    blob.x += blob.vx;
-    blob.y += blob.vy;
-
-    const speed = Math.sqrt(
-        blob.vx * blob.vx +
-        blob.vy * blob.vy
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
     );
 
-    const targetRadius =
-        blob.baseRadius +
-        Math.min(speed * 2.2, 35);
+    if (!blob.x) {
 
-    blob.radius +=
-        (targetRadius - blob.radius) * .09;
+        blob.x =
+            width / 2;
 
-    blob.rotation +=
-        blob.vx * .002;
+        blob.y =
+            height / 2;
+    }
 
-    pointer.force *= .93;
-}
+    blob.baseRadius =
+        Math.min(
+            width,
+            height
+        ) * .19;
 
+    if (!particles.length) {
 
-/* =========================
-   DRAW BACKGROUND PARTICLES
-========================= */
-
-function updateParticles() {
-
-    for (const p of particles) {
-
-        const dx = blob.x - p.x;
-        const dy = blob.y - p.y;
-
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 220) {
-
-            const force =
-                (220 - distance) / 220;
-
-            p.vx -= (dx / distance) * force * .12;
-            p.vy -= (dy / distance) * force * .12;
-        }
-
-        p.vx *= .98;
-        p.vy *= .98;
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < -10) p.x = width + 10;
-        if (p.x > width + 10) p.x = -10;
-        if (p.y < -10) p.y = height + 10;
-        if (p.y > height + 10) p.y = -10;
+        createParticles();
     }
 }
 
-function drawParticles() {
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
 
-    for (const p of particles) {
+
+/* =================================
+   POINTER POSITION
+================================= */
+
+function updatePointer(
+    clientX,
+    clientY
+) {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const x =
+        clientX - rect.left;
+
+    const y =
+        clientY - rect.top;
+
+    pointer.previousX =
+        pointer.x;
+
+    pointer.previousY =
+        pointer.y;
+
+    pointer.x = x;
+    pointer.y = y;
+
+    const dx =
+        pointer.x -
+        pointer.previousX;
+
+    const dy =
+        pointer.y -
+        pointer.previousY;
+
+    pointer.speed =
+        Math.sqrt(
+            dx * dx +
+            dy * dy
+        );
+
+    pointer.force =
+        Math.min(
+            pointer.speed / 10,
+            1.5
+        );
+
+    pointer.active = true;
+}
+
+
+canvas.addEventListener(
+    "pointermove",
+    event => {
+
+        updatePointer(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        updatePointer(
+            event.clientX,
+            event.clientY
+        );
+
+        createRipple(
+            pointer.x,
+            pointer.y,
+            true
+        );
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerup",
+    () => {
+
+        pointer.active = false;
+    }
+);
+
+
+canvas.addEventListener(
+    "pointercancel",
+    () => {
+
+        pointer.active = false;
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerleave",
+    () => {
+
+        pointer.active = false;
+    }
+);
+
+
+/* =================================
+   RIPPLE SYSTEM
+================================= */
+
+const ripples = [];
+
+function createRipple(
+    x,
+    y,
+    strong = false
+) {
+
+    ripples.push({
+
+        x,
+        y,
+
+        radius:
+            strong ? 8 : 3,
+
+        alpha:
+            strong ? .7 : .3,
+
+        speed:
+            strong ? 5 : 2.5
+
+    });
+}
+
+
+function drawRipples() {
+
+    for (
+        let i = ripples.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const ripple =
+            ripples[i];
+
+        ripple.radius +=
+            ripple.speed;
+
+        ripple.alpha *=
+            .945;
 
         ctx.beginPath();
+
         ctx.arc(
-            p.x,
-            p.y,
-            p.size,
+            ripple.x,
+            ripple.y,
+            ripple.radius,
             0,
             Math.PI * 2
         );
 
+        ctx.strokeStyle =
+            `hsla(
+                ${blob.hue},
+                100%,
+                90%,
+                ${ripple.alpha}
+            )`;
+
+        ctx.lineWidth =
+            1.2;
+
+        ctx.stroke();
+
+        if (
+            ripple.alpha <
+            .008
+        ) {
+
+            ripples.splice(
+                i,
+                1
+            );
+        }
+    }
+}
+
+
+/* =================================
+   BLOB PHYSICS
+================================= */
+
+function updateBlob() {
+
+    let targetX =
+        width / 2;
+
+    let targetY =
+        height / 2;
+
+
+    if (
+        pointer.active
+    ) {
+
+        targetX =
+            pointer.x;
+
+        targetY =
+            pointer.y;
+    }
+
+
+    const dx =
+        targetX -
+        blob.x;
+
+    const dy =
+        targetY -
+        blob.y;
+
+
+    blob.vx +=
+        dx * .009;
+
+    blob.vy +=
+        dy * .009;
+
+
+    /*
+       Liquid resistance
+    */
+
+    blob.vx *=
+        .875;
+
+    blob.vy *=
+        .875;
+
+
+    blob.x +=
+        blob.vx;
+
+    blob.y +=
+        blob.vy;
+
+
+    /*
+       Stretch
+    */
+
+    const speed =
+        Math.sqrt(
+            blob.vx *
+            blob.vx +
+            blob.vy *
+            blob.vy
+        );
+
+
+    const targetRadius =
+        blob.baseRadius +
+        Math.min(
+            speed * 2.7,
+            38
+        );
+
+
+    blob.radius +=
+        (
+            targetRadius -
+            blob.radius
+        ) * .09;
+
+
+    /*
+       Rotation
+    */
+
+    blob.rotation +=
+        blob.vx * .002;
+
+
+    /*
+       Energy
+    */
+
+    blob.energy +=
+        (
+            Math.min(
+                speed * .05,
+                1
+            ) -
+            blob.energy
+        ) * .08;
+
+
+    /*
+       Colour shifts
+    */
+
+    blob.hue +=
+        (
+            235 +
+            speed * 2 -
+            blob.hue
+        ) * .015;
+
+
+    liquidTitle.style.color =
+        `hsl(
+            ${blob.hue},
+            80%,
+            92%
+        )`;
+
+
+    /*
+       Card reacts to energy
+    */
+
+    liquidCard.style.boxShadow =
+        `
+        inset 0 1px rgba(255,255,255,.08),
+        0 30px 100px
+        hsla(
+            ${blob.hue},
+            80%,
+            50%,
+            ${.05 + blob.energy * .14}
+        )
+        `;
+
+
+    /*
+       Energy indicator
+    */
+
+    if (
+        blob.energy >
+        .12
+    ) {
+
+        energyDot.classList.add(
+            "active"
+        );
+
+    } else {
+
+        energyDot.classList.remove(
+            "active"
+        );
+    }
+}
+
+
+/* =================================
+   PARTICLE PHYSICS
+================================= */
+
+function updateParticles() {
+
+    for (
+        const particle of particles
+    ) {
+
+        /*
+           Blob influence
+        */
+
+        let dx =
+            blob.x -
+            particle.x;
+
+        let dy =
+            blob.y -
+            particle.y;
+
+        let distance =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        if (
+            distance < 250 &&
+            distance > 1
+        ) {
+
+            const force =
+                (
+                    250 -
+                    distance
+                ) / 250;
+
+
+            /*
+               Push particles outward
+            */
+
+            particle.vx -=
+                (
+                    dx / distance
+                ) *
+                force *
+                .16;
+
+            particle.vy -=
+                (
+                    dy / distance
+                ) *
+                force *
+                .16;
+        }
+
+
+        /*
+           Pointer influence
+        */
+
+        if (
+            pointer.active
+        ) {
+
+            dx =
+                pointer.x -
+                particle.x;
+
+            dy =
+                pointer.y -
+                particle.y;
+
+            distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (
+                distance < 150 &&
+                distance > 1
+            ) {
+
+                const force =
+                    (
+                        150 -
+                        distance
+                    ) / 150;
+
+
+                particle.vx -=
+                    (
+                        dx / distance
+                    ) *
+                    force *
+                    pointer.force *
+                    .35;
+
+                particle.vy -=
+                    (
+                        dy / distance
+                    ) *
+                    force *
+                    pointer.force *
+                    .35;
+            }
+        }
+
+
+        /*
+           Friction
+        */
+
+        particle.vx *=
+            .975;
+
+        particle.vy *=
+            .975;
+
+
+        particle.x +=
+            particle.vx;
+
+        particle.y +=
+            particle.vy;
+
+
+        /*
+           Wrap around
+        */
+
+        if (
+            particle.x < -10
+        ) {
+
+            particle.x =
+                width + 10;
+        }
+
+        if (
+            particle.x >
+            width + 10
+        ) {
+
+            particle.x =
+                -10;
+        }
+
+        if (
+            particle.y < -10
+        ) {
+
+            particle.y =
+                height + 10;
+        }
+
+        if (
+            particle.y >
+            height + 10
+        ) {
+
+            particle.y =
+                -10;
+        }
+    }
+}
+
+
+/* =================================
+   DRAW PARTICLES
+================================= */
+
+function drawParticles() {
+
+    for (
+        const particle of particles
+    ) {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            particle.x,
+            particle.y,
+            particle.size,
+            0,
+            Math.PI * 2
+        );
+
+
         ctx.fillStyle =
-            `rgba(255,255,255,${p.alpha})`;
+            `hsla(
+                ${blob.hue},
+                70%,
+                90%,
+                ${particle.alpha}
+            )`;
+
 
         ctx.fill();
     }
 }
 
 
-/* =========================
-   DRAW LIQUID
-========================= */
+/* =================================
+   DRAW LIQUID BLOB
+================================= */
 
 function drawBlob() {
 
-    const points = 64;
+    const points = 72;
+
     const coords = [];
 
-    for (let i = 0; i < points; i++) {
+    const time =
+        performance.now();
+
+
+    for (
+        let i = 0;
+        i < points;
+        i++
+    ) {
 
         const angle =
-            (Math.PI * 2 * i) / points;
+            (
+                Math.PI *
+                2 *
+                i
+            ) / points;
+
+
+        /*
+           Organic surface
+        */
 
         const wave1 =
-            Math.sin(angle * 3 + performance.now() * .0015) * 5;
+            Math.sin(
+                angle * 3 +
+                time * .0015
+            ) * 5;
+
 
         const wave2 =
-            Math.sin(angle * 5 - performance.now() * .0011) * 3;
+            Math.sin(
+                angle * 5 -
+                time * .0011
+            ) * 3;
 
-        const velocityStretch =
-            Math.cos(angle - Math.atan2(blob.vy, blob.vx))
-            * Math.min(
-                Math.sqrt(blob.vx * blob.vx + blob.vy * blob.vy) * 1.8,
-                28
+
+        const wave3 =
+            Math.sin(
+                angle * 7 +
+                time * .0008
+            ) * 2;
+
+
+        /*
+           Movement stretch
+        */
+
+        let velocityStretch = 0;
+
+        const velocity =
+            Math.sqrt(
+                blob.vx *
+                blob.vx +
+                blob.vy *
+                blob.vy
             );
 
-        const r =
+
+        if (
+            velocity > .1
+        ) {
+
+            velocityStretch =
+                Math.cos(
+                    angle -
+                    Math.atan2(
+                        blob.vy,
+                        blob.vx
+                    )
+                ) *
+                Math.min(
+                    velocity * 2,
+                    30
+                );
+        }
+
+
+        const radius =
             blob.radius +
             wave1 +
             wave2 +
+            wave3 +
             velocityStretch;
 
+
         coords.push({
-            x: blob.x + Math.cos(angle + blob.rotation) * r,
-            y: blob.y + Math.sin(angle + blob.rotation) * r
+
+            x:
+                blob.x +
+                Math.cos(
+                    angle +
+                    blob.rotation
+                ) *
+                radius,
+
+            y:
+                blob.y +
+                Math.sin(
+                    angle +
+                    blob.rotation
+                ) *
+                radius
+
         });
     }
 
-    const gradient = ctx.createRadialGradient(
-        blob.x - blob.radius * .35,
-        blob.y - blob.radius * .4,
-        5,
-        blob.x,
-        blob.y,
-        blob.radius * 1.35
+
+    /*
+       Gradient
+    */
+
+    const gradient =
+        ctx.createRadialGradient(
+
+            blob.x -
+            blob.radius * .35,
+
+            blob.y -
+            blob.radius * .4,
+
+            5,
+
+            blob.x,
+
+            blob.y,
+
+            blob.radius * 1.4
+        );
+
+
+    gradient.addColorStop(
+        0,
+        `hsla(
+            ${blob.hue},
+            100%,
+            98%,
+            .98
+        )`
     );
 
-    gradient.addColorStop(0, "rgba(255,255,255,.95)");
-    gradient.addColorStop(.22, "rgba(170,165,255,.88)");
-    gradient.addColorStop(.58, "rgba(92,80,255,.65)");
-    gradient.addColorStop(1, "rgba(30,20,100,.18)");
+
+    gradient.addColorStop(
+        .22,
+        `hsla(
+            ${blob.hue},
+            90%,
+            85%,
+            .9
+        )`
+    );
+
+
+    gradient.addColorStop(
+        .55,
+        `hsla(
+            ${blob.hue},
+            80%,
+            60%,
+            .7
+        )`
+    );
+
+
+    gradient.addColorStop(
+        1,
+        `hsla(
+            ${blob.hue},
+            80%,
+            30%,
+            .12
+        )`
+    );
+
+
+    /*
+       Shape
+    */
 
     ctx.beginPath();
 
-    const first = coords[0];
+    const first =
+        coords[0];
 
     ctx.moveTo(
         first.x,
         first.y
     );
 
-    for (let i = 0; i < coords.length; i++) {
 
-        const current = coords[i];
-        const next = coords[(i + 1) % coords.length];
+    for (
+        let i = 0;
+        i < coords.length;
+        i++
+    ) {
 
-        const midX =
-            (current.x + next.x) / 2;
+        const current =
+            coords[i];
 
-        const midY =
-            (current.y + next.y) / 2;
+        const next =
+            coords[
+                (i + 1) %
+                coords.length
+            ];
+
+
+        const midpointX =
+            (
+                current.x +
+                next.x
+            ) / 2;
+
+
+        const midpointY =
+            (
+                current.y +
+                next.y
+            ) / 2;
+
 
         ctx.quadraticCurveTo(
+
             current.x,
             current.y,
-            midX,
-            midY
+
+            midpointX,
+            midpointY
         );
     }
 
+
     ctx.closePath();
 
-    ctx.shadowBlur = 55;
-    ctx.shadowColor =
-        "rgba(90,80,255,.5)";
 
-    ctx.fillStyle = gradient;
+    /*
+       Outer glow
+    */
+
+    ctx.shadowBlur =
+        65;
+
+    ctx.shadowColor =
+        `hsla(
+            ${blob.hue},
+            90%,
+            60%,
+            .45
+        )`;
+
+
+    ctx.fillStyle =
+        gradient;
+
     ctx.fill();
+
 
     ctx.shadowBlur = 0;
 
-    /* Inner glow */
 
-    ctx.beginPath();
-
-    ctx.arc(
-        blob.x - blob.radius * .3,
-        blob.y - blob.radius * .35,
-        blob.radius * .25,
-        0,
-        Math.PI * 2
-    );
+    /*
+       Glass highlight
+    */
 
     const highlight =
         ctx.createRadialGradient(
-            blob.x - blob.radius * .3,
-            blob.y - blob.radius * .35,
+
+            blob.x -
+            blob.radius * .35,
+
+            blob.y -
+            blob.radius * .4,
+
             0,
-            blob.x - blob.radius * .3,
-            blob.y - blob.radius * .35,
-            blob.radius * .25
+
+            blob.x -
+            blob.radius * .35,
+
+            blob.y -
+            blob.radius * .4,
+
+            blob.radius * .35
         );
+
 
     highlight.addColorStop(
         0,
-        "rgba(255,255,255,.28)"
+        "rgba(255,255,255,.3)"
     );
+
 
     highlight.addColorStop(
         1,
         "rgba(255,255,255,0)"
     );
 
-    ctx.fillStyle = highlight;
+
+    ctx.beginPath();
+
+    ctx.arc(
+
+        blob.x -
+        blob.radius * .3,
+
+        blob.y -
+        blob.radius * .35,
+
+        blob.radius * .3,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+
+    ctx.fillStyle =
+        highlight;
+
     ctx.fill();
 }
 
 
-/* =========================
-   POINTER RIPPLE
-========================= */
+/* =================================
+   AUTO RIPPLE
+================================= */
 
-let ripples = [];
+let rippleTimer = 0;
 
-canvas.addEventListener("pointerdown", (event) => {
+function ambientRipple() {
 
-    const rect = canvas.getBoundingClientRect();
+    rippleTimer++;
 
-    ripples.push({
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-        radius: 5,
-        alpha: .55
-    });
-});
+    if (
+        rippleTimer > 100
+    ) {
 
-function drawRipples() {
+        rippleTimer = 0;
 
-    for (let i = ripples.length - 1; i >= 0; i--) {
+        if (
+            !pointer.active
+        ) {
 
-        const r = ripples[i];
-
-        r.radius += 3.5;
-        r.alpha *= .94;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            r.x,
-            r.y,
-            r.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.strokeStyle =
-            `rgba(255,255,255,${r.alpha})`;
-
-        ctx.lineWidth = 1;
-
-        ctx.stroke();
-
-        if (r.alpha < .01) {
-            ripples.splice(i, 1);
+            createRipple(
+                blob.x,
+                blob.y
+            );
         }
     }
 }
 
 
-/* =========================
+/* =================================
    MAIN LOOP
-========================= */
+================================= */
 
 function animate() {
 
@@ -1032,17 +1926,32 @@ function animate() {
         height
     );
 
+
     updateBlob();
+
     updateParticles();
 
+    ambientRipple();
+
     drawParticles();
+
     drawRipples();
+
     drawBlob();
 
-    requestAnimationFrame(animate);
+
+    requestAnimationFrame(
+        animate
+    );
 }
 
+
+/* =================================
+   START
+================================= */
+
 resizeCanvas();
+
 animate();
 
 </script>
