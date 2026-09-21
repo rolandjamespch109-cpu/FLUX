@@ -1,282 +1,1865 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050507">
-  <title>FLUX</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#050507">
+<meta name="description" content="FLUX. A digital playground for everyone.">
+<title>FLUX — Do you wanna play with Flux?</title>
+
+<style>
+:root{
+  --bg:#050507;
+  --panel:rgba(255,255,255,.075);
+  --panel2:rgba(255,255,255,.045);
+  --border:rgba(255,255,255,.13);
+  --text:#fff;
+  --muted:rgba(255,255,255,.58);
+  --accent:#9d7cff;
+  --accent2:#45e6ff;
+  --good:#65ffad;
+  --danger:#ff6688;
+  --shadow:0 25px 80px rgba(0,0,0,.42);
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button{
+  font:inherit;
+  color:inherit;
+  border:0;
+  cursor:pointer;
+}
+
+button:active{
+  transform:scale(.96);
+}
+
+#background{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(112,82,255,.12),transparent 34%),
+    radial-gradient(circle at 10% 80%,rgba(0,210,255,.07),transparent 30%),
+    #050507;
+}
+
+.orb{
+  position:absolute;
+  width:38vw;
+  height:38vw;
+  min-width:240px;
+  min-height:240px;
+  border-radius:50%;
+  filter:blur(70px);
+  opacity:.16;
+  animation:float 13s ease-in-out infinite alternate;
+}
+
+.orb.one{
+  background:#744cff;
+  top:-14%;
+  left:-8%;
+}
+
+.orb.two{
+  background:#00d9ff;
+  right:-12%;
+  top:28%;
+  animation-delay:-4s;
+}
+
+.orb.three{
+  background:#ff42b8;
+  bottom:-18%;
+  left:30%;
+  animation-delay:-8s;
+}
+
+@keyframes float{
+  from{transform:translate3d(-4%,2%,0) scale(1)}
+  to{transform:translate3d(7%,-5%,0) scale(1.14)}
+}
+
+#pointerGlow{
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(140,110,255,.15),transparent 68%);
+  z-index:1;
+}
+
+#app{
+  position:relative;
+  z-index:2;
+  width:100%;
+  min-height:100vh;
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+  padding:24px;
+}
+
+.screen.active{
+  display:block;
+  animation:screenIn .45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes screenIn{
+  from{opacity:0;transform:translateY(16px) scale(.985)}
+  to{opacity:1;transform:none}
+}
+
+/* LANDING */
+
+#landing{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hero{
+  width:min(900px,100%);
+}
+
+.logo{
+  font-size:clamp(80px,17vw,190px);
+  line-height:.8;
+  letter-spacing:-.09em;
+  font-weight:900;
+  background:linear-gradient(120deg,#fff 10%,#c9bcff 48%,#68eaff 90%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  user-select:none;
+  transition:transform .15s ease;
+}
+
+.tagline{
+  margin:30px 0 38px;
+  font-size:clamp(18px,3vw,29px);
+  color:var(--muted);
+  letter-spacing:-.02em;
+}
+
+.primary{
+  padding:16px 28px;
+  border-radius:999px;
+  background:#fff;
+  color:#08080a;
+  font-weight:800;
+  box-shadow:0 15px 50px rgba(255,255,255,.13);
+  transition:.2s ease;
+}
+
+.primary:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 20px 70px rgba(150,120,255,.3);
+}
+
+/* HUB */
+
+.topbar{
+  width:min(1180px,100%);
+  margin:0 auto 36px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.small-logo{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-.08em;
+}
+
+.top-actions{
+  display:flex;
+  gap:9px;
+}
+
+.icon-btn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:var(--panel);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  transition:.2s;
+}
+
+.icon-btn:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.container{
+  width:min(1180px,100%);
+  margin:auto;
+}
+
+.welcome{
+  margin-bottom:30px;
+}
+
+.welcome h1{
+  margin:0 0 8px;
+  font-size:clamp(34px,6vw,62px);
+  letter-spacing:-.055em;
+}
+
+.welcome p{
+  margin:0;
+  color:var(--muted);
+}
+
+.stats{
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+
+.stat{
+  padding:11px 16px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:15px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat strong{
+  color:#fff;
+  margin-left:5px;
+}
+
+.section-title{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin:35px 0 15px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:20px;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+
+.card{
+  position:relative;
+  min-height:180px;
+  padding:22px;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035));
+  border:1px solid var(--border);
+  overflow:hidden;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s;
+  text-align:left;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,.27);
+  background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.05));
+}
+
+.card:before{
+  content:"";
+  position:absolute;
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  background:var(--card-glow,#805cff);
+  filter:blur(55px);
+  opacity:.15;
+  right:-35px;
+  bottom:-45px;
+}
+
+.card-icon{
+  font-size:32px;
+  margin-bottom:25px;
+}
+
+.card h3{
+  margin:0 0 6px;
+  font-size:19px;
+}
+
+.card p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.online{
+  margin-top:14px;
+  min-height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:22px;
+  border-radius:25px;
+  border:1px solid rgba(101,255,173,.15);
+  background:linear-gradient(120deg,rgba(101,255,173,.06),rgba(255,255,255,.04));
+}
+
+.online strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.online span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.badge{
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(101,255,173,.09);
+  color:var(--good);
+  border:1px solid rgba(101,255,173,.18);
+  font-size:12px;
+  white-space:nowrap;
+}
+
+/* GAME */
+
+.game-screen{
+  padding:15px;
+}
+
+.game-wrap{
+  width:min(1100px,100%);
+  margin:auto;
+}
+
+.game-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.game-title h2{
+  margin:0;
+  font-size:clamp(25px,5vw,42px);
+  letter-spacing:-.05em;
+}
+
+.game-title p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.game-tools{
+  display:flex;
+  gap:8px;
+}
+
+.secondary{
+  padding:11px 16px;
+  border-radius:999px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  font-size:13px;
+}
+
+.game-box{
+  position:relative;
+  height:min(70vh,650px);
+  min-height:430px;
+  border-radius:28px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:#07070a;
+  box-shadow:var(--shadow);
+}
+
+canvas{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
+
+.game-hud{
+  position:absolute;
+  top:15px;
+  left:15px;
+  right:15px;
+  display:flex;
+  justify-content:space-between;
+  pointer-events:none;
+}
+
+.hud-item{
+  padding:9px 13px;
+  border-radius:13px;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,.1);
+  font-size:12px;
+}
+
+.hud-item strong{
+  font-size:16px;
+  margin-left:5px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:20;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(15px);
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-card{
+  width:min(500px,100%);
+  padding:28px;
+  border-radius:28px;
+  background:#111116;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  animation:modalIn .3s ease;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:scale(.94)}
+  to{opacity:1;transform:none}
+}
+
+.modal-card h2{
+  margin:0 0 12px;
+}
+
+.modal-card p{
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:22px;
+}
+
+/* SETTINGS */
+
+.setting{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:18px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.setting:last-child{
+  border-bottom:0;
+}
+
+.setting strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.setting span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.toggle{
+  width:48px;
+  height:27px;
+  padding:3px;
+  border-radius:30px;
+  background:#33333a;
+  flex-shrink:0;
+}
+
+.toggle i{
+  display:block;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:#fff;
+  transition:.2s;
+}
+
+.toggle.on{
+  background:#fff;
+}
+
+.toggle.on i{
+  transform:translateX(21px);
+  background:#111;
+}
+
+/* COLOUR LAB */
+
+.colour-panel{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:25px;
+  transition:background .15s;
+}
+
+.colour-preview{
+  width:min(250px,50vw);
+  aspect-ratio:1;
+  border-radius:35%;
+  background:rgb(150,100,255);
+  box-shadow:0 0 100px rgba(130,90,255,.3);
+  transition:.12s;
+}
+
+.sliders{
+  width:min(500px,85%);
+  display:grid;
+  gap:15px;
+}
+
+.slider-row{
+  display:grid;
+  grid-template-columns:35px 1fr 45px;
+  align-items:center;
+  gap:10px;
+}
+
+input[type=range]{
+  width:100%;
+  accent-color:#fff;
+}
+
+/* SPIRAL */
+
+#spiralCanvas{
+  background:radial-gradient(circle,#111 0%,#050507 65%);
+}
+
+/* TOAST */
+
+#toast{
+  position:fixed;
+  z-index:50;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  padding:12px 18px;
+  border-radius:999px;
+  background:rgba(20,20,24,.9);
+  border:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  font-size:13px;
+  transition:.3s;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* MOBILE */
+
+@media(max-width:760px){
+  .screen{
+    padding:17px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .card{
+    min-height:165px;
+    padding:17px;
+    border-radius:21px;
+  }
+
+  .card-icon{
+    font-size:27px;
+    margin-bottom:18px;
+  }
+
+  .card h3{
+    font-size:16px;
+  }
+
+  .card p{
+    font-size:12px;
+  }
+
+  .online{
+    border-radius:21px;
+  }
+
+  .game-box{
+    height:calc(100vh - 135px);
+    min-height:420px;
+    border-radius:21px;
+  }
+
+  .game-head{
+    padding:2px 2px 8px;
+  }
+
+  .game-title p{
+    display:none;
+  }
+}
+
+@media(max-width:460px){
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .card{
+    min-height:145px;
+  }
+
+  .card p{
+    display:none;
+  }
+
+  .card-icon{
+    margin-bottom:15px;
+  }
+
+  .logo{
+    font-size:24vw;
+  }
+
+  .tagline{
+    margin:24px 0 30px;
+  }
+}
+
+.reduced-motion *,
+.reduced-motion *:before,
+.reduced-motion *:after{
+  animation-duration:.001ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.001ms!important;
+}
+</style>
 </head>
 
 <body>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="noise"></div>
+<div id="background">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+</div>
 
-<main>
+<div id="pointerGlow"></div>
 
-  <!-- LANDING -->
-  <section id="landing" class="screen active">
-    <div class="hero">
-      <span class="eyebrow">THE DIGITAL PLAYGROUND</span>
-      <h1>FLUX</h1>
-      <p>Do you wanna play with Flux?</p>
-      <button class="primary" onclick="enterFlux()">LET'S PLAY <span>↗</span></button>
-      <small>Touch. Drag. Experiment.</small>
+<div id="app">
+
+<!-- LANDING -->
+
+<section id="landing" class="screen active">
+  <div class="hero">
+    <div class="logo" id="heroLogo">FLUX</div>
+    <div class="tagline">Do you wanna play with Flux?</div>
+    <button class="primary" id="startButton">LET'S PLAY</button>
+  </div>
+</section>
+
+<!-- HUB -->
+
+<section id="hub" class="screen">
+  <div class="topbar">
+    <div class="small-logo">FLUX</div>
+    <div class="top-actions">
+      <button class="icon-btn" id="randomTop" title="Surprise Me">🎲</button>
+      <button class="icon-btn" id="settingsTop" title="Settings">⚙️</button>
     </div>
-  </section>
+  </div>
 
-
-  <!-- HUB -->
-  <section id="hub" class="screen">
-
-    <header>
-      <button class="logo" onclick="show('landing')">FLUX</button>
-
-      <div class="headerButtons">
-        <button onclick="show('profile')">◉</button>
-        <button onclick="show('settings')">⚙</button>
-      </div>
-    </header>
-
-    <div class="container">
-
-      <div class="welcome">
-        <span class="eyebrow">PLAYGROUND</span>
-        <h2 id="welcome">Welcome to Flux.</h2>
-        <p>Pick something. See what happens.</p>
-      </div>
-
-      <div class="xpBox">
-        <div>
-          <small>FLUX LEVEL</small>
-          <strong id="level">1</strong>
-        </div>
-
-        <div class="xpTrack">
-          <div id="xpBar"></div>
-        </div>
-
-        <span id="xpText">0 / 100 XP</span>
-      </div>
-
-
-      <div class="games">
-
-        <button class="game large" onclick="openGame('gravity')">
-          <span>✦</span>
-          <b>Gravity Playground</b>
-          <small>Pull, push and collect.</small>
-        </button>
-
-        <button class="game" onclick="openGame('blob')">
-          <span>◉</span>
-          <b>Liquid Blob</b>
-          <small>Stretch the impossible.</small>
-        </button>
-
-        <button class="game" onclick="openGame('colour')">
-          <span>◌</span>
-          <b>Colour Lab</b>
-          <small>Create your atmosphere.</small>
-        </button>
-
-        <button class="game" onclick="openGame('spiral')">
-          <span>◎</span>
-          <b>Hypnotic Spiral</b>
-          <small>Shape the flow.</small>
-        </button>
-
-        <button class="game" onclick="openGame('reaction')">
-          <span>⚡</span>
-          <b>Reaction Rush</b>
-          <small>Test your speed.</small>
-        </button>
-
-        <button class="game surprise" onclick="surprise()">
-          <span>?</span>
-          <b>Surprise Me</b>
-          <small>Let Flux decide.</small>
-        </button>
-
-      </div>
-
-      <button class="online" onclick="show('profile')">
-        <div>
-          <b><i></i> FLUX ONLINE</b>
-          <small>Profiles are ready. Multiplayer comes next.</small>
-        </div>
-        →
-      </button>
-
-    </div>
-  </section>
-
-
-  <!-- GAME -->
-  <section id="game" class="screen">
-
-    <header>
-      <button class="back" onclick="closeGame()">‹ FLUX</button>
-      <span id="gameName">EXPERIENCE</span>
-      <button onclick="show('profile')">◉</button>
-    </header>
-
-    <div id="gameArea"></div>
-
-  </section>
-
-
-  <!-- PROFILE -->
-  <section id="profile" class="screen">
-
-    <header>
-      <button class="back" onclick="show('hub')">‹ FLUX</button>
-      <b>PROFILE</b>
-      <button onclick="show('settings')">⚙</button>
-    </header>
-
-    <div class="container profile">
-
-      <div class="profileCard">
-        <div id="avatar" class="avatar">F</div>
-
-        <div>
-          <span class="eyebrow">PLAYER</span>
-          <h2 id="profileName">Flux Player</h2>
-          <p id="profileHandle">@player</p>
-        </div>
-      </div>
-
+  <div class="container">
+    <div class="welcome">
+      <h1>Welcome to Flux.</h1>
+      <p>A playground where something interesting is always waiting.</p>
 
       <div class="stats">
-
-        <div>
-          <small>LEVEL</small>
-          <b id="profileLevel">1</b>
-        </div>
-
-        <div>
-          <small>XP</small>
-          <b id="profileXP">0</b>
-        </div>
-
-        <div>
-          <small>RECORDS</small>
-          <b id="records">0</b>
-        </div>
-
+        <div class="stat">XP <strong id="xpValue">0</strong></div>
+        <div class="stat">Level <strong id="levelValue">1</strong></div>
+        <div class="stat">Games <strong id="gamesValue">0</strong></div>
+        <div class="stat">Best Reaction <strong id="bestValue">--</strong></div>
       </div>
+    </div>
 
+    <div class="section-title">
+      <h2>Explore</h2>
+      <span>Choose your playground</span>
+    </div>
 
-      <div class="achievement">
-        🏆
-        <div>
-          <b>First Contact</b>
-          <p>Enter the FLUX playground.</p>
-        </div>
-      </div>
+    <div class="grid">
 
-      <button class="secondary full" onclick="show('account')">
-        EDIT ACCOUNT
+      <button class="card" style="--card-glow:#8f69ff" data-game="gravity">
+        <div class="card-icon">🪐</div>
+        <h3>Gravity Playground</h3>
+        <p>Move your finger through a field of glowing particles.</p>
+      </button>
+
+      <button class="card" style="--card-glow:#40e6ff" data-game="blob">
+        <div class="card-icon">🫧</div>
+        <h3>Liquid Blob</h3>
+        <p>Push, pull and distort a living pool of colour.</p>
+      </button>
+
+      <button class="card" style="--card-glow:#ff6bd6" data-game="colour">
+        <div class="card-icon">🎨</div>
+        <h3>Colour Lab</h3>
+        <p>Create colours and watch Flux transform around them.</p>
+      </button>
+
+      <button class="card" style="--card-glow:#68a6ff" data-game="spiral">
+        <div class="card-icon">🌀</div>
+        <h3>Hypnotic Spiral</h3>
+        <p>Manipulate an evolving spiral with your movement.</p>
+      </button>
+
+      <button class="card" style="--card-glow:#ffe16a" data-game="reaction">
+        <div class="card-icon">⚡</div>
+        <h3>Reaction Rush</h3>
+        <p>Wait for the signal. Tap as quickly as possible.</p>
+      </button>
+
+      <button class="card" style="--card-glow:#65ffad" data-game="surprise">
+        <div class="card-icon">🎲</div>
+        <h3>Surprise Me</h3>
+        <p>Let Flux decide what happens next.</p>
       </button>
 
     </div>
 
-  </section>
-
-
-  <!-- ACCOUNT -->
-  <section id="account" class="screen">
-
-    <header>
-      <button class="back" onclick="show('profile')">‹ PROFILE</button>
-      <b>ACCOUNT</b>
-      <span></span>
-    </header>
-
-    <div class="container account">
-
-      <span class="eyebrow">YOUR FLUX IDENTITY</span>
-
-      <h2>Create your Flux identity.</h2>
-
-      <p>
-        This V5 account is stored locally on your device.
-        Online accounts and multiplayer will be connected later.
-      </p>
-
-      <label>
-        USERNAME
-        <input id="username" maxlength="18" placeholder="yourusername">
-      </label>
-
-      <label>
-        DISPLAY NAME
-        <input id="displayName" maxlength="24" placeholder="Your name">
-      </label>
-
-      <button class="primary full" onclick="saveAccount()">
-        SAVE PROFILE
-      </button>
-
-      <button class="danger full" onclick="resetAccount()">
-        RESET LOCAL ACCOUNT
-      </button>
-
+    <div class="section-title">
+      <h2>Coming to Flux</h2>
+      <span>More chaos loading...</span>
     </div>
 
-  </section>
+    <div class="online">
+      <div>
+        <strong>🌐 FLUX Online</strong>
+        <span>Shared challenges, multiplayer rooms and global experiences are coming.</span>
+      </div>
+      <div class="badge">COMING SOON</div>
+    </div>
+  </div>
+</section>
 
+<!-- GAME -->
 
-  <!-- SETTINGS -->
-  <section id="settings" class="screen">
+<section id="gameScreen" class="screen game-screen">
+  <div class="game-wrap">
 
-    <header>
-      <button class="back" onclick="show('hub')">‹ FLUX</button>
-      <b>SETTINGS</b>
-      <span></span>
-    </header>
-
-    <div class="container">
-
-      <div class="setting">
-        <div>
-          <b>Reduced motion</b>
-          <small>Use calmer animations.</small>
-        </div>
-
-        <button id="motion" onclick="toggleMotion()">OFF</button>
+    <div class="game-head">
+      <div class="game-title">
+        <h2 id="gameTitle">Game</h2>
+        <p id="gameDescription">Have fun.</p>
       </div>
 
-      <div class="setting">
-        <div>
-          <b>Haptics</b>
-          <small>Mobile interaction feedback.</small>
-        </div>
-
-        <button id="haptic" class="on" onclick="toggleHaptic()">ON</button>
+      <div class="game-tools">
+        <button class="secondary" id="restartGame">↻ Restart</button>
+        <button class="secondary" id="backHome">← Flux</button>
       </div>
+    </div>
 
-      <div class="setting">
-        <div>
-          <b>Local progress</b>
-          <small>Your progress stays on this device.</small>
-        </div>
+    <div class="game-box" id="gameBox">
 
-        <strong class="activeText">ACTIVE</strong>
+      <canvas id="gameCanvas"></canvas>
+
+      <div class="game-hud">
+        <div class="hud-item" id="hudLeft">ENERGY <strong>100</strong></div>
+        <div class="hud-item" id="hudRight">SCORE <strong>0</strong></div>
       </div>
 
     </div>
+  </div>
+</section>
 
-  </section>
+<!-- SETTINGS -->
 
-</main>
+<section id="settingsScreen" class="screen">
+  <div class="container">
+    <div class="topbar" style="width:100%">
+      <div class="small-logo">FLUX</div>
+      <button class="secondary" id="settingsBack">← Back</button>
+    </div>
+
+    <div class="modal-card" style="margin:30px auto">
+      <h2>Settings</h2>
+      <p>Make Flux feel the way you want.</p>
+
+      <div class="setting">
+        <div>
+          <strong>Reduced Motion</strong>
+          <span>Reduce animations and movement.</span>
+        </div>
+        <button class="toggle" id="motionToggle"><i></i></button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>Haptic Feedback</strong>
+          <span>Use vibration on supported phones.</span>
+        </div>
+        <button class="toggle on" id="hapticToggle"><i></i></button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>Reset Progress</strong>
+          <span>Erase local XP and high scores.</span>
+        </div>
+        <button class="secondary" id="resetProgress">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h2 id="modalTitle">Flux</h2>
+    <p id="modalText"></p>
+    <div class="modal-actions">
+      <button class="secondary" id="modalClose">Close</button>
+      <button class="primary" id="modalAction">Let's go</button>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
-<script src="app.js"></script>
+<script>
+/* =========================================================
+   FLUX V4.5
+   Standalone edition
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+const state = {
+  xp: Number(localStorage.getItem("fluxXP") || 0),
+  games: Number(localStorage.getItem("fluxGames") || 0),
+  bestReaction: Number(localStorage.getItem("fluxBestReaction") || 0),
+  reducedMotion: localStorage.getItem("fluxReducedMotion") === "true",
+  haptics: localStorage.getItem("fluxHaptics") !== "false",
+  currentGame: null,
+  animation: null,
+  cleanup: null
+};
+
+const screens = {
+  landing: $("landing"),
+  hub: $("hub"),
+  game: $("gameScreen"),
+  settings: $("settingsScreen")
+};
+
+function show(screen){
+  Object.values(screens).forEach(s => s.classList.remove("active"));
+  screen.classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function save(){
+  localStorage.setItem("fluxXP", state.xp);
+  localStorage.setItem("fluxGames", state.games);
+  localStorage.setItem("fluxBestReaction", state.bestReaction);
+  localStorage.setItem("fluxReducedMotion", state.reducedMotion);
+  localStorage.setItem("fluxHaptics", state.haptics);
+  updateStats();
+}
+
+function level(){
+  return Math.floor(state.xp / 100) + 1;
+}
+
+function updateStats(){
+  $("xpValue").textContent = state.xp;
+  $("levelValue").textContent = level();
+  $("gamesValue").textContent = state.games;
+  $("bestValue").textContent = state.bestReaction ? state.bestReaction + "ms" : "--";
+
+  $("motionToggle").classList.toggle("on", state.reducedMotion);
+  $("hapticToggle").classList.toggle("on", state.haptics);
+
+  document.body.classList.toggle("reduced-motion", state.reducedMotion);
+}
+
+function addXP(amount){
+  const oldLevel = level();
+  state.xp += amount;
+  const newLevel = level();
+
+  save();
+
+  if(newLevel > oldLevel){
+    toast("✨ Level " + newLevel + " unlocked!");
+    vibrate(40);
+  }
+}
+
+function vibrate(ms=20){
+  if(state.haptics && navigator.vibrate){
+    navigator.vibrate(ms);
+  }
+}
+
+function toast(message){
+  const t = $("toast");
+  t.textContent = message;
+  t.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    t.classList.remove("show");
+  },2200);
+}
+
+/* LANDING */
+
+$("startButton").addEventListener("click",()=>{
+  vibrate(25);
+  show(screens.hub);
+});
+
+$("heroLogo").addEventListener("pointermove",e=>{
+  if(state.reducedMotion)return;
+
+  const r = e.currentTarget.getBoundingClientRect();
+  const x = (e.clientX-r.left)/r.width-.5;
+  const y = (e.clientY-r.top)/r.height-.5;
+
+  e.currentTarget.style.transform =
+    `perspective(500px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;
+});
+
+$("heroLogo").addEventListener("pointerleave",e=>{
+  e.currentTarget.style.transform="";
+});
+
+/* POINTER LIGHT */
+
+window.addEventListener("pointermove",e=>{
+  $("pointerGlow").style.left=e.clientX+"px";
+  $("pointerGlow").style.top=e.clientY+"px";
+});
+
+/* HUB */
+
+document.querySelectorAll("[data-game]").forEach(card=>{
+  card.addEventListener("click",()=>{
+    launchGame(card.dataset.game);
+  });
+});
+
+$("randomTop").addEventListener("click",()=>launchGame("surprise"));
+
+$("settingsTop").addEventListener("click",()=>{
+  show(screens.settings);
+});
+
+/* SETTINGS */
+
+$("settingsBack").addEventListener("click",()=>{
+  show(screens.hub);
+});
+
+$("motionToggle").addEventListener("click",()=>{
+  state.reducedMotion=!state.reducedMotion;
+  save();
+  toast(state.reducedMotion ? "Reduced motion enabled" : "Motion restored");
+});
+
+$("hapticToggle").addEventListener("click",()=>{
+  state.haptics=!state.haptics;
+  save();
+  toast(state.haptics ? "Haptics enabled" : "Haptics disabled");
+});
+
+$("resetProgress").addEventListener("click",()=>{
+  state.xp=0;
+  state.games=0;
+  state.bestReaction=0;
+  save();
+  toast("Progress reset");
+});
+
+/* GAME SYSTEM */
+
+const canvas=$("gameCanvas");
+const ctx=canvas.getContext("2d");
+
+function resizeCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+
+  canvas.width=Math.floor(rect.width*dpr);
+  canvas.height=Math.floor(rect.height*dpr);
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  canvas.logicalWidth=rect.width;
+  canvas.logicalHeight=rect.height;
+}
+
+window.addEventListener("resize",()=>{
+  if(state.currentGame){
+    resizeCanvas();
+  }
+});
+
+function clearGame(){
+  if(state.animation){
+    cancelAnimationFrame(state.animation);
+    state.animation=null;
+  }
+
+  if(state.cleanup){
+    state.cleanup();
+    state.cleanup=null;
+  }
+
+  ctx.clearRect(0,0,canvas.logicalWidth||canvas.width,canvas.logicalHeight||canvas.height);
+}
+
+function launchGame(game){
+
+  clearGame();
+
+  state.currentGame=game;
+
+  const names={
+    gravity:["Gravity Playground","Drag the field with your finger or mouse."],
+    blob:["Liquid Blob","Push the living blob and watch it react."],
+    colour:["Colour Lab","Tune the colour and transform the world."],
+    spiral:["Hypnotic Spiral","Move around the spiral and change its flow."],
+    reaction:["Reaction Rush","Tap when the circle turns green."],
+    surprise:["Surprise Me","Flux has chosen something for you."]
+  };
+
+  $("gameTitle").textContent=names[game][0];
+  $("gameDescription").textContent=names[game][1];
+
+  show(screens.game);
+
+  requestAnimationFrame(()=>{
+    resizeCanvas();
+
+    if(game==="gravity") startGravity();
+    if(game==="blob") startBlob();
+    if(game==="colour") startColour();
+    if(game==="spiral") startSpiral();
+    if(game==="reaction") startReaction();
+    if(game==="surprise") startSurprise();
+  });
+}
+
+$("backHome").addEventListener("click",()=>{
+  clearGame();
+  state.currentGame=null;
+  show(screens.hub);
+});
+
+$("restartGame").addEventListener("click",()=>{
+  if(state.currentGame){
+    launchGame(state.currentGame);
+  }
+});
+
+/* COMMON POINTER */
+
+function pointerPosition(e){
+  const r=canvas.getBoundingClientRect();
+  return {
+    x:e.clientX-r.left,
+    y:e.clientY-r.top
+  };
+}
+
+/* GRAVITY */
+
+function startGravity(){
+
+  const w=canvas.logicalWidth;
+  const h=canvas.logicalHeight;
+
+  let px=w/2;
+  let py=h/2;
+  let active=false;
+  let score=0;
+
+  const particles=[];
+
+  for(let i=0;i<85;i++){
+    particles.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      vx:(Math.random()-.5)*.5,
+      vy:(Math.random()-.5)*.5,
+      r:1+Math.random()*3
+    });
+  }
+
+  function move(e){
+    const p=pointerPosition(e);
+    px=p.x;
+    py=p.y;
+    active=true;
+  }
+
+  function leave(){
+    active=false;
+  }
+
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerdown",move);
+  canvas.addEventListener("pointerleave",leave);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointermove",move);
+    canvas.removeEventListener("pointerdown",move);
+    canvas.removeEventListener("pointerleave",leave);
+  };
+
+  function frame(){
+
+    ctx.fillStyle="rgba(5,5,8,.28)";
+    ctx.fillRect(0,0,w,h);
+
+    for(const p of particles){
+
+      let dx=px-p.x;
+      let dy=py-p.y;
+      let d=Math.sqrt(dx*dx+dy*dy);
+
+      if(active && d<250 && d>2){
+        const force=(1-d/250)*.055;
+        p.vx+=dx/d*force;
+        p.vy+=dy/d*force;
+      }
+
+      p.vx*=.992;
+      p.vy*=.992;
+
+      p.x+=p.vx;
+      p.y+=p.vy;
+
+      if(p.x<0)p.x=w;
+      if(p.x>w)p.x=0;
+      if(p.y<0)p.y=h;
+      if(p.y>h)p.y=0;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle="rgba(160,140,255,.75)";
+      ctx.fill();
+    }
+
+    if(active){
+
+      const gradient=ctx.createRadialGradient(px,py,0,px,py,170);
+      gradient.addColorStop(0,"rgba(100,220,255,.12)");
+      gradient.addColorStop(1,"transparent");
+
+      ctx.fillStyle=gradient;
+      ctx.fillRect(px-170,py-170,340,340);
+    }
+
+    $("hudLeft").innerHTML="ENERGY <strong>∞</strong>";
+    $("hudRight").innerHTML="SCORE <strong>"+Math.floor(score)+"</strong>";
+
+    score+=active?.15:.04;
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+/* LIQUID BLOB */
+
+function startBlob(){
+
+  const w=canvas.logicalWidth;
+  const h=canvas.logicalHeight;
+
+  let cx=w/2;
+  let cy=h/2;
+  let tx=cx;
+  let ty=cy;
+  let energy=0;
+
+  const points=[];
+  const count=80;
+
+  for(let i=0;i<count;i++){
+    const a=i/count*Math.PI*2;
+    points.push({
+      a,
+      r:145+Math.random()*12,
+      v:0
+    });
+  }
+
+  function move(e){
+    const p=pointerPosition(e);
+    tx=p.x;
+    ty=p.y;
+    energy=Math.min(100,energy+8);
+  }
+
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerdown",move);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointermove",move);
+    canvas.removeEventListener("pointerdown",move);
+  };
+
+  function frame(){
+
+    ctx.fillStyle="rgba(5,5,8,.2)";
+    ctx.fillRect(0,0,w,h);
+
+    cx+=(tx-cx)*.055;
+    cy+=(ty-cy)*.055;
+    energy*=.97;
+
+    const grad=ctx.createRadialGradient(cx-40,cy-50,10,cx,cy,230);
+    grad.addColorStop(0,"rgba(190,160,255,.95)");
+    grad.addColorStop(.48,"rgba(91,197,255,.65)");
+    grad.addColorStop(1,"rgba(80,50,255,.08)");
+
+    ctx.beginPath();
+
+    points.forEach((p,i)=>{
+      const wave=
+        Math.sin(performance.now()*.002+p.a*4)*7+
+        Math.sin(performance.now()*.0013+p.a*7)*5;
+
+      const pull=Math.max(0,1-Math.hypot(tx-cx,ty-cy)/350);
+      const target=145+wave+pull*energy;
+
+      p.r+=(target-p.r)*.08;
+
+      const x=cx+Math.cos(p.a)*p.r;
+      const y=cy+Math.sin(p.a)*p.r;
+
+      if(i===0)ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+
+    ctx.closePath();
+    ctx.fillStyle=grad;
+    ctx.shadowBlur=45;
+    ctx.shadowColor="rgba(120,100,255,.4)";
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    ctx.beginPath();
+    ctx.arc(tx,ty,8+energy*.06,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,.55)";
+    ctx.fill();
+
+    $("hudLeft").innerHTML="ENERGY <strong>"+Math.floor(energy)+"</strong>";
+    $("hudRight").innerHTML="SCORE <strong>"+Math.floor(energy*10)+"</strong>";
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+/* COLOUR LAB */
+
+function startColour(){
+
+  const w=canvas.logicalWidth;
+  const h=canvas.logicalHeight;
+
+  let hue=270;
+  let sat=80;
+  let light=65;
+
+  const controls=document.createElement("div");
+  controls.className="colour-panel";
+  controls.innerHTML=`
+    <div class="colour-preview"></div>
+    <div class="sliders">
+      <div class="slider-row">
+        <span>H</span>
+        <input id="hueRange" type="range" min="0" max="360" value="270">
+        <span id="hueVal">270</span>
+      </div>
+      <div class="slider-row">
+        <span>S</span>
+        <input id="satRange" type="range" min="0" max="100" value="80">
+        <span id="satVal">80</span>
+      </div>
+      <div class="slider-row">
+        <span>L</span>
+        <input id="lightRange" type="range" min="10" max="90" value="65">
+        <span id="lightVal">65</span>
+      </div>
+    </div>
+  `;
+
+  $("gameBox").appendChild(controls);
+
+  canvas.style.display="none";
+
+  const preview=controls.querySelector(".colour-preview");
+
+  function update(){
+
+    hue=+controls.querySelector("#hueRange").value;
+    sat=+controls.querySelector("#satRange").value;
+    light=+controls.querySelector("#lightRange").value;
+
+    const colour=`hsl(${hue} ${sat}% ${light}%)`;
+
+    preview.style.background=colour;
+    preview.style.boxShadow=`0 0 110px hsla(${hue},100%,65%,.38)`;
+
+    controls.style.background=
+      `radial-gradient(circle at 50% 50%,hsla(${hue},100%,60%,.18),transparent 55%)`;
+
+    $("hueVal").textContent=hue;
+    $("satVal").textContent=sat;
+    $("lightVal").textContent=light;
+
+    $("hudLeft").innerHTML="COLOUR <strong>"+hue+"°</strong>";
+    $("hudRight").innerHTML="ENERGY <strong>"+Math.floor(light)+"</strong>";
+  }
+
+  controls.querySelectorAll("input").forEach(i=>{
+    i.addEventListener("input",update);
+  });
+
+  state.cleanup=()=>{
+    controls.remove();
+    canvas.style.display="block";
+  };
+
+  update();
+}
+
+/* SPIRAL */
+
+function startSpiral(){
+
+  const w=canvas.logicalWidth;
+  const h=canvas.logicalHeight;
+
+  let mx=w/2;
+  let my=h/2;
+  let spin=0;
+
+  function move(e){
+    const p=pointerPosition(e);
+    mx=p.x;
+    my=p.y;
+  }
+
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerdown",move);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointermove",move);
+    canvas.removeEventListener("pointerdown",move);
+  };
+
+  function frame(){
+
+    ctx.fillStyle="rgba(5,5,8,.16)";
+    ctx.fillRect(0,0,w,h);
+
+    const cx=w/2;
+    const cy=h/2;
+
+    spin+=.008;
+
+    for(let i=0;i<900;i++){
+
+      const p=i/900;
+      const angle=p*28+spin;
+      const radius=p*Math.min(w,h)*.47;
+
+      const influence=Math.hypot(mx-cx,my-cy);
+      const bend=(mx-cx)*p*.08+(my-cy)*p*.04;
+
+      const x=cx+Math.cos(angle)*radius+bend;
+      const y=cy+Math.sin(angle)*radius;
+
+      const size=.5+p*2;
+
+      ctx.beginPath();
+      ctx.arc(x,y,size,0,Math.PI*2);
+
+      const hue=(p*250+performance.now()*.025)%360;
+      ctx.fillStyle=`hsla(${hue},100%,70%,${.18+p*.65})`;
+      ctx.fill();
+    }
+
+    $("hudLeft").innerHTML="FLOW <strong>"+Math.floor((spin*100)%100)+"</strong>";
+    $("hudRight").innerHTML="DEPTH <strong>∞</strong>";
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+/* REACTION RUSH */
+
+function startReaction(){
+
+  canvas.style.background="#08080a";
+
+  let stateName="waiting";
+  let startTime=0;
+  let timeout=null;
+  let score=0;
+
+  function draw(){
+
+    const w=canvas.logicalWidth;
+    const h=canvas.logicalHeight;
+
+    ctx.clearRect(0,0,w,h);
+
+    const cx=w/2;
+    const cy=h/2;
+
+    ctx.beginPath();
+    ctx.arc(cx,cy,100,0,Math.PI*2);
+
+    if(stateName==="waiting"){
+      ctx.fillStyle="rgba(255,255,255,.07)";
+      ctx.strokeStyle="rgba(255,255,255,.18)";
+    }else if(stateName==="ready"){
+      ctx.fillStyle="rgba(255,190,70,.2)";
+      ctx.strokeStyle="#ffbe46";
+    }else if(stateName==="go"){
+      ctx.fillStyle="rgba(101,255,173,.2)";
+      ctx.strokeStyle="#65ffad";
+    }
+
+    ctx.lineWidth=3;
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.font="700 19px system-ui";
+
+    ctx.fillStyle="#fff";
+
+    if(stateName==="waiting")ctx.fillText("TAP TO START",cx,cy);
+    if(stateName==="ready")ctx.fillText("WAIT...",cx,cy);
+    if(stateName==="go")ctx.fillText("TAP!",cx,cy);
+
+    $("hudLeft").innerHTML="REACTION <strong>"+(score||"--")+"</strong>";
+    $("hudRight").innerHTML="BEST <strong>"+(state.bestReaction||"--")+"ms</strong>";
+  }
+
+  function startRound(){
+
+    clearTimeout(timeout);
+
+    stateName="ready";
+    draw();
+
+    const delay=900+Math.random()*2800;
+
+    timeout=setTimeout(()=>{
+      stateName="go";
+      startTime=performance.now();
+      vibrate(25);
+      draw();
+    },delay);
+  }
+
+  function tap(){
+
+    if(stateName==="waiting"){
+      startRound();
+      return;
+    }
+
+    if(stateName==="ready"){
+      clearTimeout(timeout);
+      stateName="waiting";
+      draw();
+      toast("Too early!");
+      vibrate(80);
+      return;
+    }
+
+    if(stateName==="go"){
+
+      score=Math.floor(performance.now()-startTime);
+
+      if(!state.bestReaction || score<state.bestReaction){
+        state.bestReaction=score;
+        toast("🔥 New personal record!");
+      }else{
+        toast(score+"ms");
+      }
+
+      state.games++;
+      addXP(Math.max(5,Math.floor(1000/score*20)));
+      save();
+
+      stateName="waiting";
+      draw();
+    }
+  }
+
+  canvas.addEventListener("pointerdown",tap);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointerdown",tap);
+    clearTimeout(timeout);
+    canvas.style.background="";
+  };
+
+  draw();
+}
+
+/* SURPRISE */
+
+function startSurprise(){
+
+  const choices=[
+    {
+      title:"COLOR BLAST",
+      text:"Tap anywhere and Flux will paint the screen.",
+      action:colorBlast
+    },
+    {
+      title:"PARTICLE STORM",
+      text:"Move your finger around and create chaos.",
+      action:particleStorm
+    },
+    {
+      title:"FLUX CHALLENGE",
+      text:"Keep your finger moving for 15 seconds.",
+      action:movementChallenge
+    },
+    {
+      title:"RANDOM MOOD",
+      text:"Flux has decided your colour for the next few seconds.",
+      action:randomMood
+    }
+  ];
+
+  const choice=choices[Math.floor(Math.random()*choices.length)];
+
+  $("hudLeft").innerHTML="SURPRISE <strong>?</strong>";
+  $("hudRight").innerHTML="XP <strong>+"+10+"</strong>";
+
+  choice.action();
+
+  addXP(10);
+  state.games++;
+  save();
+
+  toast(choice.title+"!");
+}
+
+function colorBlast(){
+
+  let hue=Math.random()*360;
+  let particles=[];
+
+  function tap(e){
+
+    const p=pointerPosition(e);
+
+    for(let i=0;i<50;i++){
+      const a=Math.random()*Math.PI*2;
+      const speed=2+Math.random()*7;
+
+      particles.push({
+        x:p.x,
+        y:p.y,
+        vx:Math.cos(a)*speed,
+        vy:Math.sin(a)*speed,
+        life:1
+      });
+    }
+
+    vibrate(20);
+  }
+
+  canvas.addEventListener("pointerdown",tap);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointerdown",tap);
+  };
+
+  function frame(){
+
+    const w=canvas.logicalWidth;
+    const h=canvas.logicalHeight;
+
+    ctx.fillStyle="rgba(5,5,8,.14)";
+    ctx.fillRect(0,0,w,h);
+
+    hue+=.3;
+
+    particles.forEach(p=>{
+      p.x+=p.vx;
+      p.y+=p.vy;
+      p.vx*=.985;
+      p.vy*=.985;
+      p.life-=.012;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,2+p.life*5,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${hue+p.x*.1},100%,70%,${p.life})`;
+      ctx.fill();
+    });
+
+    particles=particles.filter(p=>p.life>0);
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+function particleStorm(){
+
+  let parts=[];
+
+  for(let i=0;i<120;i++){
+    parts.push({
+      x:Math.random()*canvas.logicalWidth,
+      y:Math.random()*canvas.logicalHeight,
+      vx:(Math.random()-.5),
+      vy:(Math.random()-.5)
+    });
+  }
+
+  let mouse={x:canvas.logicalWidth/2,y:canvas.logicalHeight/2};
+
+  function move(e){
+    mouse=pointerPosition(e);
+  }
+
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerdown",move);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointermove",move);
+    canvas.removeEventListener("pointerdown",move);
+  };
+
+  function frame(){
+
+    const w=canvas.logicalWidth;
+    const h=canvas.logicalHeight;
+
+    ctx.fillStyle="rgba(5,5,8,.18)";
+    ctx.fillRect(0,0,w,h);
+
+    parts.forEach(p=>{
+
+      const dx=mouse.x-p.x;
+      const dy=mouse.y-p.y;
+      const d=Math.hypot(dx,dy)||1;
+
+      if(d<250){
+        p.vx+=dx/d*.04;
+        p.vy+=dy/d*.04;
+      }
+
+      p.vx*=.99;
+      p.vy*=.99;
+      p.x+=p.vx;
+      p.y+=p.vy;
+
+      if(p.x<0)p.x=w;
+      if(p.x>w)p.x=0;
+      if(p.y<0)p.y=h;
+      if(p.y>h)p.y=0;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,2,0,Math.PI*2);
+      ctx.fillStyle="rgba(100,220,255,.75)";
+      ctx.fill();
+    });
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+function movementChallenge(){
+
+  let moved=0;
+  let last=null;
+  const start=performance.now();
+
+  function move(e){
+
+    const p=pointerPosition(e);
+
+    if(last){
+      moved+=Math.hypot(p.x-last.x,p.y-last.y);
+    }
+
+    last=p;
+
+    $("hudLeft").innerHTML="DISTANCE <strong>"+Math.floor(moved)+"</strong>";
+    $("hudRight").innerHTML="TIME <strong>"+Math.max(0,15-Math.floor((performance.now()-start)/1000))+"</strong>";
+  }
+
+  canvas.addEventListener("pointermove",move);
+
+  state.cleanup=()=>{
+    canvas.removeEventListener("pointermove",move);
+  };
+
+  function frame(){
+
+    const elapsed=(performance.now()-start)/1000;
+
+    if(elapsed>=15){
+      addXP(Math.min(100,Math.floor(moved/20)));
+      toast("Challenge complete! +" + Math.min(100,Math.floor(moved/20)) + " XP");
+      return;
+    }
+
+    ctx.fillStyle="rgba(5,5,8,.18)";
+    ctx.fillRect(0,0,canvas.logicalWidth,canvas.logicalHeight);
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+function randomMood(){
+
+  const hue=Math.floor(Math.random()*360);
+
+  canvas.style.background=
+    `radial-gradient(circle at 50% 50%,hsla(${hue},100%,65%,.35),#050507 70%)`;
+
+  state.cleanup=()=>{
+    canvas.style.background="";
+  };
+
+  let t=0;
+
+  function frame(){
+
+    t++;
+
+    canvas.style.background=
+      `radial-gradient(circle at ${50+Math.sin(t*.01)*20}% ${50+Math.cos(t*.013)*20}%,hsla(${hue+t*.5},100%,65%,.32),#050507 70%)`;
+
+    state.animation=requestAnimationFrame(frame);
+  }
+
+  frame();
+}
+
+/* INITIALISE */
+
+updateStats();
+
+/* Keyboard shortcuts */
+
+window.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && screens.game.classList.contains("active")){
+    $("backHome").click();
+  }
+});
+
+/* Prevent accidental browser gestures inside games */
+
+canvas.addEventListener("touchstart",e=>{
+  e.preventDefault();
+},{passive:false});
+
+canvas.addEventListener("touchmove",e=>{
+  e.preventDefault();
+},{passive:false});
+
+</script>
 
 </body>
 </html>
