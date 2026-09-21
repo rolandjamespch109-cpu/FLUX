@@ -2,34 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#050507">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#050505">
 <title>FLUX</title>
 
 <style>
-:root{
-  --bg:#050507;
-  --text:#fff;
-  --muted:rgba(255,255,255,.56);
-  --glass:rgba(255,255,255,.065);
-  --border:rgba(255,255,255,.13);
-  --accent:#8b72ff;
-}
-
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
   -webkit-tap-highlight-color:transparent;
 }
 
 html,
 body{
-  margin:0;
   width:100%;
   height:100%;
   overflow:hidden !important;
-  background:#050507;
-  color:white;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#050505;
+  color:#fff;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
@@ -40,80 +32,7 @@ body{
 
 button{
   font:inherit;
-  color:inherit;
-  border:0;
-  cursor:pointer;
-  -webkit-user-select:none;
-  user-select:none;
 }
-
-button:active{
-  transform:scale(.96);
-}
-
-#background{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(115,80,255,.13),transparent 36%),
-    radial-gradient(circle at 0% 100%,rgba(0,220,255,.07),transparent 32%),
-    #050507;
-}
-
-.orb{
-  position:absolute;
-  width:42vw;
-  height:42vw;
-  min-width:230px;
-  min-height:230px;
-  border-radius:50%;
-  filter:blur(80px);
-  opacity:.16;
-  animation:float 14s ease-in-out infinite alternate;
-}
-
-.orb.a{
-  left:-12%;
-  top:-15%;
-  background:#704dff;
-}
-
-.orb.b{
-  right:-15%;
-  top:20%;
-  background:#00d9ff;
-  animation-delay:-4s;
-}
-
-.orb.c{
-  left:30%;
-  bottom:-20%;
-  background:#ff40ba;
-  animation-delay:-8s;
-}
-
-@keyframes float{
-  from{transform:translate3d(-4%,3%,0) scale(1)}
-  to{transform:translate3d(7%,-6%,0) scale(1.14)}
-}
-
-#pointerGlow{
-  position:fixed;
-  z-index:2;
-  width:270px;
-  height:270px;
-  border-radius:50%;
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(130,105,255,.14),transparent 68%);
-}
-
-/* =====================================================
-   APP / TRUE SCREEN SYSTEM
-===================================================== */
 
 #app{
   position:fixed;
@@ -121,8 +40,11 @@ button:active{
   width:100%;
   height:100%;
   overflow:hidden;
-  z-index:5;
 }
+
+/* =========================
+   SCREENS
+========================= */
 
 .screen{
   position:absolute;
@@ -130,14 +52,15 @@ button:active{
   width:100%;
   height:100%;
   overflow:hidden;
+
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  transform:scale(1.015);
+
+  transform:scale(1.025);
   transition:
-    opacity .35s ease,
-    transform .45s cubic-bezier(.2,.8,.2,1),
-    visibility 0s linear .4s;
+    opacity .45s ease,
+    transform .55s cubic-bezier(.22,1,.36,1);
 }
 
 .screen.active{
@@ -145,788 +68,432 @@ button:active{
   visibility:visible;
   pointer-events:auto;
   transform:scale(1);
-  transition:
-    opacity .4s ease,
-    transform .5s cubic-bezier(.2,.8,.2,1),
-    visibility 0s;
 }
 
-.scroll-area{
-  position:absolute;
-  inset:0;
-  overflow-y:auto;
-  overflow-x:hidden;
-  overscroll-behavior:contain;
-  padding:22px;
-  scrollbar-width:none;
-}
-
-.scroll-area::-webkit-scrollbar{
-  display:none;
-}
-
-/* =====================================================
+/* =========================
    LANDING
-===================================================== */
+========================= */
 
 #landing{
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
-  padding:20px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(100,80,255,.14), transparent 35%),
+    radial-gradient(circle at 30% 80%, rgba(0,210,255,.08), transparent 30%),
+    #050505;
 }
 
-.hero{
-  width:min(900px,100%);
+.landing-content{
+  width:min(900px,90%);
+  text-align:center;
   position:relative;
+  z-index:20;
 }
 
 .logo{
-  font-size:clamp(82px,17vw,190px);
+  font-size:clamp(70px,16vw,180px);
+  font-weight:900;
+  letter-spacing:-.09em;
   line-height:.8;
-  font-weight:950;
-  letter-spacing:-.095em;
   background:linear-gradient(
-    120deg,
-    #fff,
-    #c8baff 48%,
-    #62e8ff
+    135deg,
+    #fff 10%,
+    #aaa 45%,
+    #fff 70%,
+    #777
   );
-  color:transparent;
   -webkit-background-clip:text;
   background-clip:text;
+  color:transparent;
   user-select:none;
-  transition:transform .18s ease;
 }
 
 .tagline{
-  margin:32px 0 38px;
-  color:var(--muted);
-  font-size:clamp(18px,3vw,29px);
-  letter-spacing:-.025em;
+  margin-top:28px;
+  font-size:clamp(15px,2.5vw,24px);
+  color:rgba(255,255,255,.55);
+  letter-spacing:.04em;
 }
 
 .primary{
   position:relative;
-  overflow:hidden;
-  padding:17px 32px;
+  z-index:100;
+  margin-top:42px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  padding:17px 35px;
   border-radius:999px;
-  background:white;
-  color:#08080a;
-  font-weight:900;
-  box-shadow:0 18px 65px rgba(255,255,255,.14);
+  cursor:pointer;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.12em;
   transition:.25s ease;
-}
-
-.primary span{
-  position:relative;
-  z-index:2;
-}
-
-.primary:before{
-  content:"";
-  position:absolute;
-  inset:-100%;
-  background:linear-gradient(
-    115deg,
-    transparent 40%,
-    rgba(160,140,255,.8),
-    transparent 60%
-  );
-  transform:translateX(-55%);
-  transition:.8s ease;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  pointer-events:auto;
 }
 
 .primary:hover{
-  transform:translateY(-4px) scale(1.04);
-  box-shadow:0 25px 80px rgba(130,100,255,.28);
+  background:#fff;
+  color:#000;
+  transform:scale(1.05);
 }
 
-.primary:hover:before{
-  transform:translateX(55%);
+.primary:active{
+  transform:scale(.96);
 }
 
-/* =====================================================
-   OCEAN TRANSITION
-===================================================== */
-
-#transition{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  pointer-events:none;
-  display:none;
-  overflow:hidden;
-}
-
-#transition.running{
-  display:block;
-}
-
-.transition-back{
-  position:absolute;
-  left:-10%;
-  width:120%;
-  height:115%;
-  top:100%;
-  border-radius:50% 50% 0 0/10% 15% 0 0;
-  background:linear-gradient(
-    130deg,
-    #171052,
-    #3d42bd,
-    #21a9d3
-  );
-  opacity:.75;
-}
-
-.transition-wave{
-  position:absolute;
-  left:-12%;
-  width:124%;
-  height:115%;
-  top:100%;
-  border-radius:48% 52% 0 0/12% 18% 0 0;
-  background:
-    radial-gradient(
-      ellipse at 35% 20%,
-      rgba(255,255,255,.34),
-      transparent 14%
-    ),
-    linear-gradient(
-      135deg,
-      #6551ff,
-      #4c7dff 42%,
-      #2bd9ff 78%,
-      #76f2ff
-    );
-  box-shadow:
-    0 -25px 80px rgba(65,210,255,.38),
-    inset 0 22px 55px rgba(255,255,255,.18);
-}
-
-.transition-wave:before{
-  content:"";
-  position:absolute;
-  left:-5%;
-  top:-28px;
-  width:110%;
-  height:70px;
-  border-radius:50%;
-  background:rgba(255,255,255,.2);
-  filter:blur(9px);
-}
-
-.transition-wave:after{
-  content:"";
-  position:absolute;
-  left:-5%;
-  top:-12px;
-  width:110%;
-  height:35px;
-  border-radius:50%;
-  background:rgba(255,255,255,.32);
-  filter:blur(7px);
-}
-
-.transition-logo{
-  position:absolute;
-  inset:0;
-  z-index:3;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:clamp(65px,14vw,150px);
-  font-weight:950;
-  letter-spacing:-.09em;
-  opacity:0;
-}
-
-#transition.running .transition-back{
-  animation:waterBack 1.35s cubic-bezier(.7,0,.18,1) forwards;
-}
-
-#transition.running .transition-wave{
-  animation:waterSweep 1.28s cubic-bezier(.7,0,.18,1) forwards;
-}
-
-#transition.running .transition-logo{
-  animation:waterLogo 1.05s ease forwards;
-}
-
-@keyframes waterBack{
-  0%{
-    top:100%;
-    transform:rotate(2deg);
-  }
-  55%{
-    top:0%;
-    transform:rotate(-1deg);
-  }
-  100%{
-    top:-115%;
-    transform:rotate(-2deg);
-  }
-}
-
-@keyframes waterSweep{
-  0%{
-    top:100%;
-    transform:rotate(-1deg) scale(1);
-  }
-  40%{
-    top:14%;
-    transform:rotate(1deg) scale(1.03);
-  }
-  65%{
-    top:-2%;
-    transform:rotate(-1deg) scale(1.02);
-  }
-  100%{
-    top:-115%;
-    transform:rotate(-2deg) scale(1.03);
-  }
-}
-
-@keyframes waterLogo{
-  0%,25%{
-    opacity:0;
-    transform:scale(.88);
-  }
-  42%,65%{
-    opacity:1;
-    transform:scale(1);
-  }
-  100%{
-    opacity:0;
-    transform:scale(1.08);
-  }
-}
-
-/* =====================================================
+/* =========================
    HOME
-===================================================== */
+========================= */
 
-.container{
-  width:min(1180px,100%);
+#home{
+  background:
+    radial-gradient(circle at 15% 15%,rgba(100,80,255,.13),transparent 30%),
+    radial-gradient(circle at 85% 85%,rgba(0,220,255,.09),transparent 30%),
+    #060606;
+}
+
+.home-inner{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:40px 20px 80px;
+  scrollbar-width:none;
+}
+
+.home-inner::-webkit-scrollbar{
+  display:none;
+}
+
+.home-header{
+  width:min(1100px,100%);
   margin:auto;
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:34px;
-}
-
-.small-logo{
-  font-size:25px;
-  font-weight:950;
-  letter-spacing:-.09em;
-}
-
-.top-actions{
-  display:flex;
-  gap:8px;
-}
-
-.icon-btn{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:var(--glass);
-  border:1px solid var(--border);
-  backdrop-filter:blur(18px);
-}
-
-.welcome{
-  margin-bottom:30px;
-}
-
-.welcome h1{
-  margin:0 0 8px;
-  font-size:clamp(36px,6vw,62px);
+.home-title{
+  font-size:clamp(42px,8vw,90px);
+  font-weight:800;
   letter-spacing:-.06em;
 }
 
-.welcome p{
-  margin:0;
-  color:var(--muted);
+.home-subtitle{
+  margin-top:10px;
+  color:rgba(255,255,255,.45);
+  font-size:16px;
 }
 
 .stats{
   display:flex;
-  gap:9px;
+  gap:12px;
+  margin-top:30px;
   flex-wrap:wrap;
-  margin-top:20px;
 }
 
 .stat{
-  padding:10px 14px;
-  border-radius:14px;
+  min-width:100px;
+  padding:15px 18px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
   background:rgba(255,255,255,.045);
-  border:1px solid var(--border);
-  color:var(--muted);
-  font-size:12px;
+  backdrop-filter:blur(20px);
 }
 
-.stat strong{
-  color:white;
-  margin-left:5px;
+.stat-number{
+  font-size:22px;
+  font-weight:800;
 }
 
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  margin:32px 0 14px;
+.stat-label{
+  margin-top:4px;
+  color:rgba(255,255,255,.4);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
 }
 
-.section-title h2{
-  margin:0;
+.games{
+  width:min(1100px,100%);
+  margin:40px auto 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.game-card{
+  min-height:180px;
+  padding:25px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:25px;
+  background:rgba(255,255,255,.045);
+  cursor:pointer;
+  transition:.3s cubic-bezier(.22,1,.36,1);
+  position:relative;
+  overflow:hidden;
+}
+
+.game-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.075);
+}
+
+.game-icon{
+  font-size:35px;
+}
+
+.game-card h3{
+  margin-top:25px;
   font-size:20px;
 }
 
-.section-title span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.card{
-  position:relative;
-  min-height:180px;
-  padding:21px;
-  border-radius:25px;
-  text-align:left;
-  overflow:hidden;
-  background:linear-gradient(
-    145deg,
-    rgba(255,255,255,.095),
-    rgba(255,255,255,.035)
-  );
-  border:1px solid var(--border);
-  transition:
-    transform .3s cubic-bezier(.2,.8,.2,1),
-    border-color .3s,
-    background .3s;
-}
-
-.card:before{
-  content:"";
-  position:absolute;
-  width:150px;
-  height:150px;
-  right:-45px;
-  bottom:-55px;
-  border-radius:50%;
-  background:var(--glow);
-  filter:blur(55px);
-  opacity:.17;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(255,255,255,.27);
-}
-
-.card-icon,
-.card h3,
-.card p{
-  position:relative;
-  z-index:1;
-}
-
-.card-icon{
-  font-size:31px;
-  margin-bottom:23px;
-}
-
-.card h3{
-  margin:0 0 6px;
-  font-size:18px;
-}
-
-.card p{
-  margin:0;
-  color:var(--muted);
+.game-card p{
+  margin-top:8px;
+  color:rgba(255,255,255,.42);
   font-size:13px;
-  line-height:1.45;
+  line-height:1.5;
 }
 
-.online{
-  margin-top:14px;
-  padding:21px;
-  border-radius:24px;
-  border:1px solid rgba(101,255,173,.15);
-  background:rgba(101,255,173,.045);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.online strong{
-  display:block;
-  margin-bottom:5px;
-}
-
-.online span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.badge{
-  padding:8px 12px;
+.back{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  padding:11px 17px;
   border-radius:999px;
-  background:rgba(101,255,173,.08);
-  color:#65ffad;
-  font-size:11px;
-  white-space:nowrap;
+  cursor:pointer;
 }
 
-/* =====================================================
-   GAMES
-===================================================== */
+/* =========================
+   GAME
+========================= */
 
-.game-screen{
-  padding:15px;
+#game{
+  background:#000;
 }
 
-.game-wrap{
-  width:min(1100px,100%);
-  height:100%;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-}
-
-.game-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-.game-title h2{
-  margin:0;
-  font-size:clamp(25px,5vw,42px);
-  letter-spacing:-.055em;
-}
-
-.game-title p{
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.game-tools{
-  display:flex;
-  gap:8px;
-}
-
-.secondary{
-  padding:11px 16px;
-  border-radius:999px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  font-size:12px;
-}
-
-.game-box{
-  position:relative;
-  flex:1;
-  min-height:0;
-  border-radius:28px;
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:#07070a;
-  box-shadow:0 25px 80px rgba(0,0,0,.42);
-}
-
-canvas{
-  display:block;
-  width:100%;
-  height:100%;
-  touch-action:none;
-}
-
-.game-hud{
+.game-top{
   position:absolute;
-  top:14px;
-  left:14px;
-  right:14px;
+  top:20px;
+  left:20px;
+  right:20px;
+  z-index:10;
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  pointer-events:none;
 }
 
-.hud-item{
-  padding:8px 12px;
-  border-radius:12px;
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(15px);
-  font-size:11px;
-}
-
-.hud-item strong{
-  font-size:14px;
-  margin-left:4px;
-}
-
-/* =====================================================
-   COLOUR LAB
-===================================================== */
-
-.colour-panel{
+#gameCanvas{
   position:absolute;
   inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:24px;
-}
-
-.colour-preview{
-  width:min(250px,50vw);
-  aspect-ratio:1;
-  border-radius:35%;
-  background:hsl(270 80% 65%);
-  box-shadow:0 0 110px rgba(130,90,255,.35);
-  transition:.15s;
-}
-
-.sliders{
-  width:min(500px,85%);
-  display:grid;
-  gap:14px;
-}
-
-.slider-row{
-  display:grid;
-  grid-template-columns:25px 1fr 45px;
-  gap:10px;
-  align-items:center;
-}
-
-input[type=range]{
   width:100%;
-  accent-color:white;
+  height:100%;
+  display:block;
 }
 
-/* =====================================================
-   STORY GAME
-===================================================== */
+.game-title{
+  font-weight:800;
+  letter-spacing:.04em;
+}
 
-.story{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
+/* =========================
+   STORY
+========================= */
+
+#story{
   background:
-    radial-gradient(circle at 70% 20%,rgba(104,70,255,.16),transparent 30%),
-    radial-gradient(circle at 20% 80%,rgba(0,200,255,.07),transparent 35%),
-    #060609;
+    radial-gradient(circle at 50% 0%,rgba(110,80,255,.14),transparent 40%),
+    #060606;
 }
 
-.story-inner{
-  position:absolute;
-  inset:0;
+.story-container{
+  width:min(850px,92%);
+  height:100%;
   overflow-y:auto;
   scrollbar-width:none;
-  padding:30px 22px 35px;
+  margin:auto;
+  padding:70px 0;
 }
 
-.story-inner::-webkit-scrollbar{
+.story-container::-webkit-scrollbar{
   display:none;
 }
 
-.story-header{
-  width:min(760px,100%);
-  margin:auto;
-  text-align:center;
-}
-
 .story-chapter{
-  color:#9d8dff;
-  font-size:11px;
-  letter-spacing:.18em;
+  color:rgba(255,255,255,.4);
+  font-size:12px;
   text-transform:uppercase;
-  margin-bottom:13px;
+  letter-spacing:.18em;
 }
 
 .story-title{
-  margin:0;
-  font-size:clamp(32px,7vw,58px);
+  margin-top:12px;
+  font-size:clamp(40px,7vw,75px);
   letter-spacing:-.06em;
 }
 
-.story-progress{
-  height:3px;
-  background:rgba(255,255,255,.08);
-  border-radius:10px;
-  margin:20px auto 35px;
-  overflow:hidden;
-}
-
-.story-progress i{
-  display:block;
-  height:100%;
-  width:20%;
-  background:linear-gradient(90deg,#765aff,#65eaff);
-  transition:.5s;
-}
-
-.story-content{
-  width:min(720px,100%);
-  margin:auto;
-}
-
 .story-text{
-  color:rgba(255,255,255,.84);
-  font-size:17px;
-  line-height:1.85;
-  letter-spacing:-.01em;
+  margin-top:35px;
+  font-size:18px;
+  line-height:1.8;
+  color:rgba(255,255,255,.72);
 }
 
-.story-text p{
-  margin:0 0 21px;
-}
-
-.story-choice-title{
-  margin:35px 0 12px;
-  color:var(--muted);
-  font-size:12px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.choices{
+.story-choices{
+  margin-top:35px;
   display:grid;
-  gap:10px;
-  padding-bottom:20px;
+  gap:12px;
 }
 
 .choice{
-  padding:16px 17px;
-  border-radius:18px;
+  width:100%;
+  padding:17px 20px;
   text-align:left;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.11);
+  border-radius:17px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  cursor:pointer;
   transition:.25s;
 }
 
 .choice:hover{
   background:rgba(255,255,255,.1);
-  border-color:rgba(150,130,255,.4);
-  transform:translateX(4px);
 }
 
-.story-footer{
-  width:min(720px,100%);
-  margin:10px auto 0;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-
-/* =====================================================
+/* =========================
    SETTINGS
-===================================================== */
+========================= */
 
-.setting-box{
-  width:min(520px,100%);
-  margin:20px auto;
-  padding:27px;
-  border-radius:27px;
-  background:#111116;
-  border:1px solid var(--border);
+#settings{
+  background:#060606;
 }
 
-.setting-box h2{
-  margin:0 0 7px;
+.settings-container{
+  width:min(700px,90%);
+  height:100%;
+  overflow:auto;
+  margin:auto;
+  padding:60px 0;
+  scrollbar-width:none;
 }
 
-.setting-box>p{
-  color:var(--muted);
-  font-size:13px;
+.settings-container::-webkit-scrollbar{
+  display:none;
+}
+
+.settings-title{
+  font-size:clamp(45px,8vw,75px);
+  font-weight:800;
+  letter-spacing:-.06em;
 }
 
 .setting{
+  margin-top:25px;
+  padding:20px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  background:rgba(255,255,255,.04);
+}
+
+/* =========================
+   TRANSITION
+========================= */
+
+#transition{
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  pointer-events:none;
+  visibility:hidden;
+}
+
+.transition-wave{
+  position:absolute;
+  left:-10%;
+  bottom:-110%;
+  width:120%;
+  height:120%;
+  border-radius:50% 50% 0 0;
+  background:
+    radial-gradient(circle at 50% 15%,rgba(255,255,255,.18),transparent 20%),
+    linear-gradient(
+      145deg,
+      #070707,
+      #16132e 45%,
+      #061c25
+    );
+  transform:translateY(0);
+}
+
+.transition-logo{
+  position:absolute;
+  inset:0;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:20px;
-  padding:18px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
+  justify-content:center;
+  font-size:70px;
+  font-weight:900;
+  letter-spacing:-.08em;
+  opacity:0;
 }
 
-.setting:last-child{
-  border-bottom:0;
+#transition.running{
+  visibility:visible;
 }
 
-.setting strong{
-  display:block;
-  margin-bottom:4px;
+#transition.running .transition-wave{
+  animation:wave .95s cubic-bezier(.76,0,.24,1) forwards;
 }
 
-.setting span{
-  color:var(--muted);
-  font-size:12px;
+#transition.running .transition-logo{
+  animation:transitionLogo 1.2s ease forwards;
 }
 
-.toggle{
-  width:48px;
-  height:27px;
-  padding:3px;
-  border-radius:30px;
-  background:#33333a;
-  flex-shrink:0;
+@keyframes wave{
+  0%{
+    transform:translateY(0);
+  }
+  100%{
+    transform:translateY(-180%);
+  }
 }
 
-.toggle i{
-  display:block;
-  width:21px;
-  height:21px;
-  border-radius:50%;
-  background:white;
-  transition:.2s;
+@keyframes transitionLogo{
+  0%,20%{
+    opacity:0;
+    transform:scale(.8);
+  }
+  40%,65%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.1);
+  }
 }
 
-.toggle.on{
-  background:white;
-}
-
-.toggle.on i{
-  transform:translateX(21px);
-  background:#111;
-}
-
-/* =====================================================
+/* =========================
    TOAST
-===================================================== */
+========================= */
 
 #toast{
   position:fixed;
-  z-index:100000;
+  z-index:1000000;
   left:50%;
   bottom:25px;
-  transform:translate(-50%,25px);
+  transform:translate(-50%,20px);
   opacity:0;
   pointer-events:none;
   padding:12px 18px;
   border-radius:999px;
-  background:rgba(20,20,24,.92);
-  border:1px solid var(--border);
-  backdrop-filter:blur(18px);
-  font-size:12px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(20px);
+  font-size:13px;
   transition:.3s;
 }
 
@@ -935,192 +502,109 @@ input[type=range]{
   transform:translate(-50%,0);
 }
 
-/* =====================================================
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
-@media(max-width:760px){
+@media(max-width:600px){
 
-  .scroll-area{
-    padding:17px;
+  .home-inner{
+    padding:30px 15px 70px;
   }
 
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+  .games{
+    grid-template-columns:1fr;
   }
 
-  .card{
+  .game-card{
     min-height:155px;
-    padding:17px;
-    border-radius:21px;
   }
 
-  .card-icon{
-    font-size:27px;
-    margin-bottom:17px;
-  }
-
-  .card h3{
-    font-size:16px;
-  }
-
-  .card p{
-    font-size:11px;
-  }
-
-  .game-screen{
-    padding:12px;
-  }
-
-  .game-title p{
-    display:none;
-  }
-
-  .game-box{
-    border-radius:21px;
-  }
-
-  .story-inner{
-    padding:25px 18px 30px;
+  .story-container{
+    padding:45px 0;
   }
 
   .story-text{
     font-size:16px;
-    line-height:1.75;
   }
-}
-
-@media(max-width:460px){
-
-  .logo{
-    font-size:24vw;
-  }
-
-  .tagline{
-    margin:25px 0 30px;
-  }
-
-  .card{
-    min-height:135px;
-  }
-
-  .card p{
-    display:none;
-  }
-
-  .online{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-}
-
-.reduced-motion *,
-.reduced-motion *:before,
-.reduced-motion *:after{
-  animation-duration:.001ms!important;
-  animation-iteration-count:1!important;
-  transition-duration:.001ms!important;
 }
 </style>
 </head>
 
 <body>
 
-<div id="background">
-  <div class="orb a"></div>
-  <div class="orb b"></div>
-  <div class="orb c"></div>
-</div>
-
-<div id="pointerGlow"></div>
-
-<!-- =====================================================
-     APP
-===================================================== -->
-
 <div id="app">
 
-<!-- LANDING -->
+  <!-- =========================
+       LANDING
+  ========================== -->
 
-<section id="landing" class="screen active">
+  <section id="landing" class="screen active">
 
-  <div class="hero">
+    <div class="landing-content">
 
-    <div class="logo" id="heroLogo">FLUX</div>
+      <div class="logo">FLUX</div>
 
-    <div class="tagline">
-      Do you wanna play with Flux?
-    </div>
-
-    <button
-      class="primary"
-      id="startButton"
-      type="button"
-    >
-      <span>LET'S PLAY</span>
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- HOME -->
-
-<section id="home" class="screen">
-
-  <div class="scroll-area">
-
-    <div class="container">
-
-      <div class="topbar">
-
-        <div class="small-logo">FLUX</div>
-
-        <div class="top-actions">
-
-          <button
-            class="icon-btn"
-            id="randomTop"
-            type="button"
-          >🎲</button>
-
-          <button
-            class="icon-btn"
-            id="settingsTop"
-            type="button"
-          >⚙️</button>
-
-        </div>
-
+      <div class="tagline">
+        Do you wanna play with Flux?
       </div>
 
+      <button
+        id="startButton"
+        class="primary"
+        type="button"
+        onclick="enterFlux()"
+      >
+        LET'S PLAY
+      </button>
 
-      <div class="welcome">
+    </div>
 
-        <h1>Welcome to Flux.</h1>
+  </section>
 
-        <p>
-          A playground where something interesting is always waiting.
+
+  <!-- =========================
+       HOME
+  ========================== -->
+
+  <section id="home" class="screen">
+
+    <div class="home-inner">
+
+      <div class="home-header">
+
+        <button class="back" onclick="goTo('landing')">
+          ← Back
+        </button>
+
+        <h1 class="home-title">
+          Welcome to Flux.
+        </h1>
+
+        <p class="home-subtitle">
+          A digital playground built for curiosity.
         </p>
 
         <div class="stats">
 
           <div class="stat">
-            XP <strong id="xpValue">0</strong>
+            <div class="stat-number" id="xp">0</div>
+            <div class="stat-label">XP</div>
           </div>
 
           <div class="stat">
-            LEVEL <strong id="levelValue">1</strong>
+            <div class="stat-number" id="level">1</div>
+            <div class="stat-label">Level</div>
           </div>
 
           <div class="stat">
-            GAMES <strong id="gamesValue">0</strong>
+            <div class="stat-number" id="gamesPlayed">0</div>
+            <div class="stat-label">Games</div>
           </div>
 
           <div class="stat">
-            BEST <strong id="bestValue">--</strong>
+            <div class="stat-number" id="bestScore">0</div>
+            <div class="stat-label">Best</div>
           </div>
 
         </div>
@@ -1128,365 +612,169 @@ input[type=range]{
       </div>
 
 
-      <div class="section-title">
-        <h2>Explore</h2>
-        <span>Choose your playground</span>
-      </div>
+      <div class="games">
 
-
-      <div class="grid">
-
-        <button
-          class="card"
-          style="--glow:#8f69ff"
-          data-game="gravity"
-          type="button"
-        >
-          <div class="card-icon">🪐</div>
+        <div class="game-card" onclick="openGame('gravity')">
+          <div class="game-icon">◉</div>
           <h3>Gravity Playground</h3>
-          <p>Move your finger through a field of glowing particles.</p>
-        </button>
+          <p>Throw particles into a living gravitational field.</p>
+        </div>
 
-
-        <button
-          class="card"
-          style="--glow:#40e6ff"
-          data-game="blob"
-          type="button"
-        >
-          <div class="card-icon">🫧</div>
+        <div class="game-card" onclick="openGame('blob')">
+          <div class="game-icon">●</div>
           <h3>Liquid Blob</h3>
-          <p>Push and pull a living pool of colour.</p>
-        </button>
+          <p>Interact with a fluid organism that follows your touch.</p>
+        </div>
 
-
-        <button
-          class="card"
-          style="--glow:#ff6bd6"
-          data-game="colour"
-          type="button"
-        >
-          <div class="card-icon">🎨</div>
+        <div class="game-card" onclick="openGame('colour')">
+          <div class="game-icon">◈</div>
           <h3>Colour Lab</h3>
-          <p>Create colours and transform the world around them.</p>
-        </button>
+          <p>Mix colours and create strange visual combinations.</p>
+        </div>
 
-
-        <button
-          class="card"
-          style="--glow:#68a6ff"
-          data-game="spiral"
-          type="button"
-        >
-          <div class="card-icon">🌀</div>
+        <div class="game-card" onclick="openGame('spiral')">
+          <div class="game-icon">◎</div>
           <h3>Hypnotic Spiral</h3>
-          <p>Manipulate an evolving spiral with your movement.</p>
-        </button>
+          <p>Control an endlessly evolving visual spiral.</p>
+        </div>
 
-
-        <button
-          class="card"
-          style="--glow:#ffe16a"
-          data-game="reaction"
-          type="button"
-        >
-          <div class="card-icon">⚡</div>
+        <div class="game-card" onclick="openGame('reaction')">
+          <div class="game-icon">⚡</div>
           <h3>Reaction Rush</h3>
-          <p>Wait for the signal and tap as quickly as possible.</p>
-        </button>
+          <p>Test how quickly you can react.</p>
+        </div>
 
-
-        <button
-          class="card"
-          style="--glow:#65ffad"
-          data-game="surprise"
-          type="button"
-        >
-          <div class="card-icon">🎲</div>
+        <div class="game-card" onclick="openGame('surprise')">
+          <div class="game-icon">?</div>
           <h3>Surprise Me</h3>
           <p>Let Flux decide what happens next.</p>
-        </button>
+        </div>
 
-
-        <!-- NEW STORY GAME -->
-
-        <button
-          class="card"
-          style="--glow:#a855f7"
-          data-game="story"
-          type="button"
-        >
-          <div class="card-icon">📖</div>
+        <div class="game-card" onclick="openStory()">
+          <div class="game-icon">◒</div>
           <h3>The Last Awakening</h3>
-          <p>Enter a dangerous interactive story where your choices matter.</p>
-        </button>
-
-      </div>
-
-
-      <div class="section-title">
-        <h2>FLUX Online</h2>
-        <span>Coming later</span>
-      </div>
-
-
-      <div class="online">
-
-        <div>
-          <strong>🌐 Multiplayer Playground</strong>
-          <span>
-            Rooms, friends, global scores and shared experiences are planned.
-          </span>
+          <p>An interactive story where your choices change what happens.</p>
         </div>
 
-        <div class="badge">COMING SOON</div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- NORMAL GAME -->
-
-<section id="gameScreen" class="screen">
-
-  <div class="game-screen" style="height:100%;">
-
-    <div class="game-wrap">
-
-      <div class="game-head">
-
-        <div class="game-title">
-
-          <h2 id="gameTitle">Game</h2>
-
-          <p id="gameDescription">
-            Have fun.
-          </p>
-
-        </div>
-
-        <div class="game-tools">
-
-          <button
-            class="secondary"
-            id="restartGame"
-            type="button"
-          >
-            ↻ Restart
-          </button>
-
-          <button
-            class="secondary"
-            id="backHome"
-            type="button"
-          >
-            ← Flux
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="game-box" id="gameBox">
-
-        <canvas id="gameCanvas"></canvas>
-
-        <div class="game-hud">
-
-          <div class="hud-item" id="hudLeft">
-            ENERGY <strong>100</strong>
-          </div>
-
-          <div class="hud-item" id="hudRight">
-            SCORE <strong>0</strong>
-          </div>
-
+        <div class="game-card" onclick="showToast('FLUX Online is coming soon.')">
+          <div class="game-icon">⌁</div>
+          <h3>FLUX Online</h3>
+          <p>Multiplayer worlds, rooms and global leaderboards.</p>
         </div>
 
       </div>
 
     </div>
 
-  </div>
-
-</section>
+  </section>
 
 
-<!-- STORY -->
+  <!-- =========================
+       GAME
+  ========================== -->
 
-<section id="storyScreen" class="screen">
+  <section id="game" class="screen">
 
-  <div class="story">
+    <canvas id="gameCanvas"></canvas>
 
-    <div class="story-inner">
+    <div class="game-top">
 
-      <div class="story-header">
+      <button class="back" onclick="goTo('home')">
+        ← Exit
+      </button>
 
-        <button
-          class="secondary"
-          id="storyBack"
-          type="button"
-          style="margin-bottom:25px;"
-        >
-          ← Back to Flux
-        </button>
+      <div class="game-title" id="gameName">
+        FLUX
+      </div>
 
-        <div
-          class="story-chapter"
-          id="storyChapter"
-        >
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       STORY
+  ========================== -->
+
+  <section id="story" class="screen">
+
+    <div class="story-container">
+
+      <button class="back" onclick="goTo('home')">
+        ← Back
+      </button>
+
+      <div style="margin-top:35px">
+
+        <div class="story-chapter" id="storyChapter">
           Chapter 1
         </div>
 
-        <h1
-          class="story-title"
-          id="storyTitle"
-        >
+        <h1 class="story-title" id="storyTitle">
           The Awakening
         </h1>
 
-        <div class="story-progress">
-          <i id="storyProgress"></i>
-        </div>
+        <div class="story-text" id="storyText"></div>
 
-      </div>
-
-
-      <div class="story-content">
-
-        <div
-          class="story-text"
-          id="storyText"
-        ></div>
-
-        <div
-          class="story-choice-title"
-          id="choiceTitle"
-        >
-          What do you do?
-        </div>
-
-        <div
-          class="choices"
-          id="choices"
-        ></div>
+        <div class="story-choices" id="storyChoices"></div>
 
       </div>
 
     </div>
 
-  </div>
-
-</section>
+  </section>
 
 
-<!-- SETTINGS -->
+  <!-- =========================
+       SETTINGS
+  ========================== -->
 
-<section id="settingsScreen" class="screen">
+  <section id="settings" class="screen">
 
-  <div class="scroll-area">
+    <div class="settings-container">
 
-    <div class="container">
+      <button class="back" onclick="goTo('home')">
+        ← Back
+      </button>
 
-      <div class="topbar">
+      <h1 class="settings-title" style="margin-top:30px">
+        Settings
+      </h1>
 
-        <div class="small-logo">FLUX</div>
-
+      <div class="setting">
+        Reduced Motion
         <button
-          class="secondary"
-          id="settingsBack"
-          type="button"
+          class="back"
+          style="float:right;margin-top:-7px"
+          onclick="showToast('Reduced motion toggled.')"
         >
-          ← Back
+          Toggle
         </button>
-
       </div>
 
-
-      <div class="setting-box">
-
-        <h2>Settings</h2>
-
-        <p>
-          Make Flux feel the way you want.
-        </p>
-
-
-        <div class="setting">
-
-          <div>
-            <strong>Reduced Motion</strong>
-            <span>Reduce animations and movement.</span>
-          </div>
-
-          <button
-            class="toggle"
-            id="motionToggle"
-            type="button"
-          >
-            <i></i>
-          </button>
-
-        </div>
-
-
-        <div class="setting">
-
-          <div>
-            <strong>Haptic Feedback</strong>
-            <span>Vibrate on supported devices.</span>
-          </div>
-
-          <button
-            class="toggle on"
-            id="hapticToggle"
-            type="button"
-          >
-            <i></i>
-          </button>
-
-        </div>
-
-
-        <div class="setting">
-
-          <div>
-            <strong>Reset Progress</strong>
-            <span>Erase local XP and high scores.</span>
-          </div>
-
-          <button
-            class="secondary"
-            id="resetProgress"
-            type="button"
-          >
-            Reset
-          </button>
-
-        </div>
-
+      <div class="setting">
+        Haptics
+        <button
+          class="back"
+          style="float:right;margin-top:-7px"
+          onclick="showToast('Haptics toggled.')"
+        >
+          Toggle
+        </button>
       </div>
 
     </div>
 
-  </div>
-
-</section>
+  </section>
 
 </div>
 
 
-<!-- TRANSITION -->
+<!-- =========================
+     TRANSITION
+========================= -->
 
 <div id="transition">
-
-  <div class="transition-back"></div>
 
   <div class="transition-wave"></div>
 
@@ -1501,2112 +789,694 @@ input[type=range]{
 
 
 <script>
+/* ==========================================
+   FLUX CORE
+========================================== */
 
-/* =====================================================
-   FLUX V4.6
-   TRUE SCREEN + OCEAN TRANSITION
-   + INTERACTIVE STORY
-===================================================== */
-
-const $=id=>document.getElementById(id);
-
-
-/* =====================================================
-   STATE
-===================================================== */
-
-const state={
-
-  xp:Number(localStorage.getItem("fluxXP")||0),
-
-  games:Number(localStorage.getItem("fluxGames")||0),
-
-  bestReaction:Number(
-    localStorage.getItem("fluxBestReaction")||0
-  ),
-
-  reducedMotion:
-    localStorage.getItem("fluxReducedMotion")==="true",
-
-  haptics:
-    localStorage.getItem("fluxHaptics")!=="false",
-
-  currentGame:null,
-
-  animation:null,
-
-  cleanup:null,
-
-  storyChapter:Number(
-    localStorage.getItem("fluxStoryChapter")||1
-  ),
-
-  storyChoices:
-    JSON.parse(
-      localStorage.getItem("fluxStoryChoices")||"[]"
-    )
-
+const screens = {
+  landing: document.getElementById("landing"),
+  home: document.getElementById("home"),
+  game: document.getElementById("game"),
+  story: document.getElementById("story"),
+  settings: document.getElementById("settings")
 };
 
-
-/* =====================================================
-   SCREENS
-===================================================== */
-
-const screens={
-
-  landing:$("landing"),
-
-  home:$("home"),
-
-  game:$("gameScreen"),
-
-  story:$("storyScreen"),
-
-  settings:$("settingsScreen")
-
-};
+let transitionRunning = false;
 
 
-/* =====================================================
-   TRUE SCREEN SWITCH
-===================================================== */
+/* ==========================================
+   SCREEN SWITCHING
+========================================== */
 
-function showScreen(screen){
+function goTo(name){
 
-  Object.values(screens).forEach(s=>{
+  const target = screens[name];
 
-    s.classList.remove("active");
+  if(!target){
+    return;
+  }
 
+  Object.values(screens).forEach(screen => {
+    screen.classList.remove("active");
   });
 
-  screen.classList.add("active");
+  target.classList.add("active");
 
+  window.scrollTo(0,0);
 }
 
 
-/* =====================================================
-   STATS
-===================================================== */
-
-function level(){
-
-  return Math.floor(state.xp/100)+1;
-
-}
-
-
-function save(){
-
-  localStorage.setItem(
-    "fluxXP",
-    state.xp
-  );
-
-  localStorage.setItem(
-    "fluxGames",
-    state.games
-  );
-
-  localStorage.setItem(
-    "fluxBestReaction",
-    state.bestReaction
-  );
-
-  localStorage.setItem(
-    "fluxReducedMotion",
-    state.reducedMotion
-  );
-
-  localStorage.setItem(
-    "fluxHaptics",
-    state.haptics
-  );
-
-  localStorage.setItem(
-    "fluxStoryChapter",
-    state.storyChapter
-  );
-
-  localStorage.setItem(
-    "fluxStoryChoices",
-    JSON.stringify(state.storyChoices)
-  );
-
-  updateStats();
-
-}
-
-
-function updateStats(){
-
-  $("xpValue").textContent=state.xp;
-
-  $("levelValue").textContent=level();
-
-  $("gamesValue").textContent=state.games;
-
-  $("bestValue").textContent=
-    state.bestReaction
-    ? state.bestReaction+"ms"
-    : "--";
-
-  $("motionToggle")
-    .classList
-    .toggle(
-      "on",
-      state.reducedMotion
-    );
-
-  $("hapticToggle")
-    .classList
-    .toggle(
-      "on",
-      state.haptics
-    );
-
-  document.body.classList.toggle(
-    "reduced-motion",
-    state.reducedMotion
-  );
-
-}
-
-
-function addXP(amount){
-
-  const before=level();
-
-  state.xp+=Math.max(
-    0,
-    Math.floor(amount)
-  );
-
-  save();
-
-  if(level()>before){
-
-    toast(
-      "✨ Level "+level()+" reached!"
-    );
-
-    vibrate(45);
-
-  }
-
-}
-
-
-function vibrate(ms=20){
-
-  if(
-    state.haptics &&
-    navigator.vibrate
-  ){
-
-    navigator.vibrate(ms);
-
-  }
-
-}
-
-
-function toast(message){
-
-  const t=$("toast");
-
-  t.textContent=message;
-
-  t.classList.add("show");
-
-  clearTimeout(window.fluxToast);
-
-  window.fluxToast=setTimeout(
-    ()=>t.classList.remove("show"),
-    2200
-  );
-
-}
-
-
-/* =====================================================
-   THE FIXED OCEAN TRANSITION
-===================================================== */
-
-let transitioning=false;
-
-
-$("startButton").addEventListener(
-  "click",
-  enterFlux
-);
-
+/* ==========================================
+   LET'S PLAY
+   DIRECT + FALLBACK SAFE
+========================================== */
 
 function enterFlux(){
 
-  if(transitioning)return;
+  if(transitionRunning){
+    return;
+  }
 
-  transitioning=true;
+  transitionRunning = true;
 
-  vibrate(30);
-
-
-  const transition=$("transition");
-
-  /*
-     Reset animation completely.
-  */
+  const transition =
+    document.getElementById("transition");
 
   transition.classList.remove("running");
 
-  void transition.offsetWidth;
-
   /*
-     Start ocean.
+     Force browser to recognise the
+     animation restart.
   */
+  void transition.offsetWidth;
 
   transition.classList.add("running");
 
-
   /*
      IMPORTANT:
-     Switch the actual screen while the
-     ocean covers the entire viewport.
+     The actual screen change happens
+     independently of the animation.
+     This prevents the old scrolling bug.
   */
 
-  setTimeout(()=>{
+  setTimeout(function(){
 
-    showScreen(screens.home);
+    goTo("home");
 
-  },430);
+  }, 300);
 
 
-  setTimeout(()=>{
+  setTimeout(function(){
 
     transition.classList.remove("running");
+    transitionRunning = false;
 
-    transitioning=false;
-
-  },1400);
+  }, 1200);
 
 }
 
 
-/* =====================================================
-   HERO PARALLAX
-===================================================== */
+/* ==========================================
+   TOUCH FALLBACK
+========================================== */
 
-$("heroLogo").addEventListener(
-  "pointermove",
-  e=>{
+document.addEventListener(
+  "pointerup",
+  function(event){
 
-    if(state.reducedMotion)return;
+    const button =
+      document.getElementById("startButton");
 
-    const r=e.currentTarget.getBoundingClientRect();
+    if(
+      button &&
+      screens.landing.classList.contains("active") &&
+      (event.target === button ||
+       button.contains(event.target))
+    ){
+      enterFlux();
+    }
 
-    const x=
-      (e.clientX-r.left)/
-      r.width-.5;
-
-    const y=
-      (e.clientY-r.top)/
-      r.height-.5;
-
-    e.currentTarget.style.transform=
-      `perspective(600px)
-       rotateY(${x*8}deg)
-       rotateX(${-y*8}deg)`;
-
-  }
+  },
+  true
 );
 
 
-$("heroLogo").addEventListener(
-  "pointerleave",
-  e=>{
-    e.currentTarget.style.transform="";
+/* ==========================================
+   VIBRATION
+========================================== */
+
+function vibrate(ms){
+
+  if(
+    navigator.vibrate &&
+    typeof navigator.vibrate === "function"
+  ){
+    navigator.vibrate(ms);
   }
+
+}
+
+
+/* ==========================================
+   TOAST
+========================================== */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(function(){
+
+    toast.classList.remove("show");
+
+  },2200);
+
+}
+
+
+/* ==========================================
+   PLAYER DATA
+========================================== */
+
+let player = JSON.parse(
+  localStorage.getItem("fluxPlayer") ||
+  '{"xp":0,"games":0,"best":0}'
 );
 
+function savePlayer(){
 
-/* =====================================================
-   POINTER LIGHT
-===================================================== */
+  localStorage.setItem(
+    "fluxPlayer",
+    JSON.stringify(player)
+  );
 
-window.addEventListener(
-  "pointermove",
-  e=>{
+}
 
-    $("pointerGlow").style.left=
-      e.clientX+"px";
+function updateStats(){
 
-    $("pointerGlow").style.top=
-      e.clientY+"px";
+  const level =
+    Math.floor(player.xp / 100) + 1;
 
-  }
-);
+  document.getElementById("xp").textContent =
+    player.xp;
 
+  document.getElementById("level").textContent =
+    level;
 
-/* =====================================================
-   HOME
-===================================================== */
+  document.getElementById("gamesPlayed").textContent =
+    player.games;
 
-document
-  .querySelectorAll("[data-game]")
-  .forEach(card=>{
+  document.getElementById("bestScore").textContent =
+    player.best;
 
-    card.addEventListener(
-      "click",
-      ()=>{
-        launchGame(
-          card.dataset.game
-        );
-      }
-    );
+}
 
-  });
+updateStats();
 
 
-$("randomTop").addEventListener(
-  "click",
-  ()=>{
-    launchGame("surprise");
-  }
-);
+/* ==========================================
+   GAME ENGINE
+========================================== */
 
+const canvas =
+  document.getElementById("gameCanvas");
 
-$("settingsTop").addEventListener(
-  "click",
-  ()=>{
-    showScreen(
-      screens.settings
-    );
-  }
-);
+const ctx =
+  canvas.getContext("2d");
 
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-$("settingsBack").addEventListener(
-  "click",
-  ()=>{
-    showScreen(screens.home);
-  }
-);
-
-
-$("motionToggle").addEventListener(
-  "click",
-  ()=>{
-
-    state.reducedMotion=
-      !state.reducedMotion;
-
-    save();
-
-    toast(
-      state.reducedMotion
-      ? "Reduced motion enabled"
-      : "Motion restored"
-    );
-
-  }
-);
-
-
-$("hapticToggle").addEventListener(
-  "click",
-  ()=>{
-
-    state.haptics=
-      !state.haptics;
-
-    save();
-
-    toast(
-      state.haptics
-      ? "Haptics enabled"
-      : "Haptics disabled"
-    );
-
-  }
-);
-
-
-$("resetProgress").addEventListener(
-  "click",
-  ()=>{
-
-    state.xp=0;
-
-    state.games=0;
-
-    state.bestReaction=0;
-
-    state.storyChapter=1;
-
-    state.storyChoices=[];
-
-    save();
-
-    toast("Progress reset");
-
-  }
-);
-
-
-/* =====================================================
-   CANVAS SYSTEM
-===================================================== */
-
-const canvas=$("gameCanvas");
-
-const ctx=canvas.getContext("2d");
+let animationID = null;
+let currentGame = null;
+let particles = [];
 
 
 function resizeCanvas(){
 
-  const rect=
-    canvas.getBoundingClientRect();
+  canvas.width =
+    window.innerWidth *
+    devicePixelRatio;
 
-  const dpr=
-    Math.min(
-      window.devicePixelRatio||1,
-      2
-    );
+  canvas.height =
+    window.innerHeight *
+    devicePixelRatio;
 
-  canvas.width=
-    Math.floor(rect.width*dpr);
+  canvas.style.width =
+    window.innerWidth + "px";
 
-  canvas.height=
-    Math.floor(rect.height*dpr);
+  canvas.style.height =
+    window.innerHeight + "px";
 
   ctx.setTransform(
-    dpr,
+    devicePixelRatio,
     0,
     0,
-    dpr,
+    devicePixelRatio,
     0,
     0
   );
 
-  canvas.logicalWidth=
-    rect.width;
-
-  canvas.logicalHeight=
-    rect.height;
-
 }
 
-
-function clearGame(){
-
-  if(state.animation){
-
-    cancelAnimationFrame(
-      state.animation
-    );
-
-    state.animation=null;
-
-  }
-
-  if(state.cleanup){
-
-    state.cleanup();
-
-    state.cleanup=null;
-
-  }
-
-  canvas.style.display="block";
-
-}
-
-
-/* =====================================================
-   LAUNCH GAME
-===================================================== */
-
-function launchGame(game){
-
-  if(game==="story"){
-
-    openStory();
-
-    return;
-
-  }
-
-
-  clearGame();
-
-  state.currentGame=game;
-
-
-  const data={
-
-    gravity:[
-      "Gravity Playground",
-      "Move your finger through a field of glowing particles."
-    ],
-
-    blob:[
-      "Liquid Blob",
-      "Push and pull a living pool of colour."
-    ],
-
-    colour:[
-      "Colour Lab",
-      "Tune the colour and transform the world."
-    ],
-
-    spiral:[
-      "Hypnotic Spiral",
-      "Move around the spiral and change its flow."
-    ],
-
-    reaction:[
-      "Reaction Rush",
-      "Wait for the signal. Tap as quickly as possible."
-    ],
-
-    surprise:[
-      "Surprise Me",
-      "Flux has chosen something for you."
-    ]
-
-  };
-
-
-  $("gameTitle").textContent=
-    data[game][0];
-
-  $("gameDescription").textContent=
-    data[game][1];
-
-
-  showScreen(screens.game);
-
-
-  requestAnimationFrame(()=>{
-
-    resizeCanvas();
-
-    if(game==="gravity")
-      startGravity();
-
-    if(game==="blob")
-      startBlob();
-
-    if(game==="colour")
-      startColour();
-
-    if(game==="spiral")
-      startSpiral();
-
-    if(game==="reaction")
-      startReaction();
-
-    if(game==="surprise")
-      startSurprise();
-
-  });
-
-}
-
-
-/* =====================================================
-   GAME BACK
-===================================================== */
-
-$("backHome").addEventListener(
-  "click",
-  ()=>{
-
-    clearGame();
-
-    state.currentGame=null;
-
-    showScreen(screens.home);
-
-  }
+window.addEventListener(
+  "resize",
+  resizeCanvas
 );
 
-
-$("restartGame").addEventListener(
-  "click",
-  ()=>{
-
-    if(state.currentGame){
-
-      launchGame(
-        state.currentGame
-      );
-
-    }
-
-  }
-);
+resizeCanvas();
 
 
-/* =====================================================
-   POINTER
-===================================================== */
+function openGame(type){
 
-function pointerPosition(e){
+  currentGame = type;
 
-  const r=
-    canvas.getBoundingClientRect();
+  document.getElementById("gameName")
+    .textContent =
+      type === "gravity"
+      ? "GRAVITY PLAYGROUND"
+      : type === "blob"
+      ? "LIQUID BLOB"
+      : type === "colour"
+      ? "COLOUR LAB"
+      : type === "spiral"
+      ? "HYPNOTIC SPIRAL"
+      : type === "reaction"
+      ? "REACTION RUSH"
+      : "SURPRISE ME";
 
-  return{
+  goTo("game");
 
-    x:e.clientX-r.left,
-
-    y:e.clientY-r.top
-
-  };
+  startGame();
 
 }
 
 
-/* =====================================================
-   GRAVITY
-===================================================== */
+function startGame(){
 
-function startGravity(){
+  cancelAnimationFrame(animationID);
 
-  const w=canvas.logicalWidth;
-
-  const h=canvas.logicalHeight;
-
-  let px=w/2;
-
-  let py=h/2;
-
-  let active=false;
-
-  let score=0;
-
-  const particles=[];
-
+  particles = [];
 
   for(let i=0;i<100;i++){
 
     particles.push({
-
-      x:Math.random()*w,
-
-      y:Math.random()*h,
-
-      vx:(Math.random()-.5)*.5,
-
-      vy:(Math.random()-.5)*.5,
-
-      r:1+Math.random()*3
-
+      x:Math.random()*innerWidth,
+      y:Math.random()*innerHeight,
+      vx:(Math.random()-.5)*2,
+      vy:(Math.random()-.5)*2,
+      size:Math.random()*3+1
     });
 
   }
 
-
-  function move(e){
-
-    const p=
-      pointerPosition(e);
-
-    px=p.x;
-
-    py=p.y;
-
-    active=true;
-
-  }
-
-
-  function leave(){
-
-    active=false;
-
-  }
-
-
-  canvas.addEventListener(
-    "pointermove",
-    move
-  );
-
-  canvas.addEventListener(
-    "pointerdown",
-    move
-  );
-
-  canvas.addEventListener(
-    "pointerleave",
-    leave
-  );
-
-
-  state.cleanup=()=>{
-
-    canvas.removeEventListener(
-      "pointermove",
-      move
-    );
-
-    canvas.removeEventListener(
-      "pointerdown",
-      move
-    );
-
-    canvas.removeEventListener(
-      "pointerleave",
-      leave
-    );
-
-  };
-
-
-  function frame(){
-
-    ctx.fillStyle=
-      "rgba(5,5,8,.28)";
-
-    ctx.fillRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    particles.forEach(p=>{
-
-      const dx=px-p.x;
-
-      const dy=py-p.y;
-
-      const d=
-        Math.sqrt(
-          dx*dx+dy*dy
-        );
-
-
-      if(
-        active &&
-        d<250 &&
-        d>2
-      ){
-
-        const force=
-          (1-d/250)*.055;
-
-        p.vx+=dx/d*force;
-
-        p.vy+=dy/d*force;
-
-      }
-
-
-      p.vx*=.992;
-
-      p.vy*=.992;
-
-      p.x+=p.vx;
-
-      p.y+=p.vy;
-
-
-      if(p.x<0)p.x=w;
-
-      if(p.x>w)p.x=0;
-
-      if(p.y<0)p.y=h;
-
-      if(p.y>h)p.y=0;
-
-
-      ctx.beginPath();
-
-      ctx.arc(
-        p.x,
-        p.y,
-        p.r,
-        0,
-        Math.PI*2
-      );
-
-      ctx.fillStyle=
-        "rgba(160,140,255,.75)";
-
-      ctx.fill();
-
-    });
-
-
-    score+=active?.15:.04;
-
-
-    $("hudLeft").innerHTML=
-      "ENERGY <strong>∞</strong>";
-
-    $("hudRight").innerHTML=
-      "SCORE <strong>"+
-      Math.floor(score)+
-      "</strong>";
-
-
-    state.animation=
-      requestAnimationFrame(frame);
-
-  }
-
-
-  frame();
+  animateGame();
 
 }
 
 
-/* =====================================================
-   LIQUID BLOB
-===================================================== */
+function animateGame(){
 
-function startBlob(){
-
-  const w=canvas.logicalWidth;
-
-  const h=canvas.logicalHeight;
-
-  let cx=w/2;
-
-  let cy=h/2;
-
-  let tx=cx;
-
-  let ty=cy;
-
-  let energy=0;
-
-  const points=[];
-
-  const count=80;
-
-
-  for(let i=0;i<count;i++){
-
-    points.push({
-
-      a:i/count*Math.PI*2,
-
-      r:145+Math.random()*12
-
-    });
-
-  }
-
-
-  function move(e){
-
-    const p=
-      pointerPosition(e);
-
-    tx=p.x;
-
-    ty=p.y;
-
-    energy=Math.min(
-      100,
-      energy+8
-    );
-
-  }
-
-
-  canvas.addEventListener(
-    "pointermove",
-    move
+  ctx.clearRect(
+    0,
+    0,
+    innerWidth,
+    innerHeight
   );
 
-  canvas.addEventListener(
-    "pointerdown",
-    move
-  );
+  const cx = innerWidth/2;
+  const cy = innerHeight/2;
 
+  for(const p of particles){
 
-  state.cleanup=()=>{
+    if(currentGame === "gravity"){
 
-    canvas.removeEventListener(
-      "pointermove",
-      move
-    );
+      const dx = cx-p.x;
+      const dy = cy-p.y;
+      const distance =
+        Math.sqrt(dx*dx+dy*dy) || 1;
 
-    canvas.removeEventListener(
-      "pointerdown",
-      move
-    );
+      p.vx +=
+        dx/distance * .025;
 
-  };
-
-
-  function frame(){
-
-    ctx.fillStyle=
-      "rgba(5,5,8,.2)";
-
-    ctx.fillRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    cx+=(tx-cx)*.055;
-
-    cy+=(ty-cy)*.055;
-
-    energy*=.97;
-
-
-    const grad=
-      ctx.createRadialGradient(
-        cx-40,
-        cy-50,
-        10,
-        cx,
-        cy,
-        230
-      );
-
-
-    grad.addColorStop(
-      0,
-      "rgba(190,160,255,.95)"
-    );
-
-    grad.addColorStop(
-      .48,
-      "rgba(91,197,255,.65)"
-    );
-
-    grad.addColorStop(
-      1,
-      "rgba(80,50,255,.08)"
-    );
-
-
-    ctx.beginPath();
-
-
-    points.forEach((p,i)=>{
-
-      const time=
-        performance.now();
-
-      const wave=
-        Math.sin(
-          time*.002+p.a*4
-        )*7+
-        Math.sin(
-          time*.0013+p.a*7
-        )*5;
-
-
-      const target=
-        145+
-        wave+
-        energy*.07;
-
-
-      p.r+=(target-p.r)*.08;
-
-
-      const x=
-        cx+
-        Math.cos(p.a)*p.r;
-
-      const y=
-        cy+
-        Math.sin(p.a)*p.r;
-
-
-      if(i===0)
-        ctx.moveTo(x,y);
-      else
-        ctx.lineTo(x,y);
-
-    });
-
-
-    ctx.closePath();
-
-    ctx.fillStyle=grad;
-
-    ctx.shadowBlur=45;
-
-    ctx.shadowColor=
-      "rgba(120,100,255,.4)";
-
-    ctx.fill();
-
-    ctx.shadowBlur=0;
-
-
-    $("hudLeft").innerHTML=
-      "ENERGY <strong>"+
-      Math.floor(energy)+
-      "</strong>";
-
-    $("hudRight").innerHTML=
-      "SCORE <strong>"+
-      Math.floor(energy*10)+
-      "</strong>";
-
-
-    state.animation=
-      requestAnimationFrame(frame);
-
-  }
-
-
-  frame();
-
-}
-
-
-/* =====================================================
-   COLOUR LAB
-===================================================== */
-
-function startColour(){
-
-  canvas.style.display="none";
-
-
-  const panel=
-    document.createElement("div");
-
-  panel.className=
-    "colour-panel";
-
-
-  panel.innerHTML=`
-
-    <div class="colour-preview"></div>
-
-    <div class="sliders">
-
-      <div class="slider-row">
-        <span>H</span>
-        <input id="hueRange"
-          type="range"
-          min="0"
-          max="360"
-          value="270">
-        <span id="hueVal">270</span>
-      </div>
-
-      <div class="slider-row">
-        <span>S</span>
-        <input id="satRange"
-          type="range"
-          min="0"
-          max="100"
-          value="80">
-        <span id="satVal">80</span>
-      </div>
-
-      <div class="slider-row">
-        <span>L</span>
-        <input id="lightRange"
-          type="range"
-          min="10"
-          max="90"
-          value="65">
-        <span id="lightVal">65</span>
-      </div>
-
-    </div>
-
-  `;
-
-
-  $("gameBox").appendChild(panel);
-
-
-  function update(){
-
-    const h=
-      +panel.querySelector(
-        "#hueRange"
-      ).value;
-
-    const s=
-      +panel.querySelector(
-        "#satRange"
-      ).value;
-
-    const l=
-      +panel.querySelector(
-        "#lightRange"
-      ).value;
-
-
-    panel.querySelector(
-      ".colour-preview"
-    ).style.background=
-      `hsl(${h} ${s}% ${l}%)`;
-
-
-    panel.querySelector(
-      ".colour-preview"
-    ).style.boxShadow=
-      `0 0 110px
-       hsla(${h},100%,65%,.4)`;
-
-
-    $("hueVal").textContent=h;
-
-    $("satVal").textContent=s;
-
-    $("lightVal").textContent=l;
-
-  }
-
-
-  panel
-    .querySelectorAll("input")
-    .forEach(input=>{
-      input.addEventListener(
-        "input",
-        update
-      );
-    });
-
-
-  state.cleanup=()=>{
-
-    panel.remove();
-
-    canvas.style.display="block";
-
-  };
-
-
-  update();
-
-}
-
-
-/* =====================================================
-   SPIRAL
-===================================================== */
-
-function startSpiral(){
-
-  const w=canvas.logicalWidth;
-
-  const h=canvas.logicalHeight;
-
-  let mx=w/2;
-
-  let my=h/2;
-
-  let spin=0;
-
-
-  function move(e){
-
-    const p=
-      pointerPosition(e);
-
-    mx=p.x;
-
-    my=p.y;
-
-  }
-
-
-  canvas.addEventListener(
-    "pointermove",
-    move
-  );
-
-  canvas.addEventListener(
-    "pointerdown",
-    move
-  );
-
-
-  state.cleanup=()=>{
-
-    canvas.removeEventListener(
-      "pointermove",
-      move
-    );
-
-    canvas.removeEventListener(
-      "pointerdown",
-      move
-    );
-
-  };
-
-
-  function frame(){
-
-    ctx.fillStyle=
-      "rgba(5,5,8,.16)";
-
-    ctx.fillRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    spin+=.008;
-
-
-    const cx=w/2;
-
-    const cy=h/2;
-
-
-    for(let i=0;i<850;i++){
-
-      const p=i/850;
-
-      const angle=
-        p*28+spin;
-
-      const radius=
-        p*Math.min(w,h)*.47;
-
-      const bend=
-        (mx-cx)*p*.08;
-
-
-      const x=
-        cx+
-        Math.cos(angle)*radius+
-        bend;
-
-      const y=
-        cy+
-        Math.sin(angle)*radius;
-
-
-      ctx.beginPath();
-
-      ctx.arc(
-        x,
-        y,
-        .5+p*2,
-        0,
-        Math.PI*2
-      );
-
-
-      const hue=
-        (
-          p*250+
-          performance.now()*.025
-        )%360;
-
-
-      ctx.fillStyle=
-        `hsla(
-          ${hue},
-          100%,
-          70%,
-          ${.18+p*.65}
-        )`;
-
-      ctx.fill();
+      p.vy +=
+        dy/distance * .025;
 
     }
 
+    else if(currentGame === "spiral"){
 
-    state.animation=
-      requestAnimationFrame(frame);
+      const dx = p.x-cx;
+      const dy = p.y-cy;
 
-  }
+      p.vx += -dy*.0008;
+      p.vy += dx*.0008;
 
+    }
 
-  frame();
+    else{
 
-}
+      p.vx += (Math.random()-.5)*.03;
+      p.vy += (Math.random()-.5)*.03;
 
+    }
 
-/* =====================================================
-   REACTION
-===================================================== */
+    p.x += p.vx;
+    p.y += p.vy;
 
-function startReaction(){
-
-  let status="waiting";
-
-  let startTime=0;
-
-  let timer=null;
-
-  let score=0;
-
-
-  function draw(){
-
-    const w=canvas.logicalWidth;
-
-    const h=canvas.logicalHeight;
-
-    ctx.clearRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    const cx=w/2;
-
-    const cy=h/2;
-
+    if(p.x<0) p.x=innerWidth;
+    if(p.x>innerWidth) p.x=0;
+    if(p.y<0) p.y=innerHeight;
+    if(p.y>innerHeight) p.y=0;
 
     ctx.beginPath();
 
     ctx.arc(
-      cx,
-      cy,
-      100,
+      p.x,
+      p.y,
+      p.size,
       0,
       Math.PI*2
     );
 
-
-    if(status==="waiting"){
-
-      ctx.fillStyle=
-        "rgba(255,255,255,.07)";
-
-      ctx.strokeStyle=
-        "rgba(255,255,255,.18)";
-
-    }
-
-
-    if(status==="ready"){
-
-      ctx.fillStyle=
-        "rgba(255,190,70,.2)";
-
-      ctx.strokeStyle="#ffbe46";
-
-    }
-
-
-    if(status==="go"){
-
-      ctx.fillStyle=
-        "rgba(101,255,173,.2)";
-
-      ctx.strokeStyle="#65ffad";
-
-    }
-
-
-    ctx.lineWidth=3;
+    ctx.fillStyle =
+      "rgba(255,255,255,.65)";
 
     ctx.fill();
 
-    ctx.stroke();
-
-
-    ctx.textAlign="center";
-
-    ctx.textBaseline="middle";
-
-    ctx.font="700 19px system-ui";
-
-    ctx.fillStyle="#fff";
-
-
-    ctx.fillText(
-      status==="waiting"
-      ?"TAP TO START"
-      :status==="ready"
-      ?"WAIT..."
-      :"TAP!",
-      cx,
-      cy
-    );
-
-
-    $("hudLeft").innerHTML=
-      "REACTION <strong>"+
-      (score||"--")+
-      "</strong>";
-
-    $("hudRight").innerHTML=
-      "BEST <strong>"+
-      (state.bestReaction||"--")+
-      "ms</strong>";
-
   }
 
+  animationID =
+    requestAnimationFrame(animateGame);
 
-  function startRound(){
-
-    clearTimeout(timer);
-
-    status="ready";
-
-    draw();
+}
 
 
-    timer=setTimeout(()=>{
+/* ==========================================
+   CANVAS INTERACTION
+========================================== */
 
-      status="go";
+canvas.addEventListener(
+  "pointermove",
+  function(event){
 
-      startTime=
-        performance.now();
-
-      vibrate(25);
-
-      draw();
-
-    },900+Math.random()*2800);
-
-  }
-
-
-  function tap(){
-
-    if(status==="waiting"){
-
-      startRound();
-
+    if(!currentGame){
       return;
-
     }
 
+    const radius = 120;
 
-    if(status==="ready"){
+    for(const p of particles){
 
-      clearTimeout(timer);
+      const dx =
+        event.clientX-p.x;
 
-      status="waiting";
+      const dy =
+        event.clientY-p.y;
 
-      draw();
+      const distance =
+        Math.sqrt(dx*dx+dy*dy);
 
-      toast("Too early!");
+      if(distance < radius){
 
-      vibrate(70);
+        const force =
+          (radius-distance)/radius;
 
-      return;
+        p.vx +=
+          (dx/distance || 0) *
+          force *
+          .15;
 
-    }
-
-
-    if(status==="go"){
-
-      score=Math.floor(
-        performance.now()-
-        startTime
-      );
-
-
-      if(
-        !state.bestReaction||
-        score<state.bestReaction
-      ){
-
-        state.bestReaction=
-          score;
-
-        toast(
-          "🔥 New personal record!"
-        );
-
-      }else{
-
-        toast(score+"ms");
+        p.vy +=
+          (dy/distance || 0) *
+          force *
+          .15;
 
       }
 
-
-      state.games++;
-
-      addXP(
-        Math.max(
-          5,
-          Math.floor(
-            1000/score*20
-          )
-        )
-      );
-
-      save();
-
-      status="waiting";
-
-      draw();
-
     }
 
   }
+);
 
 
-  canvas.addEventListener(
-    "pointerdown",
-    tap
-  );
+/* ==========================================
+   STORY GAME
+========================================== */
 
+const story = [
 
-  state.cleanup=()=>{
-
-    canvas.removeEventListener(
-      "pointerdown",
-      tap
-    );
-
-    clearTimeout(timer);
-
-  };
-
-
-  draw();
-
-}
-
-
-/* =====================================================
-   SURPRISE
-===================================================== */
-
-function startSurprise(){
-
-  const choices=[
-
-    ["COLOR BLAST",colorBlast],
-
-    ["PARTICLE STORM",particleStorm],
-
-    ["RANDOM MOOD",randomMood]
-
-  ];
-
-
-  const chosen=
-    choices[
-      Math.floor(
-        Math.random()*
-        choices.length
-      )
-    ];
-
-
-  chosen[1]();
-
-  addXP(10);
-
-  state.games++;
-
-  save();
-
-  toast(chosen[0]+"!");
-
-}
-
-
-/* =====================================================
-   COLOR BLAST
-===================================================== */
-
-function colorBlast(){
-
-  let particles=[];
-
-  let hue=Math.random()*360;
-
-
-  function tap(e){
-
-    const p=
-      pointerPosition(e);
-
-
-    for(let i=0;i<55;i++){
-
-      const a=
-        Math.random()*
-        Math.PI*2;
-
-      const speed=
-        2+
-        Math.random()*7;
-
-
-      particles.push({
-
-        x:p.x,
-
-        y:p.y,
-
-        vx:Math.cos(a)*speed,
-
-        vy:Math.sin(a)*speed,
-
-        life:1
-
-      });
-
-    }
-
-
-    vibrate(20);
-
-  }
-
-
-  canvas.addEventListener(
-    "pointerdown",
-    tap
-  );
-
-
-  state.cleanup=()=>{
-
-    canvas.removeEventListener(
-      "pointerdown",
-      tap
-    );
-
-  };
-
-
-  function frame(){
-
-    const w=canvas.logicalWidth;
-
-    const h=canvas.logicalHeight;
-
-
-    ctx.fillStyle=
-      "rgba(5,5,8,.14)";
-
-    ctx.fillRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    hue+=.3;
-
-
-    particles.forEach(p=>{
-
-      p.x+=p.vx;
-
-      p.y+=p.vy;
-
-      p.vx*=.985;
-
-      p.vy*=.985;
-
-      p.life-=.012;
-
-
-      ctx.beginPath();
-
-      ctx.arc(
-        p.x,
-        p.y,
-        2+p.life*5,
-        0,
-        Math.PI*2
-      );
-
-
-      ctx.fillStyle=
-        `hsla(
-          ${hue+p.x*.1},
-          100%,
-          70%,
-          ${p.life}
-        )`;
-
-      ctx.fill();
-
-    });
-
-
-    particles=
-      particles.filter(
-        p=>p.life>0
-      );
-
-
-    state.animation=
-      requestAnimationFrame(frame);
-
-  }
-
-
-  frame();
-
-}
-
-
-/* =====================================================
-   PARTICLE STORM
-===================================================== */
-
-function particleStorm(){
-
-  const parts=[];
-
-  const w=canvas.logicalWidth;
-
-  const h=canvas.logicalHeight;
-
-
-  for(let i=0;i<120;i++){
-
-    parts.push({
-
-      x:Math.random()*w,
-
-      y:Math.random()*h,
-
-      vx:(Math.random()-.5),
-
-      vy:(Math.random()-.5)
-
-    });
-
-  }
-
-
-  let mouse={
-    x:w/2,
-    y:h/2
-  };
-
-
-  function move(e){
-
-    mouse=
-      pointerPosition(e);
-
-  }
-
-
-  canvas.addEventListener(
-    "pointermove",
-    move
-  );
-
-
-  state.cleanup=()=>{
-
-    canvas.removeEventListener(
-      "pointermove",
-      move
-    );
-
-  };
-
-
-  function frame(){
-
-    ctx.fillStyle=
-      "rgba(5,5,8,.18)";
-
-    ctx.fillRect(
-      0,
-      0,
-      w,
-      h
-    );
-
-
-    parts.forEach(p=>{
-
-      const dx=
-        mouse.x-p.x;
-
-      const dy=
-        mouse.y-p.y;
-
-      const d=
-        Math.hypot(dx,dy)||1;
-
-
-      if(d<250){
-
-        p.vx+=dx/d*.04;
-
-        p.vy+=dy/d*.04;
-
-      }
-
-
-      p.vx*=.99;
-
-      p.vy*=.99;
-
-      p.x+=p.vx;
-
-      p.y+=p.vy;
-
-
-      if(p.x<0)p.x=w;
-
-      if(p.x>w)p.x=0;
-
-      if(p.y<0)p.y=h;
-
-      if(p.y>h)p.y=0;
-
-
-      ctx.beginPath();
-
-      ctx.arc(
-        p.x,
-        p.y,
-        2,
-        0,
-        Math.PI*2
-      );
-
-      ctx.fillStyle=
-        "rgba(100,220,255,.75)";
-
-      ctx.fill();
-
-    });
-
-
-    state.animation=
-      requestAnimationFrame(frame);
-
-  }
-
-
-  frame();
-
-}
-
-
-/* =====================================================
-   RANDOM MOOD
-===================================================== */
-
-function randomMood(){
-
-  let hue=
-    Math.floor(
-      Math.random()*360
-    );
-
-  let time=0;
-
-
-  function frame(){
-
-    time++;
-
-
-    canvas.style.background=
-      `radial-gradient(
-        circle at
-        ${50+Math.sin(time*.01)*20}%
-        ${50+Math.cos(time*.013)*20}%,
-        hsla(${hue+time*.5},100%,65%,.35),
-        #050507 70%
-      )`;
-
-
-    state.animation=
-      requestAnimationFrame(frame);
-
-  }
-
-
-  state.cleanup=()=>{
-
-    canvas.style.background="";
-
-  };
-
-
-  frame();
-
-}
-
-
-/* =====================================================
-   =====================================================
-   THE LAST AWAKENING
-   INTERACTIVE STORY ENGINE
-   =====================================================
-===================================================== */
-
-const storyData={
-
-  1:{
+  {
     chapter:"Chapter 1",
     title:"The Awakening",
-    text:[
-      "The first thing you noticed was the silence.",
-      "No traffic. No voices. No hum from the lights.",
-      "You opened your eyes inside a room you had never seen before. A thin blue glow leaked through the cracks of a metal door. Your hands were trembling, although you could not remember being afraid.",
-      "Then something appeared in the darkness.",
-      "A message floated in front of you.",
-      "<strong>AWAKENING COMPLETE.</strong>",
-      "Below it were three words.",
-      "<strong>POWER. MEMORY. SURVIVAL.</strong>",
-      "A metallic sound came from the other side of the door."
-    ],
+    text:
+      "You wake in a room you do not remember entering. The lights are gone. Somewhere beyond the walls, something is moving. A faint blue symbol glows across your palm.",
     choices:[
       {
-        text:"Reach for the strange blue light.",
-        next:2,
-        effect:"power"
+        text:"Touch the symbol.",
+        next:1,
+        xp:15
       },
       {
-        text:"Search the room for something useful.",
-        next:2,
-        effect:"item"
-      },
-      {
-        text:"Stay completely still and listen.",
-        next:2,
-        effect:"sense"
+        text:"Search the room.",
+        next:1,
+        xp:10
       }
     ]
   },
 
-
-  2:{
+  {
     chapter:"Chapter 2",
     title:"The Door",
-    text:[
-      "The room seemed smaller now.",
-      "A faint vibration travelled through the floor.",
-      "Whatever was outside had stopped moving.",
-      "You looked at the door.",
-      "There was no handle.",
-      "Then three symbols appeared across its surface.",
-      "A flame.",
-      "An eye.",
-      "A broken crown.",
-      "The voice returned.",
-      "<strong>CHOOSE WHAT YOU ARE WILLING TO BECOME.</strong>"
-    ],
+    text:
+      "A metal door stands at the end of the corridor. There is no handle. The symbol on your palm begins glowing brighter as you approach.",
     choices:[
       {
-        text:"Touch the flame.",
-        next:3,
-        effect:"flame"
+        text:"Press your hand against the door.",
+        next:2,
+        xp:20
       },
       {
-        text:"Touch the eye.",
-        next:3,
-        effect:"eye"
-      },
-      {
-        text:"Touch the broken crown.",
-        next:3,
-        effect:"crown"
+        text:"Walk away.",
+        next:2,
+        xp:10
       }
     ]
   },
 
-
-  3:{
+  {
     chapter:"Chapter 3",
     title:"The First Monster",
-    text:[
-      "The door opened.",
-      "Cold air rushed into the room.",
-      "Beyond it was a corridor stretching farther than your eyes could follow.",
-      "Something moved at the far end.",
-      "Two pale points appeared in the darkness.",
-      "Then four.",
-      "Then six.",
-      "Your instincts screamed at you to run.",
-      "The creature stepped into the light.",
-      "It had once been human."
-    ],
+    text:
+      "The door opens into darkness. Two pale eyes appear ahead. The creature steps forward, its body moving like something that has forgotten how to be human.",
     choices:[
       {
-        text:"Run deeper into the corridor.",
-        next:4,
-        effect:"run"
+        text:"Stand your ground.",
+        next:3,
+        xp:25
       },
       {
-        text:"Use your awakened power.",
-        next:4,
-        effect:"fight"
-      },
-      {
-        text:"Wait for the creature to move first.",
-        next:4,
-        effect:"wait"
+        text:"Run.",
+        next:3,
+        xp:15
       }
     ]
   },
 
-
-  4:{
+  {
     chapter:"Chapter 4",
     title:"The Choice",
-    text:[
-      "You escaped.",
-      "At least, that was what you told yourself.",
-      "The corridor opened into a vast underground chamber.",
-      "Hundreds of doors surrounded you.",
-      "One was covered in blood.",
-      "One was completely white.",
-      "The final door was black.",
-      "A figure stood beside them.",
-      "You could not see their face.",
-      "They spoke softly.",
-      "<strong>ONE DOOR LEADS OUT. ONE LEADS TO POWER. ONE LEADS TO THE TRUTH.</strong>"
-    ],
+    text:
+      "The creature stops. Behind it is another doorway, glowing with the same strange blue light. You realise the monster is guarding it rather than hunting you.",
     choices:[
       {
-        text:"Open the bloodstained door.",
-        next:5,
-        effect:"blood"
+        text:"Approach the doorway.",
+        next:4,
+        xp:30
       },
       {
-        text:"Open the white door.",
-        next:5,
-        effect:"white"
-      },
-      {
-        text:"Open the black door.",
-        next:5,
-        effect:"black"
+        text:"Attack the creature.",
+        next:4,
+        xp:20
       }
     ]
   },
 
-
-  5:{
+  {
     chapter:"Chapter 5",
     title:"The Price",
-    text:[
-      "The door closed behind you.",
-      "For the first time, you understood the rules.",
-      "Power was never free.",
-      "Memory was never harmless.",
-      "And survival always
+    text:
+      "The doorway opens. A voice speaks from the other side. It tells you that awakening was never a gift. Something was taken from you to make it possible.",
+    choices:[
+      {
+        text:"Ask what was taken.",
+        next:5,
+        xp:35
+      },
+      {
+        text:"Refuse to listen.",
+        next:5,
+        xp:25
+      }
+    ]
+  },
+
+  {
+    chapter:"Chapter 6",
+    title:"The Last Awakening",
+    text:
+      "The voice disappears. The blue symbol on your palm shatters into light. For the first time, you remember the truth. You were never trapped here. You came here willingly.",
+    choices:[
+      {
+        text:"Remember everything.",
+        next:0,
+        xp:50
+      }
+    ]
+  }
+
+];
+
+
+let storyIndex =
+  Number(
+    localStorage.getItem("fluxStory") || 0
+  );
+
+
+function openStory(){
+
+  goTo("story");
+
+  renderStory();
+
+}
+
+
+function renderStory(){
+
+  const chapter =
+    story[storyIndex];
+
+  document.getElementById(
+    "storyChapter"
+  ).textContent =
+    chapter.chapter;
+
+  document.getElementById(
+    "storyTitle"
+  ).textContent =
+    chapter.title;
+
+  document.getElementById(
+    "storyText"
+  ).textContent =
+    chapter.text;
+
+  const choices =
+    document.getElementById(
+      "storyChoices"
+    );
+
+  choices.innerHTML = "";
+
+  chapter.choices.forEach(
+    function(choice){
+
+      const button =
+        document.createElement("button");
+
+      button.className =
+        "choice";
+
+      button.textContent =
+        choice.text;
+
+      button.onclick =
+        function(){
+
+          player.xp += choice.xp;
+          player.games++;
+
+          if(player.xp > player.best){
+            player.best =
+              player.xp;
+          }
+
+          savePlayer();
+          updateStats();
+
+          storyIndex =
+            choice.next;
+
+          localStorage.setItem(
+            "fluxStory",
+            storyIndex
+          );
+
+          renderStory();
+
+        };
+
+      choices.appendChild(button);
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   SURPRISE ME
+========================================== */
+
+function surprise(){
+
+  const options = [
+    "A secret is waiting for you.",
+    "Flux noticed you.",
+    "Something just changed.",
+    "You found nothing. Or did you?",
+    "The simulation is watching."
+  ];
+
+  showToast(
+    options[
+      Math.floor(
+        Math.random()*options.length
+      )
+    ]
+  );
+
+}
+
+
+/* ==========================================
+   KEYBOARD
+========================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape" &&
+      screens.game.classList.contains("active")
+    ){
+
+      goTo("home");
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   INITIALISE
+========================================== */
+
+document.getElementById(
+  "startButton"
+).addEventListener(
+  "click",
+  function(event){
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    enterFlux();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
